@@ -6,11 +6,9 @@ export default function Footer() {
         <footer className="bg-white border-t border-border py-20 px-6 md:px-12">
             <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
                 <div className="col-span-1 md:col-span-2">
-                    <Link href="/" className="flex items-center gap-3 text-2xl font-bold tracking-tighter text-brand-dark">
+                    <Link href="/" className="flex items-center gap-3 text-2xl font-bold tracking-tighter text-brand-dark font-somi">
                         <Image src="/favicon.svg" alt="Logo" width={32} height={32} />
-                        <div>
-                            기획의<span className="text-primary italic">숲</span>
-                        </div>
+                        <div>기획의 숲</div>
                     </Link>
                     <p className="mt-4 text-secondary-foreground max-w-sm leading-relaxed">
                         생각이 뿌리 내리고 가치가 자라나는 공간.

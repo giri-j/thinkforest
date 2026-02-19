@@ -39,7 +39,7 @@ export default function LotteO4OCaseStudy() {
                     <div className="reveal mb-6 inline-flex items-center gap-2 px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-black tracking-widest uppercase">
                         O4O / Operation Strategy
                     </div>
-                    <h1 className="reveal text-5xl md:text-7xl font-bold text-brand-dark tracking-tighter font-maple leading-tight mb-12">
+                    <h1 className="reveal text-5xl md:text-7xl font-bold text-brand-dark tracking-tighter leading-tight mb-12">
                         롯데닷컴 O4O 서비스 <br />‘스마트픽’ 시스템 관리
                     </h1>
 
@@ -70,25 +70,25 @@ export default function LotteO4OCaseStudy() {
 
                     {/* 1. Goal */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <Target className="w-8 h-8 text-primary" /> 프로젝트의 목적
                         </h2>
                         <div className="p-8 md:p-12 rounded-[3rem] bg-brand-dark text-white relative overflow-hidden">
                             <p className="text-2xl md:text-3xl font-medium leading-[1.6] relative z-10">
                                 "계열사 인프라를 연결하는 O4O 서비스를 <br className="hidden md:block" />
-                                <span className="text-primary font-bold italic">실제로 돌아가게 만드는 것</span>"
+                                <span className="text-warm font-bold italic underline decoration-2 underline-offset-8">실제로 돌아가게 만드는 것</span>"
                             </p>
-                            <div className="mt-8 text-gray-400 text-lg leading-relaxed max-w-2xl relative z-10">
+                            <div className="mt-8 text-white/60 text-lg leading-relaxed max-w-2xl relative z-10">
                                 단순한 서비스 구축을 넘어, 전국 오프라인 거점(백화점, 세븐일레븐 등)에서
                                 고객이 주문한 상품을 문제없이 픽업할 수 있도록 안정적인 운영 체계를 확립하는 것이 핵심이었습니다.
                             </div>
-                            <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-primary/10 rounded-full blur-[100px]" />
+                            <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-warm/10 rounded-full blur-[100px]" />
                         </div>
                     </div>
 
                     {/* 2. Problem */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <AlertCircle className="w-8 h-8 text-red-500" /> 문제 정의
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -111,7 +111,7 @@ export default function LotteO4OCaseStudy() {
 
                     {/* 3. My Role */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <Users className="w-8 h-8 text-primary" /> 역할과 접근 방식
                         </h2>
                         <div className="space-y-6 text-xl text-secondary-foreground leading-relaxed">
@@ -130,7 +130,7 @@ export default function LotteO4OCaseStudy() {
 
                     {/* 4. Actions */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12">
                             <Settings className="w-8 h-8 text-primary" /> 핵심 개선 포인트
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -170,7 +170,7 @@ export default function LotteO4OCaseStudy() {
 
                     {/* 5. Outcome */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12">
                             <BarChart3 className="w-8 h-8 text-primary" /> 결과 및 성과
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -197,7 +197,7 @@ export default function LotteO4OCaseStudy() {
 
                     {/* 6. Insight */}
                     <div className="reveal pb-20">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <Lightbulb className="w-8 h-8 text-yellow-500" /> 기획자의 인사이트
                         </h2>
                         <div className="p-12 rounded-[3rem] bg-brand-dark text-white relative overflow-hidden">
@@ -205,12 +205,12 @@ export default function LotteO4OCaseStudy() {
                                 "서비스는 기능이 아니라, <br />
                                 조직을 설득하고 움직이게 만드는 구조다"
                             </p>
-                            <div className="space-y-4 text-lg text-gray-400 relative z-10">
+                            <div className="space-y-4 text-lg text-white/60 relative z-10">
                                 <p>• 아무리 좋은 앱이라도 현장이 이해하지 못하면 서비스는 죽은 상태가 됩니다.</p>
                                 <p>• 계열사 간 복잡한 이해관계 속에서는 기능보다 <strong>운영 체계와 인센티브 구조</strong>가 더 강력한 힘을 발휘합니다.</p>
                                 <p>• 현장의 불만은 '교육'으로 덮는 것이 아니라 <strong>'시스템 로직'</strong>으로 해결해야 지속 가능합니다.</p>
                             </div>
-                            <div className="absolute -left-20 -top-20 w-80 h-80 bg-primary/20 rounded-full blur-[100px]" />
+                            <div className="absolute -right-20 -top-20 w-80 h-80 bg-warm/10 rounded-full blur-[100px]" />
                         </div>
                     </div>
 

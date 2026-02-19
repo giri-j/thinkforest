@@ -39,7 +39,7 @@ export default function LotteOrderCaseStudy() {
                     <div className="reveal mb-6 inline-flex items-center gap-2 px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-black tracking-widest uppercase">
                         Conversion Optimization
                     </div>
-                    <h1 className="reveal text-5xl md:text-7xl font-bold text-brand-dark tracking-tighter font-maple leading-tight mb-12">
+                    <h1 className="reveal text-5xl md:text-7xl font-bold text-brand-dark tracking-tighter leading-tight mb-12">
                         롯데닷컴 <br />주문완료율 개선 프로젝트
                     </h1>
 
@@ -70,25 +70,25 @@ export default function LotteOrderCaseStudy() {
 
                     {/* 1. Goal */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <Target className="w-8 h-8 text-primary" /> 프로젝트의 목적
                         </h2>
-                        <div className="p-8 md:p-12 rounded-[3rem] bg-brand-dark dark text-white relative overflow-hidden">
+                        <div className="p-8 md:p-12 rounded-[3rem] bg-brand-dark text-white relative overflow-hidden">
                             <p className="text-2xl md:text-3xl font-medium leading-[1.6] relative z-10">
                                 "결제 이후 발생하는 매출 손실을 최소화하여 <br className="hidden md:block" />
-                                <span className="text-primary font-bold italic">안정적인 주문 완료 구조</span>를 만드는 것"
+                                <span className="text-warm font-bold italic underline decoration-2 underline-offset-8">안정적인 주문 완료 구조</span>를 만드는 것"
                             </p>
-                            <div className="mt-8 text-gray-400 text-lg leading-relaxed max-w-2xl relative z-10">
+                            <div className="mt-8 text-white/60 text-lg leading-relaxed max-w-2xl relative z-10">
                                 백화점 상품을 온라인으로 판매하는 환경에서 발생하는 결품·취소·반품 리스크를 관리하여
                                 실제 매출 확정률을 높이는 것이 핵심이었습니다.
                             </div>
-                            <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-primary/20 rounded-full blur-[100px]" />
+                            <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-warm/10 rounded-full blur-[100px]" />
                         </div>
                     </div>
 
                     {/* 2. Problem */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <AlertCircle className="w-8 h-8 text-red-500" /> 문제 정의
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -122,7 +122,7 @@ export default function LotteOrderCaseStudy() {
 
                     {/* 3. My Role */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <Users className="w-8 h-8 text-primary" /> 역할과 접근 방식
                         </h2>
                         <div className="space-y-6 text-xl text-secondary-foreground leading-relaxed">
@@ -149,7 +149,7 @@ export default function LotteOrderCaseStudy() {
 
                     {/* 4. Actions */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12">
                             <Settings className="w-8 h-8 text-primary" /> 핵심 개선 포인트
                         </h2>
                         <div className="space-y-12">
@@ -196,7 +196,7 @@ export default function LotteOrderCaseStudy() {
 
                     {/* 5. Outcome */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12">
                             <BarChart3 className="w-8 h-8 text-primary" /> 결과 및 성과
                         </h2>
                         <div className="p-12 rounded-[3.5rem] bg-secondary/10 border border-border/50 relative overflow-hidden">
@@ -227,7 +227,7 @@ export default function LotteOrderCaseStudy() {
 
                     {/* 6. Insight */}
                     <div className="reveal pb-20">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <Lightbulb className="w-8 h-8 text-yellow-500" /> 기획자의 인사이트
                         </h2>
                         <div className="p-12 rounded-[3rem] bg-[#F8F9FA] border-l-[12px] border-primary">

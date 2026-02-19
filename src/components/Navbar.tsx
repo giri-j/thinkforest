@@ -11,6 +11,7 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const pathname = usePathname()
   const isHome = pathname === '/'
+  const isContact = pathname === '/contact'
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,19 +27,24 @@ export default function Navbar() {
     { name: 'Contact', href: '/contact' },
   ]
 
-  // Decide if we should show dark text (when scrolled OR on non-home pages)
-  const showDarkText = isScrolled || !isHome
+  // Decide if we should show dark text (when scrolled OR on non-home/non-contact pages)
+  const showDarkText = isScrolled ? (!isContact) : (!isHome && !isContact)
+
+  // Decide navbar background class
+  const navBgClass = isScrolled
+    ? (isContact ? "bg-black/40 backdrop-blur-xl border-b border-white/10 py-3" : "bg-white/70 backdrop-blur-xl border-b border-border py-3")
+    : "bg-transparent py-6"
 
   return (
     <nav className={cn(
       "fixed top-0 left-0 w-full z-50 transition-all duration-300 px-6 py-4 md:px-12",
-      showDarkText ? "bg-white/70 backdrop-blur-xl border-b border-border py-3" : "bg-transparent py-6"
+      navBgClass
     )}>
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <Link
           href="/"
           className={cn(
-            "flex items-center gap-2 text-2xl font-bold tracking-tighter group font-maple transition-colors",
+            "flex items-center gap-2 text-2xl font-bold tracking-tighter group font-somi transition-colors",
             showDarkText ? "text-brand-dark" : "text-white"
           )}
         >
@@ -50,7 +56,7 @@ export default function Navbar() {
               !showDarkText && "brightness-0 invert"
             )}
           />
-          <span>기획의<span className="italic">숲</span></span>
+          <span>기획의 숲</span>
         </Link>
 
         {/* Desktop Links */}

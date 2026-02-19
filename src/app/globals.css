@@ -1,3 +1,5 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,14 +11,30 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'NanumSomiche';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/naverfont_10@1.0/Somi.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 224 40% 5%;
-    --primary: 227 77% 56%;
-    --secondary: 227 75% 95%;
-    --brand-dark: #080B13;
+    --background: 150 7% 97%;
+    --foreground: 145 24% 15%;
+    --primary: 145 24% 15%;
+    --primary-foreground: 150 7% 97%;
+    --secondary: 150 15% 91%;
+    --secondary-foreground: 145 24% 15%;
+    --accent: 227 77% 56%;
+    --accent-foreground: 0 0% 100%;
+    --warm: 37 75% 67%;
+    --warm-foreground: 145 24% 15%;
+    --brand-dark: #1C2E24;
     --radius: 0.75rem;
+    --border: 145 10% 85%;
+    --input: 145 10% 85%;
+    --ring: 227 77% 56%;
   }
 }
 
@@ -24,10 +42,35 @@
   .font-maple {
     font-family: 'MaplestoryBold', sans-serif;
   }
+
+  .font-somi {
+    font-family: 'NanumSomiche', cursive;
+  }
+
+  .bg-radial-gradient {
+    background: radial-gradient(var(--tw-gradient-stops));
+  }
+}
+
+@keyframes pulse-subtle {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(0.98);
+  }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 4s ease-in-out infinite;
 }
 
 body {
   @apply bg-background text-foreground;
+  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
   font-feature-settings: "rlig" 1, "calt" 1;
   overflow-x: hidden;
 }

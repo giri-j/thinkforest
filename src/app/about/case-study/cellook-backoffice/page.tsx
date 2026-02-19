@@ -39,7 +39,7 @@ export default function CellookBackofficeCaseStudy() {
                     <div className="reveal mb-6 inline-flex items-center gap-2 px-4 py-1.5 bg-brand-dark/5 text-brand-dark rounded-full text-sm font-black tracking-widest uppercase">
                         Admin UX / Product Strategy
                     </div>
-                    <h1 className="reveal text-5xl md:text-7xl font-bold text-brand-dark tracking-tighter font-maple leading-tight mb-12">
+                    <h1 className="reveal text-5xl md:text-7xl font-bold text-brand-dark tracking-tighter leading-tight mb-12">
                         여성의류 플랫폼 ‘셀룩’ <br />백오피스 기획 프로젝트
                     </h1>
 
@@ -70,7 +70,7 @@ export default function CellookBackofficeCaseStudy() {
 
                     {/* 1. Goal */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <Target className="w-8 h-8 text-primary" /> 프로젝트의 목적
                         </h2>
                         <div className="p-8 md:p-12 rounded-[3rem] bg-brand-dark text-white relative overflow-hidden">
@@ -88,7 +88,7 @@ export default function CellookBackofficeCaseStudy() {
 
                     {/* 2. Problem */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <AlertCircle className="w-8 h-8 text-red-500" /> 문제 정의
                         </h2>
                         <div className="space-y-6">
@@ -114,7 +114,7 @@ export default function CellookBackofficeCaseStudy() {
 
                     {/* 3. My Role */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <Users className="w-8 h-8 text-primary" /> 역할과 접근 방식
                         </h2>
                         <div className="space-y-8">
@@ -145,7 +145,7 @@ export default function CellookBackofficeCaseStudy() {
 
                     {/* 4. Actions */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12">
                             <Settings className="w-8 h-8 text-primary" /> 핵심 개선 포인트
                         </h2>
                         <div className="space-y-16">
@@ -195,32 +195,32 @@ export default function CellookBackofficeCaseStudy() {
 
                     {/* 5. Outcome */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12">
                             <BarChart3 className="w-8 h-8 text-primary" /> 결과 및 성과
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div className="p-10 rounded-[3rem] bg-brand-dark text-white relative overflow-hidden group">
                                 <div className="relative z-10">
-                                    <Rocket className="w-10 h-10 text-primary mb-6" />
+                                    <Rocket className="w-10 h-10 text-warm mb-6" />
                                     <h3 className="text-2xl font-bold mb-4">비즈니스 확장성 확보</h3>
-                                    <p className="text-gray-400">기획전 및 라이브 기능 도입을 통해 입점몰 홍보 수단 확보 및 플랫폼 매출 발생 구조 마련</p>
+                                    <p className="text-white/60">기획전 및 라이브 기능 도입을 통해 입점몰 홍보 수단 확보 및 플랫폼 매출 발생 구조 마련</p>
                                 </div>
-                                <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-primary/20 rounded-full blur-[60px] group-hover:scale-150 transition-transform duration-700" />
+                                <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-warm/20 rounded-full blur-[60px] group-hover:scale-150 transition-transform duration-700" />
                             </div>
                             <div className="p-10 rounded-[3rem] bg-primary text-white relative overflow-hidden group">
                                 <div className="relative z-10">
-                                    <Layout className="w-10 h-10 text-brand-dark mb-6" />
+                                    <Layout className="w-10 h-10 text-warm mb-6" />
                                     <h3 className="text-2xl font-bold mb-4">운영 리소스 효율화</h3>
-                                    <p className="text-primary-foreground/80">어무 흐름 중심 UX 개선과 반복 수기 작업 자동화를 통해 업무 시간 및 운영 리소스의 획기적 절감 달성</p>
+                                    <p className="text-white/80">업무 흐름 중심 UX 개선과 반복 수기 작업 자동화를 통해 업무 시간 및 운영 리소스의 획기적 절감 달성</p>
                                 </div>
-                                <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-brand-dark/20 rounded-full blur-[60px] group-hover:scale-150 transition-transform duration-700" />
+                                <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-[60px] group-hover:scale-150 transition-transform duration-700" />
                             </div>
                         </div>
                     </div>
 
                     {/* 6. Insight */}
                     <div className="reveal pb-20">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <Lightbulb className="w-8 h-8 text-yellow-500" /> 기획자의 인사이트
                         </h2>
                         <div className="p-12 rounded-[3.5rem] bg-[#F8F9FA] border-l-[12px] border-primary">

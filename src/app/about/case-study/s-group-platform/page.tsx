@@ -39,7 +39,7 @@ export default function SGroupPlatformCaseStudy() {
                     <div className="reveal mb-6 inline-flex items-center gap-2 px-4 py-1.5 bg-blue-900/5 text-blue-900 rounded-full text-sm font-black tracking-widest uppercase border border-blue-900/10">
                         Enterprise SI / DX Education Platform
                     </div>
-                    <h1 className="reveal text-5xl md:text-7xl font-bold text-brand-dark tracking-tighter font-maple leading-tight mb-12">
+                    <h1 className="reveal text-5xl md:text-7xl font-bold text-brand-dark tracking-tighter leading-tight mb-12">
                         ‘S’그룹 DX 교육 플랫폼 <br />2차 기획 리뉴얼 프로젝트
                     </h1>
 
@@ -70,24 +70,24 @@ export default function SGroupPlatformCaseStudy() {
 
                     {/* 1. Goal */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <Target className="w-8 h-8 text-blue-600" /> 프로젝트의 목적
                         </h2>
                         <div className="p-8 md:p-12 rounded-[3.5rem] bg-brand-dark text-white relative overflow-hidden">
                             <p className="text-2xl md:text-3xl font-medium leading-[1.6] relative z-10">
                                 “단순한 기능 보완을 넘어,<br />
-                                <span className="text-blue-400 font-black italic underline decoration-4 underline-offset-8">플랫폼의 본질적인 구조를 재설계</span>하는 것”
+                                <span className="text-warm font-black italic underline decoration-4 underline-offset-8">플랫폼의 본질적인 구조를 재설계</span>하는 것”
                             </p>
-                            <div className="mt-8 text-gray-400 text-lg leading-relaxed max-w-2xl relative z-10">
+                            <div className="mt-8 text-white/60 text-lg leading-relaxed max-w-2xl relative z-10">
                                 1차 개발 이후 기대치에 미치지 못했던 사용성과 완성도를 극복하기 위해, 수기 중심의 운영을 시스템으로 전환하고 양방향 소통이 가능한 개방형 DX 교육 에코시스템을 구축하는 것이 핵심 목표였습니다.
                             </div>
-                            <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-blue-600/10 rounded-full blur-[100px]" />
+                            <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-warm/10 rounded-full blur-[100px]" />
                         </div>
                     </div>
 
                     {/* 2. Problem */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <AlertCircle className="w-8 h-8 text-red-500" /> 문제 정의
                         </h2>
                         <div className="p-8 rounded-[2rem] bg-red-50 border border-red-100 italic text-xl text-brand-dark text-center font-bold mb-12">
@@ -111,7 +111,7 @@ export default function SGroupPlatformCaseStudy() {
 
                     {/* 3. My Role */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <Users className="w-8 h-8 text-blue-600" /> 역할과 접근 방식
                         </h2>
                         <div className="space-y-8">
@@ -129,7 +129,7 @@ export default function SGroupPlatformCaseStudy() {
 
                     {/* 4. Actions */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12">
                             <Settings className="w-8 h-8 text-blue-600" /> 핵심 개선 포인트
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -174,16 +174,16 @@ export default function SGroupPlatformCaseStudy() {
 
                     {/* 5. Outcome */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12">
                             <BarChart3 className="w-8 h-8 text-blue-600" /> 결과 및 성과
                         </h2>
-                        <div className="relative p-12 md:p-20 rounded-[4rem] bg-blue-900 text-white overflow-hidden text-center">
+                        <div className="relative p-12 md:p-20 rounded-[4rem] bg-brand-dark text-white overflow-hidden text-center border border-white/10">
                             <div className="relative z-10 flex flex-col items-center">
-                                <Zap className="w-16 h-16 text-yellow-400 mb-6 animate-pulse" />
-                                <div className="text-7xl md:text-9xl font-black tracking-tighter mb-4 italic">200%</div>
+                                <Zap className="w-16 h-16 text-warm mb-6 animate-pulse" />
+                                <div className="text-7xl md:text-9xl font-black tracking-tighter mb-4 italic text-warm">200%</div>
                                 <h3 className="text-2xl md:text-3xl font-bold mb-8 tracking-tight">기존 대비 이용자 수 2배 이상 성장</h3>
                                 <div className="w-full max-w-lg h-px bg-white/20 mb-8" />
-                                <p className="text-xl font-medium text-blue-200">
+                                <p className="text-xl font-medium text-white/60">
                                     아이디어에 그치지 않고 대규모 조직의 요구를 완벽히 수렴하여 <br />
                                     실질적인 리뉴얼 성공 사례를 달성했습니다.
                                 </p>
@@ -193,7 +193,7 @@ export default function SGroupPlatformCaseStudy() {
 
                     {/* 6. Insight */}
                     <div className="reveal pb-20">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <Lightbulb className="w-8 h-8 text-yellow-500" /> 기획자의 인사이트
                         </h2>
                         <div className="p-12 rounded-[3.5rem] bg-[#F8FAFC] border-2 border-dashed border-blue-200">

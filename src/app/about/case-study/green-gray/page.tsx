@@ -39,7 +39,7 @@ export default function GreenGrayIRCaseStudy() {
                     <div className="reveal mb-6 inline-flex items-center gap-2 px-4 py-1.5 bg-orange-500/10 text-orange-600 rounded-full text-sm font-black tracking-widest uppercase">
                         Start-up IR / Funding
                     </div>
-                    <h1 className="reveal text-5xl md:text-7xl font-bold text-brand-dark tracking-tighter font-maple leading-tight mb-12">
+                    <h1 className="reveal text-5xl md:text-7xl font-bold text-brand-dark tracking-tighter leading-tight mb-12">
                         그린앤그레이 IR <br />투자 유치 프로젝트 (50억)
                     </h1>
 
@@ -70,7 +70,7 @@ export default function GreenGrayIRCaseStudy() {
 
                     {/* 1. Goal */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <Target className="w-8 h-8 text-orange-500" /> 프로젝트의 목적
                         </h2>
                         <div className="p-8 md:p-12 rounded-[3.5rem] bg-brand-dark text-white relative overflow-hidden">
@@ -88,7 +88,7 @@ export default function GreenGrayIRCaseStudy() {
 
                     {/* 2. Problem */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <AlertCircle className="w-8 h-8 text-red-500" /> 문제 정의
                         </h2>
                         <div className="space-y-6">
@@ -114,7 +114,7 @@ export default function GreenGrayIRCaseStudy() {
 
                     {/* 3. My Role */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <Users className="w-8 h-8 text-orange-500" /> 역할과 접근 방식
                         </h2>
                         <div className="space-y-8">
@@ -136,7 +136,7 @@ export default function GreenGrayIRCaseStudy() {
 
                     {/* 4. Actions */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12">
                             <Settings className="w-8 h-8 text-orange-500" /> 핵심 개선 포인트
                         </h2>
                         <div className="space-y-8">
@@ -162,10 +162,10 @@ export default function GreenGrayIRCaseStudy() {
                             </div>
                             <div className="p-8 rounded-[2.5rem] bg-brand-dark text-white">
                                 <div className="flex items-center gap-4 mb-4">
-                                    <CheckCircle2 className="text-orange-400 w-6 h-6" />
+                                    <CheckCircle2 className="text-warm w-6 h-6" />
                                     <h3 className="text-xl font-bold">흔들리지 않는 기준점 유지</h3>
                                 </div>
-                                <p className="text-gray-400 leading-relaxed md:pl-10">
+                                <p className="text-white/60 leading-relaxed md:pl-10">
                                     내부 이해당사자들의 의견이 계속 더해지는 상황에서도, "이 자료가 설득해야 할 최종 대상(투자자)의 시선"을 기준으로 끊임없이 조율하고 품질을 관리했습니다.
                                 </p>
                             </div>
@@ -174,7 +174,7 @@ export default function GreenGrayIRCaseStudy() {
 
                     {/* 5. Outcome */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12">
                             <BarChart3 className="w-8 h-8 text-orange-500" /> 결과 및 성과
                         </h2>
                         <div className="relative p-12 md:p-20 rounded-[4rem] bg-gradient-to-br from-orange-500 to-orange-700 text-white overflow-hidden text-center">
@@ -199,7 +199,7 @@ export default function GreenGrayIRCaseStudy() {
 
                     {/* 6. Insight */}
                     <div className="reveal pb-20">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <Lightbulb className="w-8 h-8 text-yellow-500" /> 기획자의 인사이트
                         </h2>
                         <div className="p-12 rounded-[3.5rem] bg-[#F8F9FA] border-2 border-dashed border-orange-200">

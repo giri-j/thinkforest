@@ -39,7 +39,7 @@ export default function RebindCaseStudy() {
                     <div className="reveal mb-6 inline-flex items-center gap-2 px-4 py-1.5 bg-[#6366F1]/10 text-[#6366F1] rounded-full text-sm font-black tracking-widest uppercase">
                         MVP / Revenue Validation
                     </div>
-                    <h1 className="reveal text-5xl md:text-7xl font-bold text-brand-dark tracking-tighter font-maple leading-tight mb-12">
+                    <h1 className="reveal text-5xl md:text-7xl font-bold text-brand-dark tracking-tighter leading-tight mb-12">
                         리바인드(Re:bind) <br />서비스 기획 프로젝트
                     </h1>
 
@@ -70,7 +70,7 @@ export default function RebindCaseStudy() {
 
                     {/* 1. Goal */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <Target className="w-8 h-8 text-[#6366F1]" /> 프로젝트의 목적
                         </h2>
                         <div className="p-8 md:p-12 rounded-[3.5rem] bg-brand-dark text-white relative overflow-hidden">
@@ -88,7 +88,7 @@ export default function RebindCaseStudy() {
 
                     {/* 2. Problem */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <AlertCircle className="w-8 h-8 text-red-500" /> 문제 정의
                         </h2>
                         <div className="p-8 rounded-[2rem] bg-red-50 border border-red-100 italic text-xl text-brand-dark text-center font-bold mb-8">
@@ -114,7 +114,7 @@ export default function RebindCaseStudy() {
 
                     {/* 3. My Role */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <Users className="w-8 h-8 text-[#6366F1]" /> 역할과 접근 방식
                         </h2>
                         <div className="space-y-8">
@@ -140,7 +140,7 @@ export default function RebindCaseStudy() {
 
                     {/* 4. Actions */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12">
                             <Settings className="w-8 h-8 text-[#6366F1]" /> 핵심 개선 포인트
                         </h2>
                         <div className="space-y-12">
@@ -172,7 +172,7 @@ export default function RebindCaseStudy() {
 
                     {/* 5. Outcome */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12">
                             <BarChart3 className="w-8 h-8 text-[#6366F1]" /> 결과 및 성과
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -187,9 +187,9 @@ export default function RebindCaseStudy() {
                                 <p className="text-secondary-foreground text-sm">확보된 전체 회원수</p>
                             </div>
                             <div className="p-8 rounded-[2.5rem] bg-brand-dark text-white text-center shadow-xl">
-                                <div className="text-primary font-black text-sm mb-4 uppercase tracking-widest">Paid Users</div>
-                                <div className="text-5xl font-black text-white mb-2 tracking-tighter">50 P</div>
-                                <p className="text-gray-400 text-sm">실제 유료 과금 전환</p>
+                                <div className="text-white/60 font-black text-sm mb-4 uppercase tracking-widest">Paid Users</div>
+                                <div className="text-5xl font-black text-warm mb-2 tracking-tighter">50 P</div>
+                                <p className="text-white/40 text-sm">실제 유료 과금 전환</p>
                             </div>
                         </div>
                         <div className="mt-8 p-8 rounded-[2rem] bg-[#6366F1]/5 border border-[#6366F1]/10 text-center">
@@ -201,7 +201,7 @@ export default function RebindCaseStudy() {
 
                     {/* 6. Insight */}
                     <div className="reveal pb-20">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <Lightbulb className="w-8 h-8 text-yellow-500" /> 기획자의 인사이트
                         </h2>
                         <div className="grid grid-cols-1 gap-6">

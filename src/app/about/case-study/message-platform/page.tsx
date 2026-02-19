@@ -39,7 +39,7 @@ export default function MessagePlatformCaseStudy() {
                     <div className="reveal mb-6 inline-flex items-center gap-2 px-4 py-1.5 bg-slate-900/5 text-slate-900 rounded-full text-sm font-black tracking-widest uppercase">
                         B2B Platform / Complexity Management
                     </div>
-                    <h1 className="reveal text-5xl md:text-7xl font-bold text-brand-dark tracking-tighter font-maple leading-tight mb-12">
+                    <h1 className="reveal text-5xl md:text-7xl font-bold text-brand-dark tracking-tighter leading-tight mb-12">
                         통합 메시징 플랫폼 <br />구조 및 정책 기획
                     </h1>
 
@@ -70,25 +70,25 @@ export default function MessagePlatformCaseStudy() {
 
                     {/* 1. Goal */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <Target className="w-8 h-8 text-slate-700" /> 프로젝트의 목적
                         </h2>
                         <div className="p-8 md:p-12 rounded-[3.5rem] bg-brand-dark text-white relative overflow-hidden">
                             <p className="text-2xl md:text-3xl font-medium leading-[1.6] relative z-10">
                                 “파편화된 메시징 시장의 혼란을 정리하고,<br />
-                                <span className="text-primary font-bold italic underline decoration-4 underline-offset-8">통합된 운영 기준</span>을 제공하는 것”
+                                <span className="text-warm font-bold italic underline decoration-4 underline-offset-8">통합된 운영 기준</span>을 제공하는 것”
                             </p>
-                            <div className="mt-8 text-gray-400 text-lg leading-relaxed max-w-2xl relative z-10">
+                            <div className="mt-8 text-white/60 text-lg leading-relaxed max-w-2xl relative z-10">
                                 문자, 카카오(알림톡/친구톡), 네이버 알림 등 채널마다 다른 계약, 정책, 관리 화면으로 인한
                                 기업의 '운영 지옥'을 해결하기 위해 이 모든 복잡성을 하나의 시스템으로 흡수하는 플랫폼을 설계했습니다.
                             </div>
-                            <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-slate-500/10 rounded-full blur-[100px]" />
+                            <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-warm/10 rounded-full blur-[100px]" />
                         </div>
                     </div>
 
                     {/* 2. Problem */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <AlertCircle className="w-8 h-8 text-red-500" /> 문제 정의
                         </h2>
                         <div className="p-8 rounded-[2rem] bg-red-50 border border-red-100 italic text-xl text-brand-dark text-center font-bold mb-12">
@@ -114,7 +114,7 @@ export default function MessagePlatformCaseStudy() {
 
                     {/* 3. My Role */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <Users className="w-8 h-8 text-slate-700" /> 기술 번역가의 시점
                         </h2>
                         <div className="space-y-8">
@@ -140,7 +140,7 @@ export default function MessagePlatformCaseStudy() {
 
                     {/* 4. Actions */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12">
                             <Settings className="w-8 h-8 text-slate-700" /> 핵심 개선 포인트
                         </h2>
                         <div className="space-y-4">
@@ -173,22 +173,22 @@ export default function MessagePlatformCaseStudy() {
 
                     {/* 5. Outcome */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12">
                             <BarChart3 className="w-8 h-8 text-slate-700" /> 결과 및 성과
                         </h2>
                         <div className="p-12 rounded-[3.5rem] bg-brand-dark text-white text-center relative overflow-hidden">
                             <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12">
                                 <div>
-                                    <div className="text-xs font-black text-gray-400 mb-2 uppercase tracking-widest">Scalability</div>
-                                    <div className="text-6xl font-black text-primary mb-4 tracking-tighter italic">Large-scale</div>
+                                    <div className="text-xs font-black text-white/40 mb-2 uppercase tracking-widest">Scalability</div>
+                                    <div className="text-6xl font-black text-warm mb-4 tracking-tighter italic">Large-scale</div>
                                     <p className="text-lg font-bold">월 수천만 건 이상의 발송량</p>
-                                    <p className="text-sm text-gray-500 mt-1">대규모 데이터 처리의 안정성 확보</p>
+                                    <p className="text-sm text-white/40 mt-1">대규모 데이터 처리의 안정성 확보</p>
                                 </div>
                                 <div>
-                                    <div className="text-xs font-black text-gray-400 mb-2 uppercase tracking-widest">Efficiency</div>
+                                    <div className="text-xs font-black text-white/40 mb-2 uppercase tracking-widest">Efficiency</div>
                                     <div className="text-6xl font-black text-white mb-4 tracking-tighter italic">Stability</div>
                                     <p className="text-lg font-bold">내부 CS 및 운영 부담 급감</p>
-                                    <p className="text-sm text-gray-500 mt-1">플랫폼 통합으로 인한 휴먼 에러 제로화</p>
+                                    <p className="text-sm text-white/40 mt-1">플랫폼 통합으로 인한 휴먼 에러 제로화</p>
                                 </div>
                             </div>
                             <div className="mt-12 pt-8 border-t border-white/10 relative z-10">
@@ -203,7 +203,7 @@ export default function MessagePlatformCaseStudy() {
 
                     {/* 6. Insight */}
                     <div className="reveal pb-20">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <Lightbulb className="w-8 h-8 text-yellow-500" /> 기획자의 인사이트
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

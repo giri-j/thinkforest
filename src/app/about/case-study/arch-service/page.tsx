@@ -39,7 +39,7 @@ export default function ArchCaseStudy() {
                     <div className="reveal mb-6 inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-500/10 text-emerald-600 rounded-full text-sm font-black tracking-widest uppercase">
                         Artist Platform / B2B Matching
                     </div>
-                    <h1 className="reveal text-5xl md:text-7xl font-bold text-brand-dark tracking-tighter font-maple leading-tight mb-12">
+                    <h1 className="reveal text-5xl md:text-7xl font-bold text-brand-dark tracking-tighter leading-tight mb-12">
                         아치(artch) <br />서비스 기획 프로젝트
                     </h1>
 
@@ -70,24 +70,24 @@ export default function ArchCaseStudy() {
 
                     {/* 1. Goal */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <Target className="w-8 h-8 text-emerald-500" /> 프로젝트의 목적
                         </h2>
                         <div className="p-8 md:p-12 rounded-[3.5rem] bg-brand-dark text-white relative overflow-hidden">
                             <p className="text-2xl md:text-3xl font-medium leading-[1.6] relative z-10">
                                 “상품에 예술의 숨결을 불어넣고,<br />
-                                <span className="text-emerald-400 font-black italic underline decoration-4 underline-offset-8">작가와 기업을 잇는 가교</span>를 만드는 것”
+                                <span className="text-warm font-black italic underline decoration-4 underline-offset-8">작가와 기업을 잇는 가교</span>를 만드는 것”
                             </p>
-                            <div className="mt-8 text-gray-400 text-lg leading-relaxed max-w-2xl relative z-10">
+                            <div className="mt-8 text-white/60 text-lg leading-relaxed max-w-2xl relative z-10">
                                 기존 커머스 인프라에 아티스트의 고유한 스토리와 디자인을 결합하여, 차별화된 상품 가치를 창출하고 예술가의 지속 가능한 창작 환경을 지원하는 아치(artch) 서비스를 기획했습니다.
                             </div>
-                            <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-emerald-500/10 rounded-full blur-[100px]" />
+                            <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-warm/10 rounded-full blur-[100px]" />
                         </div>
                     </div>
 
                     {/* 2. Problem */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <AlertCircle className="w-8 h-8 text-red-500" /> 문제 정의
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -114,7 +114,7 @@ export default function ArchCaseStudy() {
 
                     {/* 3. My Role */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <Users className="w-8 h-8 text-emerald-500" /> 역할과 접근 방식
                         </h2>
                         <div className="space-y-8">
@@ -131,7 +131,7 @@ export default function ArchCaseStudy() {
 
                     {/* 4. Actions */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12">
                             <Settings className="w-8 h-8 text-emerald-500" /> 핵심 개선 포인트
                         </h2>
                         <div className="space-y-12">
@@ -165,7 +165,7 @@ export default function ArchCaseStudy() {
 
                     {/* 5. Outcome */}
                     <div className="reveal">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-12">
                             <BarChart3 className="w-8 h-8 text-emerald-500" /> 결과 및 성과
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -196,7 +196,7 @@ export default function ArchCaseStudy() {
 
                     {/* 6. Insight */}
                     <div className="reveal pb-20">
-                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8 font-maple">
+                        <h2 className="flex items-center gap-3 text-3xl font-bold text-brand-dark mb-8">
                             <Lightbulb className="w-8 h-8 text-yellow-500" /> 기획자의 인사이트
                         </h2>
                         <div className="p-12 rounded-[3.5rem] bg-brand-dark text-white relative overflow-hidden">
@@ -204,12 +204,12 @@ export default function ArchCaseStudy() {
                                 “기획은 새로운 가치를 만드는 일이 아니라,<br />
                                 이미 존재하는 가치를 연결하는 일”
                             </p>
-                            <div className="space-y-6 text-gray-400 relative z-10 text-lg">
+                            <div className="space-y-6 text-white/60 relative z-10 text-lg">
                                 <p>• AI가 그림을 그리는 시대에도 작가의 <strong>고유한 스토리</strong>는 강력한 시장 경쟁력을 가집니다.</p>
                                 <p>• 플랫폼 가치 창출의 핵심은 기술의 화려함이 아니라 <strong>공급자와 수요자 사이의 신뢰 구조</strong>를 만드는 일입니다.</p>
                                 <p>• 발로 뛰는 영입을 통해 구축된 강력한 <strong>인적 네트워크</strong> 비즈니스의 가장 강력한 해자가 됩니다.</p>
                             </div>
-                            <div className="absolute -left-20 -bottom-20 w-80 h-80 bg-emerald-500/10 rounded-full blur-[100px]" />
+                            <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-warm/10 rounded-full blur-[100px]" />
                         </div>
                     </div>
 

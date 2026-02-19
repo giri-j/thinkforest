@@ -20,8 +20,8 @@ export default function HomeHero() {
 
         // 1. Intro Animation (Black screen + scale & rotate settling)
         tl.fromTo(introTextRef.current,
-            { scale: 1.5, opacity: 0, rotate: 20 },
-            { scale: 1, opacity: 1, rotate: 0, duration: 0.8, ease: "power3.out" }
+            { scale: 4, opacity: 0, rotate: 15 },
+            { scale: 1, opacity: 1, rotate: 0, duration: 1.2, ease: "power3.out" }
         )
             .to(introRef.current, {
                 opacity: 0,
@@ -68,7 +68,7 @@ export default function HomeHero() {
             {/* 1. Intro Overlay */}
             <div ref={introRef} className="intro-overlay">
                 <div className="-translate-y-32">
-                    <div ref={introTextRef} className="font-maple text-white text-4xl md:text-6xl tracking-tighter">
+                    <div ref={introTextRef} className="font-somi text-white text-4xl md:text-6xl tracking-tighter">
                         기획의 숲
                     </div>
                 </div>
@@ -119,7 +119,7 @@ export default function HomeHero() {
                     className="absolute inset-0 flex items-center justify-center z-[4] pointer-events-none parallax-layer"
                 >
                     <div className="-translate-y-32 text-center">
-                        <span className="font-maple text-white text-6xl md:text-9xl drop-shadow-[0_10px_20px_rgba(0,0,0,0.6)]">
+                        <span className="font-somi text-white text-6xl md:text-9xl drop-shadow-[0_10px_20px_rgba(0,0,0,0.6)]">
                             기획의 숲
                         </span>
                     </div>
