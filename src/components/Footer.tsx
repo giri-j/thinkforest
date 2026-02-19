@@ -1,12 +1,16 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function Footer() {
     return (
         <footer className="bg-white border-t border-border py-20 px-6 md:px-12">
             <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
                 <div className="col-span-1 md:col-span-2">
-                    <Link href="/" className="text-2xl font-bold tracking-tighter text-brand-dark">
-                        기획의<span className="text-primary italic">숲</span>
+                    <Link href="/" className="flex items-center gap-3 text-2xl font-bold tracking-tighter text-brand-dark">
+                        <Image src="/favicon.svg" alt="Logo" width={32} height={32} />
+                        <div>
+                            기획의<span className="text-primary italic">숲</span>
+                        </div>
                     </Link>
                     <p className="mt-4 text-secondary-foreground max-w-sm leading-relaxed">
                         생각이 뿌리 내리고 가치가 자라나는 공간.
@@ -17,7 +21,6 @@ export default function Footer() {
                 <div>
                     <h4 className="font-bold text-brand-dark mb-6">Explore</h4>
                     <ul className="space-y-4 text-sm text-secondary-foreground font-medium">
-                        <li><Link href="/" className="hover:text-primary transition-colors">Portfolio</Link></li>
                         <li><Link href="/blog" className="hover:text-primary transition-colors">Blog</Link></li>
                         <li><Link href="/about" className="hover:text-primary transition-colors">About</Link></li>
                     </ul>
@@ -34,7 +37,7 @@ export default function Footer() {
             </div>
 
             <div className="max-w-7xl mx-auto mt-20 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
-                <p className="text-xs text-secondary-foreground">© 2024 Think Forest. All rights reserved.</p>
+                <p className="text-xs text-secondary-foreground">© 2026 Think Forest. All rights reserved.</p>
                 <p className="text-xs text-secondary-foreground">Designed with intent for growth.</p>
             </div>
         </footer>
