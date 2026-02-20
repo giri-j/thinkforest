@@ -1,116 +1,67 @@
-'use client'
-
-import { useState } from 'react'
+import { getAllPosts, getCategories } from '@/lib/blog'
 import Link from 'next/link'
-import { Search, Tag } from 'lucide-react'
+import { Card } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Clock, Eye, TrendingUp } from 'lucide-react'
 import { formatDate } from '@/lib/utils'
+import BlogListClient from '@/components/blog/BlogListClient'
 
-// Mock data
-const MOCK_POSTS = [
-    {
-        id: '1',
-        slug: 'problem-definition',
-        title: '문제를 정의하는 기술: 기획의 시작',
-        summary: '해결책보다 중요한 것은 우리가 무엇을 해결하려 하는지 아는 것입니다.',
-        tags: ['STRATEGY', 'PRODUCT'],
-        published_at: '2024-02-18T00:00:00Z',
-        reading_time: '5 min read'
-    },
-    {
-        id: '2',
-        slug: 'ux-psychology',
-        title: '심리학으로 풀어보는 사용자 경험',
-        summary: '인지 편향과 행동 모델을 활용하여 더 직관적인 인터페이스를 설계하는 방법.',
-        tags: ['UX', 'DESIGN'],
-        published_at: '2024-02-15T00:00:00Z',
-        reading_time: '8 min read'
-    }
-]
+export const metadata = {
+    title: '기획의 숲 블로그 | 기획, 역기획, 여행, 돈까스',
+    description: '기획의 숲에서 길을 만든 흔적들. 기획, 역기획, 여행, 돈까스에 대한 기록입니다.',
+}
 
-export default function BlogList() {
-    const [search, setSearch] = useState('')
-    const [selectedTag, setSelectedTag] = useState<string | null>(null)
+export default async function BlogPage() {
+    const posts = await getAllPosts()
+    const categories = await getCategories()
 
-    const filteredPosts = MOCK_POSTS.filter(post => {
-        const matchesSearch = post.title.toLowerCase().includes(search.toLowerCase()) ||
-            post.summary.toLowerCase().includes(search.toLowerCase())
-        const matchesTag = !selectedTag || post.tags.includes(selectedTag)
-        return matchesSearch && matchesTag
-    })
-
-    const allTags = Array.from(new Set(MOCK_POSTS.flatMap(p => p.tags)))
+    // Mock views for now - will be replaced with real data from Supabase
+    const popularPosts = posts.slice(0, 3)
+    const latestPosts = posts.slice(0, 10)
 
     return (
-        <div className="max-w-4xl mx-auto px-6 py-32">
-            <header className="mb-16 text-center">
-                <h1 className="text-4xl md:text-6xl font-bold text-brand-dark mb-6 tracking-tight">생각의 조각들</h1>
-                <p className="text-secondary-foreground text-lg">기획과 제품, 그리고 성장에 대한 기록입니다.</p>
-            </header>
+        <div className="min-h-screen bg-[#F6F8F7]">
+            <div className="max-w-7xl mx-auto px-6 py-32">
+                <header className="mb-20 text-center">
+                    <h1 className="text-5xl md:text-7xl font-bold text-[#1C2E24] mb-6 tracking-tight font-maple">생각의 기록</h1>
+                    <p className="text-[#1C2E24]/70 text-lg md:text-xl">기획의 숲에서 길을 만든 흔적들</p>
+                </header>
 
-            {/* Search & Filter */}
-            <div className="flex flex-col md:flex-row gap-6 mb-12 items-center">
-                <div className="relative flex-1 w-full">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-secondary-foreground" size={20} />
-                    <input
-                        type="text"
-                        placeholder="Searching for thoughts..."
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        className="w-full pl-12 pr-4 py-4 rounded-2xl border border-border focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-secondary-foreground/50"
-                    />
-                </div>
-                <div className="flex gap-2 overflow-x-auto pb-2 w-full md:w-auto no-scrollbar">
-                    <button
-                        onClick={() => setSelectedTag(null)}
-                        className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${!selectedTag ? 'bg-primary text-white' : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'}`}
-                    >
-                        All
-                    </button>
-                    {allTags.map(tag => (
-                        <button
-                            key={tag}
-                            onClick={() => setSelectedTag(tag)}
-                            className={`px-4 py-2 rounded-full text-sm font-bold transition-all whitespace-nowrap ${selectedTag === tag ? 'bg-primary text-white' : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'}`}
-                        >
-                            {tag}
-                        </button>
-                    ))}
-                </div>
-            </div>
-
-            {/* Post Grid */}
-            <div className="space-y-12">
-                {filteredPosts.map(post => (
-                    <article key={post.id} className="group flex flex-col md:flex-row gap-8 items-start">
-                        <div className="flex-1">
-                            <div className="flex items-center gap-3 text-sm text-secondary-foreground mb-4">
-                                <span className="font-bold">{formatDate(post.published_at)}</span>
-                                <span>·</span>
-                                <span>{post.reading_time}</span>
-                            </div>
-                            <Link href={`/blog/${post.slug}`}>
-                                <h2 className="text-2xl md:text-3xl font-bold text-brand-dark mb-4 group-hover:text-primary transition-colors leading-tight">
-                                    {post.title}
-                                </h2>
-                            </Link>
-                            <p className="text-secondary-foreground leading-relaxed mb-6">
-                                {post.summary}
-                            </p>
-                            <div className="flex gap-2">
-                                {post.tags.map(tag => (
-                                    <span key={tag} className="text-[10px] px-2 py-1 bg-secondary rounded-md font-bold text-primary flex items-center gap-1">
-                                        <Tag size={10} /> {tag}
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
-                    </article>
-                ))}
-                {filteredPosts.length === 0 && (
-                    <div className="text-center py-20 bg-secondary/20 rounded-3xl border border-dashed border-border text-secondary-foreground">
-                        검색 결과가 없습니다. 다른 단어로 찾아보세요.
+                {/* Popular Posts Section */}
+                <section className="mb-24">
+                    <div className="flex items-center gap-2 mb-8">
+                        <TrendingUp className="text-[#E8B86D]" size={24} />
+                        <h2 className="text-2xl font-bold text-[#1C2E24]">Popular Posts</h2>
                     </div>
-                )}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {popularPosts.map((post) => (
+                            <Link href={`/blog/${post.slug}`} key={post.slug} className="group">
+                                <Card className="h-full border-[#E5EBE8] bg-white overflow-hidden hover:shadow-xl transition-all duration-300 border-l-4 border-l-transparent group-hover:border-l-[#1C2E24]">
+                                    <div className="p-8 flex flex-col h-full">
+                                        <div className="mb-4">
+                                            <Badge variant="secondary" className="bg-[#E5EBE8] text-[#1C2E24] hover:bg-[#E5EBE8] border-none">
+                                                {post.category}
+                                            </Badge>
+                                        </div>
+                                        <h3 className="text-xl font-bold text-[#1C2E24] mb-3 group-hover:text-[#355BE5] transition-colors line-clamp-2">
+                                            {post.title}
+                                        </h3>
+                                        <p className="text-[#1C2E24]/60 text-sm mb-6 line-clamp-3">
+                                            {post.summary}
+                                        </p>
+                                        <div className="mt-auto flex items-center gap-4 text-xs text-[#1C2E24]/40 font-medium">
+                                            <span>{formatDate(post.date)}</span>
+                                            <span className="flex items-center gap-1"><Clock size={12} /> {post.readingTime}</span>
+                                            <span className="flex items-center gap-1"><Eye size={12} /> 1,234</span>
+                                        </div>
+                                    </div>
+                                </Card>
+                            </Link>
+                        ))}
+                    </div>
+                </section>
+
+                <BlogListClient posts={posts} categories={categories} />
             </div>
         </div>
     )
