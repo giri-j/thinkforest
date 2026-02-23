@@ -9,7 +9,7 @@ export interface Post {
     title: string
     slug: string
     date: string
-    category: 'Planning' | 'Reverse Engineering' | 'Journey' | 'Cutlet Lab'
+    category: 'Planning' | 'Reverse Engineering' | 'Journey' | 'Cutlet Lab' | 'Personal Notes'
     tags: string[]
     summary: string
     cover?: string
@@ -54,7 +54,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
 }
 
 export async function getCategories() {
-    return ['Planning', 'Reverse Engineering', 'Journey', 'Cutlet Lab']
+    return ['Planning', 'Reverse Engineering', 'Journey', 'Cutlet Lab', 'Personal Notes']
 }
 
 export async function getPostsByCategory(category: string) {

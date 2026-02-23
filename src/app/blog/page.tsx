@@ -7,8 +7,8 @@ import { formatDate } from '@/lib/utils'
 import BlogListClient from '@/components/blog/BlogListClient'
 
 export const metadata = {
-    title: '기획의 숲 블로그 | 기획, 역기획, 여행, 돈까스',
-    description: '기획의 숲에서 길을 만든 흔적들. 기획, 역기획, 여행, 돈까스에 대한 기록입니다.',
+    title: '기획의 숲 블로그 | Planning, Reverse Engineering, Journey, Cutlet Lab, Personal Notes',
+    description: '기획의 숲에서 길을 만든 흔적들. 기획, 역기획, 여행, 돈까스, Personal Notes에 대한 공간입니다.',
 }
 
 export default async function BlogPage() {
