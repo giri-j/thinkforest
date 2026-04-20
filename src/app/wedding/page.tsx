@@ -75,8 +75,14 @@ export default function WeddingPage() {
         <div className="max-w-5xl mx-auto px-6">
           <h2 className="text-center text-3xl font-light mb-20 tracking-[0.3em] text-[#5C6E5C] uppercase">Gallery</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="aspect-[3/4] bg-white shadow-md p-3 transform rotate-[-2deg] hover:rotate-0 transition-transform duration-500">
-              <div className="w-full h-full bg-[#EAE7E1] animate-pulse"></div>
+            <div className="aspect-[3/4] bg-white shadow-md p-3 transform rotate-[-2deg] hover:rotate-0 transition-all duration-700 group">
+              <div className="w-full h-full relative overflow-hidden bg-[#EAE7E1]">
+                <img 
+                  src="/wedding/main.png" 
+                  alt="Wedding Photo 1" 
+                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105"
+                />
+              </div>
             </div>
             <div className="aspect-[3/4] bg-white shadow-md p-3 transform rotate-[3deg] hover:rotate-0 transition-transform duration-500 md:mt-12">
               <div className="w-full h-full bg-[#EAE7E1] animate-pulse"></div>
