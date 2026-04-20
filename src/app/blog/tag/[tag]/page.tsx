@@ -3,8 +3,8 @@ import BlogListClient from '@/components/blog/BlogListClient'
 import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
 
-export default async function TagPage({ params }: { params: { tag: string } }) {
-    const { tag } = params
+export default async function TagPage(context: { params: Promise<{ tag: string }> }) {
+    const { tag } = await context.params
     const posts = await getPostsByTag(tag)
     const categories = await getCategories()
 

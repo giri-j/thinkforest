@@ -18,8 +18,8 @@ export async function generateStaticParams() {
     }))
 }
 
-export default async function CategoryPage({ params }: { params: { category: string } }) {
-    const { category } = params
+export default async function CategoryPage(context: { params: Promise<{ category: string }> }) {
+    const { category } = await context.params
     const posts = await getPostsByCategory(category)
     const description = CATEGORY_DESCRIPTIONS[category] || `"${category}" 카테고리와 관련된 기획의 조각들을 모았습니다.`
 
