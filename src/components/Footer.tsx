@@ -66,17 +66,15 @@ export default function Footer() {
                                 </ul>
                             </div>
                         </div>
+
+                        {/* Bottom Copyright Section (Inside Collapsible) */}
+                        <div className="max-w-7xl mx-auto py-12 px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-4 opacity-50">
+                            <p className="text-[10px] font-bold text-[#1C2E24] uppercase tracking-widest">© 2026 Think Forest. All rights reserved.</p>
+                            <p className="text-[10px] font-bold text-[#1C2E24] uppercase tracking-widest">Designed with intent for growth.</p>
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>
-
-            {/* Bottom Copyright Section (Always Visible) */}
-            <div className="max-w-7xl mx-auto py-6 px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p className="text-[10px] font-bold text-[#1C2E24]/20 uppercase tracking-widest">© 2026 Think Forest. All rights reserved.</p>
-                <div className="flex items-center gap-6">
-                    <p className="text-[10px] font-bold text-[#1C2E24]/20 uppercase tracking-widest">Designed with intent for growth.</p>
-                </div>
-            </div>
         </footer>
     )
 }
