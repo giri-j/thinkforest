@@ -1,134 +1,889 @@
-import React from 'react';
+'use client';
 
-export const metadata = {
-  title: '전은길 & 조인아 결혼합니다',
-  description: '저희 두 사람이 사랑으로 만나 진실과 이해로써 하나를 이루려 합니다. 오셔서 축복해 주세요.',
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { MapPin, Phone, Copy, ChevronDown, Calendar as CalendarIcon, Heart, Share2, Info, ChevronLeft, ChevronRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import Script from 'next/script';
+import Head from 'next/head';
+
+// --- Components ---
+
+const SectionTitle = ({ title, subtitle, titleClassName }: { title: string; subtitle?: string; titleClassName?: string }) => (
+  <div className="text-center mb-16 px-4">
+    <p className="text-[10px] tracking-[0.4em] text-[#8BA48B] uppercase mb-4 font-light">{subtitle}</p>
+    <h2 className={cn("text-2xl md:text-3xl font-light tracking-[0.2em] text-[#5C6E5C] uppercase", titleClassName)}>{title}</h2>
+    <div className="mt-4 flex justify-center">
+      <div className="h-[1px] w-8 bg-[#D1B8A0] opacity-50"></div>
+    </div>
+  </div>
+);
+
+const Calendar = ({ date }: { date: Date }) => {
+  const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+  const month = 6; // June
+  const year = 2026;
+  const weddingDay = 28;
+  
+  // June 2026 starts on Monday (1)
+  const firstDayOfMonth = 1; 
+  const totalDays = 30;
+  
+  const calendarDays = Array.from({ length: totalDays + firstDayOfMonth }, (_, i) => {
+    if (i < firstDayOfMonth) return null;
+    return i - firstDayOfMonth + 1;
+  });
+
+  // Calculate D-Day
+  const [dDay, setDDay] = useState<string>('');
+
+  useEffect(() => {
+    const target = new Date(year, month - 1, weddingDay);
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    const diff = target.getTime() - now.getTime();
+    const diffDays = Math.ceil(diff / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 0) setDDay('D-Day');
+    else if (diffDays > 0) setDDay(`D-${diffDays}`);
+    else setDDay(`D+${Math.abs(diffDays)}`);
+  }, []);
+
+  return (
+    <div className="max-w-sm mx-auto bg-white/50 backdrop-blur-sm p-8 rounded-3xl border border-[#F0EBE3] shadow-sm">
+      <div className="text-center mb-8">
+        <h3 className="text-xl font-light tracking-[0.2em] text-[#5C6E5C]">2026. 06</h3>
+      </div>
+      <div className="grid grid-cols-7 gap-y-4 text-center">
+        {days.map((day, idx) => (
+          <div key={day} className={cn("text-[9px] font-bold tracking-widest mb-4", idx === 0 ? "text-[#D1B8A0]" : "text-[#A0A0A0]")}>
+            {day}
+          </div>
+        ))}
+        {calendarDays.map((day, idx) => (
+          <div 
+            key={idx} 
+            className={cn(
+              "relative h-10 flex items-center justify-center text-sm font-light transition-all",
+              day === weddingDay ? "text-white z-10" : "text-[#6B705C]",
+              idx % 7 === 0 ? "text-[#D1B8A0]" : ""
+            )}
+          >
+            {day === weddingDay && (
+              <motion.div 
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="absolute inset-0 m-auto w-8 h-8 bg-[#8BA48B] rounded-full -z-10 shadow-sm"
+              />
+            )}
+            {day}
+          </div>
+        ))}
+      </div>
+      <div className="mt-10 pt-6 border-t border-[#F0EBE3] text-center">
+        <p className="text-[12.5px] font-light text-[#8BA48B] tracking-tight whitespace-nowrap">
+          은길 ♥ 인아의 결혼식이 <span className="font-bold text-[#5C6E5C] text-base ml-0.5">{dDay}</span> 남았습니다
+        </p>
+      </div>
+    </div>
+  );
 };
 
-export default function WeddingPage() {
+const AccountInfo = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [copied, setCopied] = useState<string | null>(null);
+
+  const copyToClipboard = (text: string, label: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(label);
+    setTimeout(() => setCopied(null), 2000);
+  };
+
+  const accounts = [
+    { name: '신랑 전은길', bank: '신한은행', number: '110-123-456789' },
+    { name: '신랑측 혼주 전OO', bank: '국민은행', number: '123-45-678901' },
+    { name: '신부 조인아', bank: '우리은행', number: '1002-123-456789' },
+    { name: '신부측 혼주 조OO', bank: '기업은행', number: '123-456-789012' },
+  ];
+
   return (
-    <div className="min-h-screen bg-[#FDFCF8] text-[#4A4A4A] selection:bg-[#E2D1C3] selection:text-white overflow-hidden font-playfair">
-      {/* Hero Section */}
-      <section className="relative h-screen flex flex-col items-center justify-center text-center px-4 overflow-hidden">
-        {/* Decorative Background Elements */}
-        <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-          <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <path d="M0,0 C30,20 70,20 100,0 L100,100 C70,80 30,80 0,100 Z" fill="#D4E2D4" />
-          </svg>
+    <div className="max-w-md mx-auto px-6">
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex items-center justify-between py-6 px-8 bg-[#FDFCF8] border border-[#F0EBE3] rounded-2xl shadow-sm hover:shadow-md transition-all group"
+      >
+        <div className="flex items-center gap-3 text-[#5C6E5C]">
+          <Heart size={18} className="text-[#D1B8A0] fill-[#D1B8A0] opacity-50" />
+          <span className="text-sm font-medium tracking-widest uppercase">축하의 마음 전하기</span>
         </div>
+        <ChevronDown size={18} className={cn("text-[#A0A0A0] transition-transform duration-500", isOpen && "rotate-180")} />
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="overflow-hidden"
+          >
+            <div className="mt-4 space-y-3 pb-8">
+              {accounts.map((acc, i) => (
+                <div key={i} className="flex items-center justify-between p-5 bg-white border border-[#F0EBE3] rounded-xl shadow-sm">
+                  <div>
+                    <p className="text-[10px] text-[#8BA48B] font-bold uppercase tracking-widest mb-1">{acc.bank}</p>
+                    <p className="text-sm font-medium text-[#5C6E5C] mb-1">{acc.name}</p>
+                    <p className="text-xs text-[#A0A0A0] tracking-tighter">{acc.number}</p>
+                  </div>
+                  <button 
+                    onClick={() => copyToClipboard(acc.number, acc.name)}
+                    className={cn(
+                      "flex items-center gap-2 px-3 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all",
+                      copied === acc.name ? "bg-[#8BA48B] text-white" : "bg-[#FDFCF8] text-[#8BA48B] hover:bg-[#8BA48B]/10 border border-[#F0EBE3]"
+                    )}
+                  >
+                    {copied === acc.name ? 'Copied' : <><Copy size={12} /> Copy</>}
+                  </button>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+const Gallery = () => {
+  const images = [
+    '/wedding/main.png',
+    '/wedding/gallery_1.jpg',
+    '/wedding/gallery_2.jpg',
+    '/wedding/gallery_3.jpg',
+    '/wedding/gallery_4.jpg',
+    '/wedding/gallery_5.jpg',
+    '/wedding/main_cover.jpg',
+  ];
+  
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const nextSlide = () => setCurrentIndex((prev) => (prev + 1) % images.length);
+  const prevSlide = () => setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+
+  // Auto-rolling effect
+  useEffect(() => {
+    const timer = setInterval(nextSlide, 3000);
+    return () => clearInterval(timer);
+  }, [images.length]);
+
+  return (
+    <div className="px-4 space-y-6">
+      {/* Big Main Image */}
+      <div className="relative aspect-[3/4] rounded-3xl overflow-hidden shadow-lg border border-[#F0EBE3] group">
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={currentIndex}
+            src={images[currentIndex]}
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="w-full h-full object-cover"
+            alt={`Wedding Photo ${currentIndex + 1}`}
+          />
+        </AnimatePresence>
+
+        {/* Navigation Overlays */}
+        <div className="absolute inset-y-0 left-0 w-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+          <button 
+            onClick={prevSlide}
+            className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/40 transition-all"
+          >
+            <ChevronLeft size={24} />
+          </button>
+        </div>
+        <div className="absolute inset-y-0 right-0 w-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+          <button 
+            onClick={nextSlide}
+            className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/40 transition-all"
+          >
+            <ChevronRight size={24} />
+          </button>
+        </div>
+
+        {/* Counter Indicator */}
+        <div className="absolute bottom-6 right-6 px-4 py-1.5 bg-black/30 backdrop-blur-md rounded-full text-white text-[10px] font-bold tracking-widest">
+          {currentIndex + 1} / {images.length}
+        </div>
+      </div>
+
+      {/* Thumbnails Strip */}
+      <div className="flex gap-3 overflow-x-auto no-scrollbar py-2 px-1">
+        {images.map((img, idx) => (
+          <button
+            key={idx}
+            onClick={() => setCurrentIndex(idx)}
+            className={cn(
+              "relative flex-shrink-0 w-16 aspect-[3/4] rounded-xl overflow-hidden transition-all duration-500",
+              currentIndex === idx 
+                ? "ring-2 ring-[#8BA48B] ring-offset-2 scale-110 z-10" 
+                : "opacity-40 grayscale hover:opacity-100 hover:grayscale-0"
+            )}
+          >
+            <img src={img} className="w-full h-full object-cover" alt={`Thumbnail ${idx + 1}`} />
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const Information = () => {
+  const [activeTab, setActiveTab] = useState<'meal' | 'parking'>('meal');
+
+  const tabs = [
+    { id: 'meal', label: '식사', title: '식사 안내', content: '식사권은 축의금 데스크에서 필요한 수량만큼 받아주세요.' },
+    { id: 'parking', label: '주차', title: '주차 안내', content: '하객은 2시간 무료이며, 총 350대로 넉넉하게 주차 가능합니다.' },
+  ];
+
+  return (
+    <div className="max-w-md mx-auto px-6">
+      <div className="flex gap-2 mb-6">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id as any)}
+            className={cn(
+              "flex-1 py-3 text-xs font-bold tracking-widest uppercase rounded-xl transition-all duration-300",
+              activeTab === tab.id 
+                ? "bg-[#8BA48B] text-white shadow-md" 
+                : "bg-white text-[#8BA48B] border border-[#F0EBE3] hover:bg-[#8BA48B]/5"
+            )}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+      
+      <div className="bg-white/50 backdrop-blur-sm p-8 rounded-3xl border border-[#F0EBE3] min-h-[160px] flex flex-col justify-center text-center">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+          >
+            <h4 className="text-[10px] text-[#D1B8A0] font-bold tracking-[0.3em] uppercase mb-4">
+              {tabs.find(t => t.id === activeTab)?.title}
+            </h4>
+            <p className="text-[14px] text-[#6B705C] leading-relaxed font-light">
+              {tabs.find(t => t.id === activeTab)?.content}
+            </p>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+};
+
+const Guestbook = () => {
+  const [messages, setMessages] = useState([
+    { name: '김지은', content: '두 분 너무 잘 어울려요! 행복하게 잘 사세요~ :)', date: '2026.04.22' },
+    { name: '이민호', content: '결혼 진심으로 축하드립니다! 꽃길만 걸으시길!', date: '2026.04.21' },
+  ]);
+  const [newName, setNewName] = useState('');
+  const [newContent, setNewContent] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newName || !newContent) return;
+    
+    const newMessage = {
+      name: newName,
+      content: newContent,
+      date: new Date().toLocaleDateString('ko-KR').replace(/\. /g, '.').replace(/\.$/, ''),
+    };
+    
+    setMessages([newMessage, ...messages]);
+    setNewName('');
+    setNewContent('');
+  };
+
+  return (
+    <div className="max-w-md mx-auto px-6">
+      <div className="text-center mb-10 space-y-2">
+        <p className="text-[13px] text-[#6B705C] font-light">두 사람의 시작을 함께 축복해주세요.</p>
+        <p className="text-[13px] text-[#6B705C] font-light">오래 기억될 마음을 남겨주세요.</p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-2xl border border-[#F0EBE3] shadow-sm mb-8 space-y-4">
+        <div className="flex gap-4">
+          <input 
+            type="text" 
+            placeholder="이름" 
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+            className="w-full px-4 py-3 bg-[#FDFCF8] border border-[#F0EBE3] rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[#8BA48B]"
+          />
+        </div>
+        <textarea 
+          placeholder="축복의 메시지를 남겨주세요." 
+          value={newContent}
+          onChange={(e) => setNewContent(e.target.value)}
+          rows={3}
+          className="w-full px-4 py-3 bg-[#FDFCF8] border border-[#F0EBE3] rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[#8BA48B] resize-none"
+        />
+        <button 
+          type="submit"
+          className="w-full py-3 bg-[#8BA48B] text-white text-xs font-bold tracking-widest uppercase rounded-xl hover:bg-[#5C6E5C] transition-all"
+        >
+          축복 남기기
+        </button>
+      </form>
+
+      <div className="space-y-4 max-h-[400px] overflow-y-auto no-scrollbar pb-10">
+        <AnimatePresence initial={false}>
+          {messages.map((msg, i) => (
+            <motion.div 
+              key={i + msg.name}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="p-5 bg-[#FAF9F6] border border-[#F0EBE3] rounded-2xl"
+            >
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-[11px] font-bold text-[#5C6E5C] uppercase tracking-wider">{msg.name}</span>
+                <span className="text-[9px] text-[#A0A0A0]">{msg.date}</span>
+              </div>
+              <p className="text-[13px] text-[#6B705C] leading-relaxed font-light">{msg.content}</p>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+};
+
+const RSVP = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [successSide, setSuccessSide] = useState<'groom' | 'bride' | null>(null);
+
+  return (
+    <div className="max-w-md mx-auto px-6 text-center">
+      <div className="mb-8 space-y-2">
+        <p className="text-[13px] text-[#6B705C] font-light">함께 해주시는 마음,</p>
+        <p className="text-[13px] text-[#6B705C] font-light">저희도 잘 간직하겠습니다.</p>
+      </div>
+      
+      <button 
+        onClick={() => setIsModalOpen(true)}
+        className="px-10 py-4 bg-[#5C6E5C] text-white text-sm font-bold tracking-[0.2em] uppercase rounded-full shadow-lg hover:bg-[#4A4A4A] transition-all"
+      >
+        참석여부 전달
+      </button>
+
+      <AnimatePresence>
+        {isModalOpen && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsModalOpen(false)}
+              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative w-full max-w-sm bg-white rounded-[2rem] p-8 shadow-2xl overflow-hidden"
+            >
+              <div className="absolute top-0 left-0 w-full h-2 bg-[#8BA48B]"></div>
+              <h3 className="text-xl font-light text-[#5C6E5C] mb-6 tracking-wide">참석 여부 전달 안내</h3>
+              <p className="text-[14px] text-[#6B705C] leading-[1.8] font-light mb-10 text-left">
+                특별한 날 축하의 마음으로 참석해주시는 모든 분들을 한 분 한 분 더욱 귀하게 모실 수 있도록, 아래 버튼을 클릭하여 신랑, 신부에게 참석여부를 전달부탁드립니다.
+              </p>
+              <div className="flex flex-col gap-3">
+                <button 
+                  className="w-full py-4 bg-[#8BA48B] text-white text-xs font-bold tracking-widest uppercase rounded-2xl shadow-sm hover:opacity-90"
+                  onClick={() => { setSuccessSide('groom'); setIsModalOpen(false); }}
+                >
+                  신랑측 참석여부 전달
+                </button>
+                <button 
+                  className="w-full py-4 bg-[#D1B8A0] text-white text-xs font-bold tracking-widest uppercase rounded-2xl shadow-sm hover:opacity-90"
+                  onClick={() => { setSuccessSide('bride'); setIsModalOpen(false); }}
+                >
+                  신부측 참석여부 전달
+                </button>
+                <button 
+                  onClick={() => setIsModalOpen(false)}
+                  className="mt-4 text-[11px] text-[#A0A0A0] font-bold tracking-widest uppercase hover:text-[#5C6E5C]"
+                >
+                  Close
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+
+        {successSide && (
+          <div className="fixed inset-0 z-[110] flex items-center justify-center p-6">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/60 backdrop-blur-md"
+            />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="relative w-full max-w-xs bg-white rounded-[2rem] p-10 shadow-2xl text-center"
+            >
+              <div className="w-16 h-16 bg-[#FDFCF8] rounded-full flex items-center justify-center mx-auto mb-6 border border-[#F0EBE3]">
+                <Heart className="text-[#8BA48B] fill-[#8BA48B]/20" size={32} />
+              </div>
+              <h3 className="text-lg font-medium text-[#5C6E5C] mb-3 leading-relaxed">
+                {successSide === 'groom' ? '신랑측' : '신부측'} 참석여부를<br />전달주셔서 감사합니다.
+              </h3>
+              <p className="text-sm text-[#8BA48B] font-light mb-8">
+                더욱 귀하게 모시도록 하겠습니다.
+              </p>
+              <button 
+                onClick={() => setSuccessSide(null)}
+                className="w-full py-3 bg-[#5C6E5C] text-white text-xs font-bold tracking-widest uppercase rounded-xl shadow-md"
+              >
+                확인
+              </button>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+// --- Page Main ---
+
+export default function WeddingPage() {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll);
+    
+    // Initialize Sakura.js if available
+    let sakuraInstance: any = null;
+    const initSakura = () => {
+      if ((window as any).Sakura) {
+        sakuraInstance = new (window as any).Sakura('.sakura-frame', {
+          delay: 50,
+          fallSpeed: 2,
+          colors: [
+            {
+              gradientColorStart: 'rgba(255, 183, 197, 0.9)',
+              gradientColorEnd: 'rgba(255, 197, 208, 0.9)',
+              gradientColorDegree: 120,
+            },
+            {
+              gradientColorStart: 'rgba(255, 189, 189, 0.9)',
+              gradientColorEnd: 'rgba(227, 170, 181, 0.9)',
+              gradientColorDegree: 120,
+            },
+          ],
+        });
+      }
+    };
+
+    // If script is already loaded
+    if ((window as any).Sakura) {
+      initSakura();
+    } else {
+      // Wait for script to load (handled by onReady in Script component)
+    }
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (sakuraInstance) {
+        // Sakura.js might not have a destroy method, but we can try to clean up if it does
+        if (typeof sakuraInstance.stop === 'function') sakuraInstance.stop();
+      }
+    };
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-[#F0F0F0] flex justify-center">
+      {/* External CSS for Sakura */}
+      <link rel="stylesheet" href="/wedding/sakura/dist/sakura.min.css" />
+      
+      {/* Sakura JS Loader */}
+      <Script 
+        src="/wedding/sakura/dist/sakura.min.js" 
+        strategy="afterInteractive"
+        onReady={() => {
+          if (!(window as any).sakuraStarted && (window as any).Sakura) {
+            new (window as any).Sakura('.sakura-frame', {
+              delay: 50,
+              fallSpeed: 2,
+            });
+            (window as any).sakuraStarted = true;
+          }
+        }}
+      />
+
+      {/* Mobile Frame Container */}
+      <div 
+        style={{ width: '390px' }} 
+        className="sakura-frame min-h-screen bg-[#FDFCF8] text-[#4A4A4A] selection:bg-[#E2D1C3] selection:text-white font-gowun shadow-2xl relative ring-1 ring-inset ring-[#E0E0E0] overflow-x-hidden flex flex-col"
+      >
         
-        <div className="z-10 animate-fade-in-up">
-          <p className="text-sm md:text-lg tracking-[0.4em] mb-6 font-light uppercase text-[#8BA48B]">Wedding Invitation</p>
-          <div className="flex flex-col md:flex-row items-center gap-4 md:gap-12 mb-8">
-            <h1 className="text-6xl md:text-8xl font-light tracking-tight">전은길</h1>
-            <span className="text-4xl md:text-5xl font-dancing text-[#D1B8A0] italic">&</span>
-            <h1 className="text-6xl md:text-8xl font-light tracking-tight">조인아</h1>
+        {/* 1. Hero Cover Section */}
+        <section className="relative h-[682px] flex flex-col items-center justify-center text-center px-4 overflow-hidden font-playfair">
+          {/* Background Image with Parallax/Zoom */}
+          <motion.div 
+            initial={{ scale: 1.1, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 2, ease: "easeOut" }}
+            className="absolute inset-0 z-0"
+          >
+            <img 
+              src="/wedding/main_cover.jpg" 
+              alt="Wedding Main" 
+              className="w-full h-full object-cover brightness-[0.9]"
+            />
+            {/* Soft Gradient Overlay for Readability */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40"></div>
+          </motion.div>
+
+          {/* Animated Background Textures (Optional, kept for depth) */}
+          <div className="absolute inset-0 opacity-10 pointer-events-none z-1">
+            <motion.div 
+              style={{ y: scrollY * 0.2 }}
+              className="absolute top-1/4 left-1/10 w-64 h-64 border border-white/30 rounded-full blur-3xl" 
+            />
           </div>
-          <div className="h-[1px] w-24 bg-[#D1B8A0] mx-auto mb-8"></div>
-          <p className="text-xl md:text-2xl font-light tracking-[0.2em] text-[#6B705C]">
-            2026. 06. 28. SUN AM 11:00
-          </p>
-          <p className="mt-4 text-lg font-light text-[#8BA48B] tracking-wide">루벨 (Luvel)</p>
-        </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-40">
-          <div className="w-[1px] h-12 bg-[#4A4A4A]"></div>
-        </div>
-      </section>
+          <div className="z-10 flex flex-col items-center text-white drop-shadow-2xl">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.5, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <motion.div 
+                className="text-[38px] md:text-[64px] font-great-vibes mb-12 text-white/80 tracking-normal leading-[1.5] pt-16 pb-8 overflow-visible text-center"
+              >
+                {/* Line 1: Invite */}
+                <div className="overflow-visible mb-2">
+                  {"Invite".split("").map((char, i) => (
+                    <motion.span
+                      key={i}
+                      className="inline-block overflow-visible"
+                      initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
+                      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                      transition={{
+                        duration: 0.8,
+                        delay: 0.8 + i * 0.08,
+                        ease: [0.2, 0.65, 0.3, 0.9],
+                      }}
+                    >
+                      {char}
+                    </motion.span>
+                  ))}
+                </div>
+                {/* Line 2: Our wedding */}
+                <div className="overflow-visible">
+                  {"Our wedding".split("").map((char, i) => (
+                    <motion.span
+                      key={i + 6}
+                      className="inline-block overflow-visible"
+                      initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
+                      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                      transition={{
+                        duration: 0.8,
+                        delay: 1.4 + i * 0.08, // Start slightly after first line
+                        ease: [0.2, 0.65, 0.3, 0.9],
+                      }}
+                    >
+                      {char === " " ? "\u00A0" : char}
+                    </motion.span>
+                  ))}
+                </div>
+              </motion.div>
+              <p className="text-[11px] tracking-[0.6em] mb-12 font-light uppercase text-white/80 animate-pulse-subtle">
+                Wedding Invitation
+              </p>
+              
+              <div className="flex justify-between items-center w-full max-w-[280px] mx-auto mb-16 px-4">
+                <div className="flex flex-col items-center gap-2">
+                  <p className="text-[10px] tracking-[0.4em] text-white/50 font-sans font-bold uppercase">Groom</p>
+                  <h1 className="text-4xl font-light tracking-tight">전은길</h1>
+                </div>
+                
+                <div className="relative">
+                  <span className="text-2xl font-dancing text-[#D1B8A0] italic">&</span>
+                </div>
 
-      {/* Message Section */}
-      <section className="py-32 px-6 md:px-12 max-w-2xl mx-auto text-center border-t border-b border-[#F0EBE3] bg-white shadow-sm">
-        <div className="mb-12">
-           <svg className="w-12 h-12 mx-auto mb-6 text-[#D1B8A0] opacity-50" fill="currentColor" viewBox="0 0 24 24">
-             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-           </svg>
-           <h2 className="text-3xl font-light mb-12 tracking-[0.3em] text-[#5C6E5C] uppercase">Invitation</h2>
-        </div>
-        <div className="space-y-8 leading-relaxed text-xl font-light text-[#6B705C] font-serif italic">
-          <p>서로가 마주 보며 다진 약속을</p>
-          <p>이제는 함께 같은 곳을 바라보며</p>
-          <p>하나가 된 마음으로 걸어가려 합니다.</p>
-          <p className="pt-6">저희 두 사람이 사랑으로 만나</p>
-          <p>진실과 이해로써 하나를 이루려 합니다.</p>
-          <p>이 기쁜 날, 함께해 주셔서</p>
-          <p>자리를 빛내 주시면 감사하겠습니다.</p>
-        </div>
+                <div className="flex flex-col items-center gap-2">
+                  <p className="text-[10px] tracking-[0.4em] text-white/50 font-sans font-bold uppercase">Bride</p>
+                  <h1 className="text-4xl font-light tracking-tight">조인아</h1>
+                </div>
+              </div>
 
-        <div className="mt-20 pt-16 border-t border-[#F0EBE3]">
-          <div className="flex justify-center items-center gap-16 text-xl">
-            <div className="text-right">
-              <p className="text-xs tracking-widest text-[#8BA48B] mb-2 uppercase">Groom</p>
-              <p className="font-medium text-2xl">전은길</p>
-            </div>
-            <div className="w-[1px] h-12 bg-[#D1B8A0]"></div>
-            <div className="text-left">
-              <p className="text-xs tracking-widest text-[#8BA48B] mb-2 uppercase">Bride</p>
-              <p className="font-medium text-2xl">조인아</p>
-            </div>
+              <div className="h-[1px] w-24 bg-white/40 mx-auto mb-12"></div>
+              
+              <div className="space-y-3">
+                <p className="text-base font-light tracking-[0.25em] text-white/90">
+                  2026. 06. 28. SUN AM 11:00
+                </p>
+                <p className="text-sm font-light text-white/70 tracking-widest uppercase italic">
+                  Luvel Wedding Hall
+                </p>
+              </div>
+            </motion.div>
           </div>
-        </div>
-      </section>
 
-      {/* Gallery Section */}
-      <section className="py-32 bg-[#FAF9F6]">
-        <div className="max-w-5xl mx-auto px-6">
-          <h2 className="text-center text-3xl font-light mb-20 tracking-[0.3em] text-[#5C6E5C] uppercase">Gallery</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="aspect-[3/4] bg-white shadow-md p-3 transform rotate-[-2deg] hover:rotate-0 transition-all duration-700 group">
-              <div className="w-full h-full relative overflow-hidden bg-[#EAE7E1]">
-                <img 
-                  src="/wedding/main.png" 
-                  alt="Wedding Photo 1" 
-                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105"
-                />
+          {/* Floating Scroll Indicator */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 2 }}
+            className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4"
+          >
+            <div className="w-[1px] h-16 bg-gradient-to-b from-transparent via-[#D1B8A0] to-transparent"></div>
+          </motion.div>
+        </section>
+
+        {/* 2. Invitation Greeting Section */}
+        <section className="py-40 px-6 max-w-2xl mx-auto text-center relative">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 opacity-10">
+            <img src="/wedding/flower_divider.png" alt="Flower Decoration" className="w-full grayscale brightness-50" />
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1.2 }}
+          >
+            <SectionTitle title="INVITATION GREETING" subtitle="우리, 결혼합니다." />
+            
+            <div className="space-y-6 leading-relaxed text-[15px] font-light text-[#6B705C] font-serif italic flex flex-col items-center w-full overflow-visible tracking-tight">
+              <p className="flex items-center gap-1 whitespace-nowrap">
+                <span className="font-bold text-[#4A4A4A] text-lg">감</span> 사한 마음으로 돌아보면
+              </p>
+              <p className="flex items-center gap-1 whitespace-nowrap">
+                <span className="font-bold text-[#4A4A4A] text-lg">사</span> 소한 순간마다 함께해 주신 여러분 덕분에
+              </p>
+              <p className="flex items-center gap-1 whitespace-nowrap">
+                <span className="font-bold text-[#4A4A4A] text-lg">해</span> 처럼 따뜻한 이 순간을 맞이할 수 있었습니다.
+              </p>
+              <p className="flex items-center gap-1 whitespace-nowrap">
+                <span className="font-bold text-[#4A4A4A] text-lg">요</span> 청드립니다. 행복한 이 순간을 함께해 주세요.
+              </p>
+            </div>
+
+            <div className="mt-24 pt-16 border-t border-[#F0EBE3]/50">
+              <p className="text-lg text-[#8BA48B] font-light tracking-wide italic mb-10">
+                신랑 전은길, 신부 조인아 드림
+              </p>
+              <img 
+                src="/wedding/greeting_illust.png" 
+                alt="Wedding Illustration" 
+                className="w-[200px] mx-auto opacity-90"
+              />
+            </div>
+          </motion.div>
+        </section>
+
+        {/* 2.5 Our Introduction Section */}
+        <section className="py-24 px-6 w-full text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+          >
+            <SectionTitle title="우리의 소개" subtitle="Introduction" />
+            
+            <div className="flex justify-between items-start gap-4 mt-12">
+              {/* Groom Profile */}
+              <div className="flex-1 flex flex-col items-center gap-6">
+                <div className="w-[155px] h-[155px] rounded-full overflow-hidden bg-[#EAE7E1] border border-[#F0EBE3] shadow-inner">
+                   <img src="/wedding/groom.jpg" className="w-full h-full object-cover scale-x-[-1]" alt="Groom" />
+                </div>
+                <div className="text-center space-y-2">
+                  <p className="text-[13px] text-[#6B705C] leading-relaxed font-serif">
+                    전안석 · 전경자의 차남<br />
+                    <span className="text-[#4A4A4A] font-bold text-base">전은길</span>
+                  </p>
+                </div>
+              </div>
+
+              {/* Bride Profile */}
+              <div className="flex-1 flex flex-col items-center gap-6">
+                <div className="w-[155px] h-[155px] rounded-full overflow-hidden bg-[#EAE7E1] border border-[#F0EBE3] shadow-inner">
+                   <img src="/wedding/bride.jpg" className="w-full h-full object-cover scale-x-[-1]" alt="Bride" />
+                </div>
+                <div className="text-center space-y-2">
+                  <p className="text-[13px] text-[#6B705C] leading-relaxed font-serif">
+                    조종섭 · 윤원흥의 차녀<br />
+                    <span className="text-[#4A4A4A] font-bold text-base">조인아</span>
+                  </p>
+                </div>
               </div>
             </div>
-            <div className="aspect-[3/4] bg-white shadow-md p-3 transform rotate-[3deg] hover:rotate-0 transition-transform duration-500 md:mt-12">
-              <div className="w-full h-full bg-[#EAE7E1] animate-pulse"></div>
+          </motion.div>
+        </section>
+
+        {/* 3. Calendar & Schedule Section */}
+        <section className="py-32 bg-[#FAF9F6]">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+          >
+            <SectionTitle 
+              title="The Wedding Day" 
+              subtitle="예식 일정" 
+              titleClassName="whitespace-nowrap text-[21px] md:text-[26px] tracking-[0.15em]" 
+            />
+            
+            <div className="text-center mb-12 space-y-2">
+              <p className="text-[15px] font-light text-[#6B705C] tracking-wide">강동 루벨 35층</p>
+              <p className="text-[15px] font-light text-[#6B705C] tracking-wide">2026년 6월 28일 일요일 오전 11시</p>
             </div>
-            <div className="aspect-[3/4] bg-white shadow-md p-3 transform rotate-[-1deg] hover:rotate-0 transition-transform duration-500">
-              <div className="w-full h-full bg-[#EAE7E1] animate-pulse"></div>
+
+            <Calendar date={new Date('2026-06-28')} />
+          </motion.div>
+        </section>
+
+        {/* 4. Location Section */}
+        <section className="py-32 px-6">
+          <SectionTitle title="Location" subtitle="오시는 길" />
+          
+          <div className="bg-white rounded-[2rem] shadow-sm border border-[#F0EBE3] overflow-hidden mb-12">
+            <div className="p-8 text-center">
+              <h3 className="text-xl font-light mb-3 text-[#1C2E24]">강동 루벨</h3>
+              <p className="text-[13px] text-[#8BA48B] font-light tracking-wide italic leading-relaxed">
+                서울특별시 강동구 천호대로 1077,<br />
+                이스트센트럴타워 35층
+              </p>
+            </div>
+            
+            <div className="aspect-video w-full bg-[#F5F3EF] relative group overflow-hidden">
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3163.504283923485!2d127.1232857763673!3d37.531405126135215!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca504f7b60001%3A0x4e6b36098099834d!2z66Oo67KoIChMdXZlbCk!5e0!3m2!1sko!2skr!4v1713768000000!5m2!1sko!2skr" 
+                width="100%" 
+                height="100%" 
+                style={{ border: 0 }} 
+                allowFullScreen={true} 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+                className="w-full h-full transition-all duration-700"
+              ></iframe>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Location Section */}
-      <section className="py-32 px-6 max-w-3xl mx-auto text-center">
-        <h2 className="text-3xl font-light mb-16 tracking-[0.3em] text-[#5C6E5C] uppercase">Location</h2>
-        <div className="mb-16">
-          <h3 className="text-2xl font-light mb-3 text-[#4A4A4A]">루벨 (Luvel)</h3>
-          <p className="text-[#8BA48B] font-light tracking-wide italic">서울특별시 강동구 천호대로 1077, 이스트센트럴타워 35층</p>
-        </div>
-        
-        <div className="aspect-video bg-[#EAE7E1] mb-16 flex items-center justify-center text-[#8BA48B] shadow-inner rounded-xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
-          <p className="text-sm tracking-widest">[ Map View ]</p>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-12 text-left max-w-2xl mx-auto">
-          <div className="bg-white p-8 rounded-2xl shadow-sm border border-[#F0EBE3]">
-            <h4 className="text-sm font-bold mb-4 tracking-widest text-[#8BA48B] uppercase">지하철</h4>
-            <p className="text-base text-[#6B705C] leading-relaxed">5호선 강동역 1번 출구 연결 (지하 통로 이용)</p>
+          <div className="space-y-6 text-left">
+            <div className="bg-[#FAF9F6] p-6 rounded-2xl border border-[#F0EBE3]">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-6 h-6 rounded-full bg-[#8BA48B] flex items-center justify-center text-white text-[10px] font-bold">Sub</div>
+                <h4 className="text-[11px] font-bold tracking-widest text-[#5C6E5C] uppercase">🚃 지하철</h4>
+              </div>
+              <p className="text-[13px] text-[#6B705C] leading-[1.8] font-light">
+                <span className="font-bold text-[#8BA48B]">5호선 강동역 1번 출구</span>와 연결된 지하통로를<br />
+                통해 이스트센트럴 타워 1층으로 올라와 엘리베이터 이용 (35층)
+              </p>
+            </div>
+            <div className="bg-[#FAF9F6] p-6 rounded-2xl border border-[#F0EBE3]">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-6 h-6 rounded-full bg-[#8BA48B] flex items-center justify-center text-white text-[10px] font-bold">Car</div>
+                <h4 className="text-[11px] font-bold tracking-widest text-[#5C6E5C] uppercase">🚘 자가용/주차</h4>
+              </div>
+              <p className="text-[13px] text-[#6B705C] leading-[1.8] font-light">
+                내비게이션: <span className="font-bold text-[#8BA48B]">'루벨'</span> 검색<br />
+                건물 내 지하 주차장 이용 (2시간 무료/200대)
+              </p>
+            </div>
           </div>
-          <div className="bg-white p-8 rounded-2xl shadow-sm border border-[#F0EBE3]">
-            <h4 className="text-sm font-bold mb-4 tracking-widest text-[#8BA48B] uppercase">내비게이션</h4>
-            <p className="text-base text-[#6B705C] leading-relaxed">'루벨' 또는 '이스트센트럴타워' 검색 (강동역)</p>
-          </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Footer */}
-      <section className="py-40 bg-[#1C2E24] text-[#FDFCF8] text-center overflow-hidden relative">
-        <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-white rounded-full"></div>
+        {/* 5. Gallery Section */}
+        <section className="py-40">
+          <SectionTitle title="Gallery" subtitle="우리의 순간" />
+          <Gallery />
+        </section>
+
+        {/* 6. Giving Heart Section */}
+        <section className="py-32 bg-[#FAF9F6]">
+          <SectionTitle title="Giving Heart" subtitle="마음 전하실 곳" />
+          <p className="text-center text-xs font-light text-[#8BA48B] mb-12 px-8 leading-relaxed">
+            축복해 주시는 마음 감사히 받겠습니다.<br />직접 축복을 전하지 못하는 분들을 위해<br />계좌 번호를 안내해 드립니다.
+          </p>
+          <AccountInfo />
+        </section>
+
+        {/* 6.5 Information Section */}
+        <section className="py-32 px-6">
+          <SectionTitle title="INFORMATION" subtitle="안내사항" />
+          <Information />
+        </section>
+
+        {/* 6.8 Guestbook Section */}
+        <section className="py-32 px-6">
+          <SectionTitle title="GUESTBOOK" subtitle="방명록" />
+          <Guestbook />
+        </section>
+
+        {/* 6.9 RSVP Section */}
+        <section className="py-32 px-6 bg-[#FAF9F6]">
+          <RSVP />
+        </section>
+
+        {/* 7. Shared Footer */}
+        <section className="relative h-[600px] flex flex-col items-center justify-center text-center overflow-hidden">
+          {/* Finish Background Image */}
+          <div className="absolute inset-0 z-0">
+            <img 
+              src="/wedding/footer_photo.jpg" 
+              alt="Wedding Finish" 
+              className="w-full h-full object-cover"
+            />
+            {/* Gradient Overlay for Depth and Readability */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/60"></div>
+          </div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            className="relative z-10 px-4"
+          >
+            <img src="/wedding/flower_divider.png" alt="Decoration" className="w-16 mx-auto mb-12 invert opacity-50" />
+            <p className="mb-6 font-light tracking-[0.5em] uppercase text-[#D1B8A0] text-[10px]">Save our Date</p>
+            <p className="text-6xl font-dancing mb-12 italic text-white drop-shadow-lg">Thank You</p>
+            <div className="h-[1px] w-16 bg-[#D1B8A0] mx-auto mb-12 opacity-50"></div>
+            
+            <div className="flex flex-col items-center gap-6">
+              <p className="text-[11px] tracking-[0.4em] font-light text-white/80 uppercase">전은길 ♥ 조인아</p>
+              <button className="flex items-center gap-2 text-[9px] font-bold tracking-[0.3em] uppercase px-8 py-3 border border-white/30 rounded-full text-white bg-white/5 backdrop-blur-sm hover:bg-white/20 transition-all">
+                <Share2 size={12} /> Share our moment
+              </button>
+            </div>
+          </motion.div>
+        </section>
+
+        {/* Fixed UI Elements - Constrained to 390px frame */}
+        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 w-full max-w-[390px] pointer-events-none z-40 px-6 flex justify-end">
+          <button className="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full shadow-lg flex items-center justify-center text-[#8BA48B] border border-[#F0EBE3] hover:scale-110 transition-all active:scale-95 pointer-events-auto">
+            <Share2 size={16} />
+          </button>
         </div>
-        <p className="mb-12 font-light tracking-[0.5em] uppercase text-[#8BA48B] text-sm">Save our Date</p>
-        <p className="text-5xl md:text-7xl font-dancing mb-16 italic">Thank You</p>
-        <div className="h-[1px] w-12 bg-[#8BA48B] mx-auto mb-16"></div>
-        <p className="text-xs tracking-[0.3em] font-light opacity-50 uppercase">© 2026 JEON & JO</p>
-      </section>
+
+      </div>
     </div>
   );
 }
-

@@ -3,12 +3,17 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronUp } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 export default function Footer() {
     const [isExpanded, setIsExpanded] = useState(false)
+    const pathname = usePathname()
+    const isWedding = pathname === '/wedding'
+
+    if (isWedding) return null
 
     return (
         <footer className="bg-white border-t border-border mt-auto">

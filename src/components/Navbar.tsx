@@ -12,6 +12,9 @@ export default function Navbar() {
   const pathname = usePathname()
   const isHome = pathname === '/'
   const isContact = pathname === '/contact'
+  const isWedding = pathname === '/wedding'
+
+  if (isWedding) return null
 
   useEffect(() => {
     const handleScroll = () => {
