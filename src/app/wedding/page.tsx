@@ -54,13 +54,13 @@ const Calendar = ({ date }: { date: Date }) => {
   }, []);
 
   return (
-    <div className="max-w-sm mx-auto bg-white/50 backdrop-blur-sm p-8 rounded-3xl border border-[#F0EBE3] shadow-sm">
-      <div className="text-center mb-8">
+    <div className="max-w-sm mx-auto bg-white/50 backdrop-blur-sm py-6 px-8 rounded-3xl border border-[#F0EBE3] shadow-sm">
+      <div className="text-center mb-6">
         <h3 className="text-xl font-light tracking-[0.2em] text-[#5C6E5C]">2026. 06</h3>
       </div>
-      <div className="grid grid-cols-7 gap-y-4 text-center">
+      <div className="grid grid-cols-7 gap-y-2 text-center">
         {days.map((day, idx) => (
-          <div key={day} className={cn("text-[9px] font-bold tracking-widest mb-4", idx === 0 ? "text-[#D1B8A0]" : "text-[#A0A0A0]")}>
+          <div key={day} className={cn("text-[9px] font-bold tracking-widest mb-2", idx === 0 ? "text-[#D1B8A0]" : "text-[#A0A0A0]")}>
             {day}
           </div>
         ))}
@@ -68,7 +68,7 @@ const Calendar = ({ date }: { date: Date }) => {
           <div 
             key={idx} 
             className={cn(
-              "relative h-10 flex items-center justify-center text-sm font-light transition-all",
+              "relative h-9 flex items-center justify-center text-sm font-light transition-all",
               day === weddingDay ? "text-white z-10" : "text-[#6B705C]",
               idx % 7 === 0 ? "text-[#D1B8A0]" : ""
             )}
@@ -77,14 +77,16 @@ const Calendar = ({ date }: { date: Date }) => {
               <motion.div 
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                className="absolute inset-0 m-auto w-8 h-8 bg-[#8BA48B] rounded-full -z-10 shadow-sm"
-              />
+                className="absolute inset-0 m-auto flex items-center justify-center -z-10"
+              >
+                <Heart className="w-9 h-9 fill-[#E58C8C] text-[#E58C8C] opacity-80" />
+              </motion.div>
             )}
-            {day}
+            <span className={cn(day === weddingDay ? "text-white font-bold" : "")}>{day}</span>
           </div>
         ))}
       </div>
-      <div className="mt-10 pt-6 border-t border-[#F0EBE3] text-center">
+      <div className="mt-8 pt-5 border-t border-[#F0EBE3] text-center">
         <p className="text-[12.5px] font-light text-[#8BA48B] tracking-tight whitespace-nowrap">
           은길 ♥ 인아의 결혼식이 <span className="font-bold text-[#5C6E5C] text-base ml-0.5">{dDay}</span> 남았습니다
         </p>
