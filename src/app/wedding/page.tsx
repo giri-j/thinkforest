@@ -95,6 +95,23 @@ const Calendar = ({ date }: { date: Date }) => {
   );
 };
 
+const FlipText = ({ items }: { items: { text: string; color: string }[] }) => (
+  <div className="h-[30px] overflow-hidden mt-2 flex flex-col items-center">
+    <div className="animate-flip-show">
+      {items.map((item, idx) => (
+        <div key={idx} className="h-[30px] mb-[20px] flex items-center justify-center">
+          <span 
+            className="text-white text-[11px] px-2.5 py-1 rounded font-bold uppercase tracking-tight"
+            style={{ backgroundColor: item.color }}
+          >
+            {item.text}
+          </span>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
 const AccountInfo = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState<string | null>(null);
@@ -709,7 +726,7 @@ export default function WeddingPage() {
                   playsInline 
                   className="w-[200px] mx-auto opacity-90 rounded-2xl"
                 >
-                  <source src="/wedding/dollbowlow.mov" type='video/quicktime; codecs="hvc1"' />
+                  <source src="/wedding/dollbow.mov" type='video/quicktime; codecs="hvc1"' />
                   <source src="/wedding/dollbow.webm" type="video/webm" />
                 </video>
               </div>
@@ -734,10 +751,15 @@ export default function WeddingPage() {
                    <img src="/wedding/groom.jpg" className="w-full h-full object-cover scale-x-[-1]" alt="Groom" />
                 </div>
                 <div className="text-center space-y-2">
-                  <p className="text-[13px] text-[#6B705C] leading-relaxed font-serif">
+                  <div className="text-[13px] text-[#6B705C] leading-relaxed font-gowun">
                     전안석 · 전경자의 차남<br />
                     <span className="text-[#4A4A4A] font-bold text-base">전은길</span>
-                  </p>
+                    <FlipText items={[
+                      { text: "IT 기획자", color: "#4ec7f3" },
+                      { text: "소년의 심장", color: "#42c58a" },
+                      { text: "3대 500", color: "#DC143C" }
+                    ]} />
+                  </div>
                 </div>
               </div>
 
@@ -747,10 +769,15 @@ export default function WeddingPage() {
                    <img src="/wedding/bride.jpg" className="w-full h-full object-cover scale-x-[-1]" alt="Bride" />
                 </div>
                 <div className="text-center space-y-2">
-                  <p className="text-[13px] text-[#6B705C] leading-relaxed font-serif">
+                  <div className="text-[13px] text-[#6B705C] leading-relaxed font-gowun">
                     조종섭 · 윤원흥의 차녀<br />
                     <span className="text-[#4A4A4A] font-bold text-base">조인아</span>
-                  </p>
+                    <FlipText items={[
+                      { text: "대기업 비서", color: "#4ec7f3" },
+                      { text: "내조의 여왕", color: "#42c58a" },
+                      { text: "심리학 전문가", color: "#DC143C" }
+                    ]} />
+                  </div>
                 </div>
               </div>
             </div>
@@ -772,9 +799,11 @@ export default function WeddingPage() {
               subtitleClassName="text-[12px]"
             />
             
-            <div className="text-center mb-12 space-y-2">
-              <p className="text-[15px] font-light text-[#6B705C] tracking-wide">강동 루벨 35층</p>
-              <p className="text-[15px] font-light text-[#6B705C] tracking-wide">2026년 6월 28일 일요일 오전 11시</p>
+            <div className="text-center mb-12 flex flex-col items-center justify-center">
+              <div className="text-[15px] font-light text-[#6B705C] tracking-wide mb-6">강동 루벨 35층</div>
+              <div className="animate-neon text-[1.0rem] md:text-[1.3rem] font-bold text-[#FDF7FF] tracking-tight leading-none px-4">
+                2026년 6월 28일 일요일 오전 11시
+              </div>
             </div>
 
             <Calendar date={new Date('2026-06-28')} />
@@ -881,6 +910,20 @@ export default function WeddingPage() {
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
             <SectionTitle title="GUESTBOOK" subtitle="방명록" subtitleClassName="text-[12px]" />
+            
+            <div className="mb-12 overflow-hidden rounded-2xl aspect-[16/7]">
+              <video 
+                autoPlay 
+                loop 
+                muted 
+                playsInline 
+                className="w-full h-full object-cover"
+              >
+                <source src="/wedding/sofalaughlow.mov" type='video/quicktime; codecs="hvc1"' />
+                <source src="/wedding/sofalaughlow.webm" type="video/webm" />
+              </video>
+            </div>
+
             <Guestbook />
           </motion.div>
         </section>

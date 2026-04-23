@@ -55,9 +55,9 @@ const NaverMap = ({ clientId }: NaverMapProps) => {
 
     const infoWindow = new window.naver.maps.InfoWindow({
       content: `
-        <div style="padding:16px; min-width:190px; font-size:12.5px; line-height:1.5; color:#4A4A4A; font-family:serif; border-radius:12px; background:white; box-shadow:0 4px 15px rgba(0,0,0,0.1);">
-          <strong style="font-size:14px; color:#5C6E5C; display:block; margin-bottom:6px;">루벨 강동 (LUVEL)</strong>
-          <span style="color:#8C7B6C; font-size:11.5px;">서울특별시 강동구 천호대로 1077<br/>이스트센트럴타워 35층</span>
+        <div style="padding:16px; min-width:190px; font-size:12.5px; line-height:1.5; color:#4A4A4A; font-family:'Gowun Batang', serif; border-radius:12px; background:white; box-shadow:0 4px 15px rgba(0,0,0,0.1);">
+          <strong style="font-size:14px; color:#5C6E5C; display:block; margin-bottom:6px; font-family:'Gowun Batang', serif;">루벨 강동 (LUVEL)</strong>
+          <span style="color:#8C7B6C; font-size:11.5px; font-family:'Gowun Batang', serif;">서울특별시 강동구 천호대로 1077<br/>이스트센트럴타워 35층</span>
           <div style="margin-top:10px; padding-top:10px; border-top:1px solid #F0EBE3;">
             <a href="https://map.naver.com/p/search/%EA%B0%95%EB%8F%99%20%EB%A3%A8%EB%B2%A8/place/1064180088?c=15.44,0,0,0,dh&placePath=/home" target="_blank" rel="noopener noreferrer" style="color:#8BA48B; text-decoration:none; font-weight:bold; display:flex; align-items:center; gap:4px;">
               네이버 지도에서 보기 <span style="font-size:9px;">▶</span>
