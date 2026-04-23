@@ -65,7 +65,7 @@ const FireworksBackground = () => {
             'pointermove': ['mousemove', 'touchmove']
           };
           if (eventMap[type]) {
-            eventMap[type].forEach((evt: string) => this.canvas.addEventListener(evt, listener));
+            eventMap[type].forEach((evt: string) => this.canvas.addEventListener(evt, listener as any));
           }
         }
       }
