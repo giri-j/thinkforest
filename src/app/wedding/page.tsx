@@ -703,13 +703,15 @@ export default function WeddingPage() {
                   신랑 전은길, 신부 조인아 드림
                 </p>
                 <video 
-                  src="/wedding/dollbow.webm" 
                   autoPlay 
                   loop 
                   muted 
                   playsInline 
                   className="w-[200px] mx-auto opacity-90 rounded-2xl"
-                />
+                >
+                  <source src="/wedding/dollbowlow.mov" type='video/quicktime; codecs="hvc1"' />
+                  <source src="/wedding/dollbow.webm" type="video/webm" />
+                </video>
               </div>
             </motion.div>
           </div>
