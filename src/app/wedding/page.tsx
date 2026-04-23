@@ -7,11 +7,15 @@ import { cn } from '@/lib/utils';
 import Script from 'next/script';
 import Head from 'next/head';
 
+import FireworksBackground from '@/components/wedding/Fireworks';
+import FlowerAnimation from '@/components/wedding/FlowerAnimation';
+import NaverMap from '@/components/wedding/NaverMap';
+
 // --- Components ---
 
-const SectionTitle = ({ title, subtitle, titleClassName }: { title: string; subtitle?: string; titleClassName?: string }) => (
+const SectionTitle = ({ title, subtitle, titleClassName, subtitleClassName }: { title: string; subtitle?: string; titleClassName?: string; subtitleClassName?: string }) => (
   <div className="text-center mb-16 px-4">
-    <p className="text-[10px] tracking-[0.4em] text-[#8BA48B] uppercase mb-4 font-light">{subtitle}</p>
+    <p className={cn("tracking-[0.4em] text-[#8BA48B] uppercase mb-4 font-light", subtitleClassName || "text-[10px]")}>{subtitle}</p>
     <h2 className={cn("text-2xl md:text-3xl font-light tracking-[0.2em] text-[#5C6E5C] uppercase", titleClassName)}>{title}</h2>
     <div className="mt-4 flex justify-center">
       <div className="h-[1px] w-8 bg-[#D1B8A0] opacity-50"></div>
@@ -100,8 +104,8 @@ const AccountInfo = () => {
   };
 
   const accounts = [
-    { name: '신랑 전은길', bank: '신한은행', number: '110-123-456789' },
-    { name: '신랑측 혼주 전OO', bank: '국민은행', number: '123-45-678901' },
+    { name: '신랑 전은길', bank: '국민은행', number: '061702-04-140015' },
+    { name: '신랑측 혼주 전경자', bank: '국민은행', number: '123-45-678901' },
     { name: '신부 조인아', bank: '우리은행', number: '1002-123-456789' },
     { name: '신부측 혼주 조OO', bank: '기업은행', number: '123-456-789012' },
   ];
@@ -274,7 +278,7 @@ const Information = () => {
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
           >
-            <h4 className="text-[10px] text-[#D1B8A0] font-bold tracking-[0.3em] uppercase mb-4">
+            <h4 className="text-[12px] text-[#D1B8A0] font-bold tracking-[0.3em] uppercase mb-4">
               {tabs.find(t => t.id === activeTab)?.title}
             </h4>
             <p className="text-[14px] text-[#6B705C] leading-relaxed font-light">
@@ -289,8 +293,8 @@ const Information = () => {
 
 const Guestbook = () => {
   const [messages, setMessages] = useState([
-    { name: '김지은', content: '두 분 너무 잘 어울려요! 행복하게 잘 사세요~ :)', date: '2026.04.22' },
-    { name: '이민호', content: '결혼 진심으로 축하드립니다! 꽃길만 걸으시길!', date: '2026.04.21' },
+    { name: 'Taylor Swift', content: '두 분 너무 잘 어울려요! 행복하게 잘 사세요~ :)', date: '2026.04.22' },
+    { name: 'David Beckham', content: '결혼 진심으로 축하드립니다! 꽃길만 걸으시길!', date: '2026.04.21' },
   ]);
   const [newName, setNewName] = useState('');
   const [newContent, setNewContent] = useState('');
@@ -655,48 +659,58 @@ export default function WeddingPage() {
         </section>
 
         {/* 2. Invitation Greeting Section */}
-        <section className="py-40 px-6 max-w-2xl mx-auto text-center relative">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 opacity-10">
-            <img src="/wedding/flower_divider.png" alt="Flower Decoration" className="w-full grayscale brightness-50" />
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1.2 }}
-          >
-            <SectionTitle title="INVITATION GREETING" subtitle="우리, 결혼합니다." />
+        <section className="bg-white py-24 pb-16 px-6 text-center overflow-hidden relative">
+          <div className="max-w-[390px] mx-auto relative">
+            {/* Background Animation Layer */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 0.6 }}
+              viewport={{ once: true }}
+              transition={{ duration: 4.0, ease: "easeOut" }}
+              className="absolute top-[-120px] left-1/2 -translate-x-1/2 z-0"
+            >
+              <FlowerAnimation />
+            </motion.div>
             
-            <div className="space-y-6 leading-relaxed text-[15px] font-light text-[#6B705C] font-serif italic flex flex-col items-center w-full overflow-visible tracking-tight">
-              <p className="flex items-center gap-1 whitespace-nowrap">
-                <span className="font-bold text-[#4A4A4A] text-lg">감</span> 사한 마음으로 돌아보면
-              </p>
-              <p className="flex items-center gap-1 whitespace-nowrap">
-                <span className="font-bold text-[#4A4A4A] text-lg">사</span> 소한 순간마다 함께해 주신 여러분 덕분에
-              </p>
-              <p className="flex items-center gap-1 whitespace-nowrap">
-                <span className="font-bold text-[#4A4A4A] text-lg">해</span> 처럼 따뜻한 이 순간을 맞이할 수 있었습니다.
-              </p>
-              <p className="flex items-center gap-1 whitespace-nowrap">
-                <span className="font-bold text-[#4A4A4A] text-lg">요</span> 청드립니다. 행복한 이 순간을 함께해 주세요.
-              </p>
-            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
+              className="relative z-10 mt-20"
+            >
+              <SectionTitle title="INVITATION GREETING" subtitle="우리, 결혼합니다." subtitleClassName="text-[12px]" />
+              
+              <div className="space-y-6 leading-relaxed text-[15px] font-light text-[#6B705C] font-serif italic flex flex-col items-start w-fit mx-auto overflow-visible tracking-tight text-left">
+                <p className="flex items-center gap-1 whitespace-nowrap">
+                  <span className="font-bold text-[#4A4A4A] text-lg">감</span> 사한 마음으로 돌아보면
+                </p>
+                <p className="flex items-center gap-1 whitespace-nowrap">
+                  <span className="font-bold text-[#4A4A4A] text-lg">사</span> 소한 순간마다 함께해 주신 여러분 덕분에
+                </p>
+                <p className="flex items-center gap-1 whitespace-nowrap">
+                  <span className="font-bold text-[#4A4A4A] text-lg">해</span> 처럼 따뜻한 이 순간을 맞이할 수 있었습니다.
+                </p>
+                <p className="flex items-center gap-1 whitespace-nowrap">
+                  <span className="font-bold text-[#4A4A4A] text-lg">요</span> 청드립니다. 행복한 이 순간을 함께해 주세요.
+                </p>
+              </div>
 
-            <div className="mt-24 pt-16 border-t border-[#F0EBE3]/50">
-              <p className="text-lg text-[#8BA48B] font-light tracking-wide italic mb-10">
-                신랑 전은길, 신부 조인아 드림
-              </p>
-              <video 
-                src="/wedding/dollbow.mp4" 
-                autoPlay 
-                loop 
-                muted 
-                playsInline 
-                className="w-[200px] mx-auto opacity-90 rounded-2xl"
-              />
-            </div>
-          </motion.div>
+              <div className="mt-24 pt-16 border-t border-[#F0EBE3]/50">
+                <p className="text-lg text-[#8BA48B] font-light tracking-wide italic mb-10">
+                  신랑 전은길, 신부 조인아 드림
+                </p>
+                <video 
+                  src="/wedding/dollbow.webm" 
+                  autoPlay 
+                  loop 
+                  muted 
+                  playsInline 
+                  className="w-[200px] mx-auto opacity-90 rounded-2xl"
+                />
+              </div>
+            </motion.div>
+          </div>
         </section>
 
         {/* 2.5 Our Introduction Section */}
@@ -704,10 +718,10 @@ export default function WeddingPage() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
           >
-            <SectionTitle title="우리의 소개" subtitle="Introduction" />
+            <SectionTitle title="Introduction" subtitle="우리의 소개" subtitleClassName="text-[12px]" />
             
             <div className="flex justify-between items-start gap-4 mt-12">
               {/* Groom Profile */}
@@ -742,15 +756,16 @@ export default function WeddingPage() {
         {/* 3. Calendar & Schedule Section */}
         <section className="py-32 bg-[#FAF9F6]">
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
           >
             <SectionTitle 
               title="The Wedding Day" 
               subtitle="예식 일정" 
               titleClassName="whitespace-nowrap text-[21px] md:text-[26px] tracking-[0.15em]" 
+              subtitleClassName="text-[12px]"
             />
             
             <div className="text-center mb-12 space-y-2">
@@ -764,7 +779,13 @@ export default function WeddingPage() {
 
         {/* 4. Location Section */}
         <section className="py-32 px-6">
-          <SectionTitle title="Location" subtitle="오시는 길" />
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+          >
+            <SectionTitle title="Location" subtitle="오시는 길" subtitleClassName="text-[12px]" />
           
           <div className="bg-white rounded-[2rem] shadow-sm border border-[#F0EBE3] overflow-hidden mb-12">
             <div className="p-8 text-center">
@@ -775,17 +796,8 @@ export default function WeddingPage() {
               </p>
             </div>
             
-            <div className="aspect-video w-full bg-[#F5F3EF] relative group overflow-hidden">
-              <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3163.504283923485!2d127.1232857763673!3d37.531405126135215!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca504f7b60001%3A0x4e6b36098099834d!2z66Oo67KoIChMdXZlbCk!5e0!3m2!1sko!2skr!4v1713768000000!5m2!1sko!2skr" 
-                width="100%" 
-                height="100%" 
-                style={{ border: 0 }} 
-                allowFullScreen={true} 
-                loading="lazy" 
-                referrerPolicy="no-referrer-when-downgrade"
-                className="w-full h-full transition-all duration-700"
-              ></iframe>
+            <div className="aspect-[4/3] w-full bg-[#F5F3EF] relative group overflow-hidden">
+              <NaverMap clientId="ywu8xzk12v" />
             </div>
           </div>
 
@@ -793,7 +805,7 @@ export default function WeddingPage() {
             <div className="bg-[#FAF9F6] p-6 rounded-2xl border border-[#F0EBE3]">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-6 h-6 rounded-full bg-[#8BA48B] flex items-center justify-center text-white text-[10px] font-bold">Sub</div>
-                <h4 className="text-[11px] font-bold tracking-widest text-[#5C6E5C] uppercase">🚃 지하철</h4>
+                <h4 className="text-[13px] font-bold tracking-widest text-[#5C6E5C] uppercase">🚃 지하철</h4>
               </div>
               <p className="text-[13px] text-[#6B705C] leading-[1.8] font-light">
                 <span className="font-bold text-[#8BA48B]">5호선 강동역 1번 출구</span>와 연결된 지하통로를<br />
@@ -803,46 +815,82 @@ export default function WeddingPage() {
             <div className="bg-[#FAF9F6] p-6 rounded-2xl border border-[#F0EBE3]">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-6 h-6 rounded-full bg-[#8BA48B] flex items-center justify-center text-white text-[10px] font-bold">Car</div>
-                <h4 className="text-[11px] font-bold tracking-widest text-[#5C6E5C] uppercase">🚘 자가용/주차</h4>
+                <h4 className="text-[13px] font-bold tracking-widest text-[#5C6E5C] uppercase">🚘 자가용/주차</h4>
               </div>
               <p className="text-[13px] text-[#6B705C] leading-[1.8] font-light">
                 내비게이션: <span className="font-bold text-[#8BA48B]">'루벨'</span> 검색<br />
-                건물 내 지하 주차장 이용 (2시간 무료/200대)
+                건물 내 지하 주차장 이용 (2시간 무료/350대)
               </p>
             </div>
           </div>
+          </motion.div>
         </section>
 
         {/* 5. Gallery Section */}
         <section className="py-40">
-          <SectionTitle title="Gallery" subtitle="우리의 순간" />
-          <Gallery />
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+          >
+            <SectionTitle title="Gallery" subtitle="우리의 순간" subtitleClassName="text-[12px]" />
+            <Gallery />
+          </motion.div>
         </section>
 
         {/* 6. Giving Heart Section */}
         <section className="py-32 bg-[#FAF9F6]">
-          <SectionTitle title="Giving Heart" subtitle="마음 전하실 곳" />
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+          >
+            <SectionTitle title="Giving Heart" subtitle="마음 전하실 곳" subtitleClassName="text-[12px]" />
           <p className="text-center text-xs font-light text-[#8BA48B] mb-12 px-8 leading-relaxed">
             축복해 주시는 마음 감사히 받겠습니다.<br />직접 축복을 전하지 못하는 분들을 위해<br />계좌 번호를 안내해 드립니다.
           </p>
-          <AccountInfo />
+            <AccountInfo />
+          </motion.div>
         </section>
 
         {/* 6.5 Information Section */}
         <section className="py-32 px-6">
-          <SectionTitle title="INFORMATION" subtitle="안내사항" />
-          <Information />
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+          >
+            <SectionTitle title="INFORMATION" subtitle="안내사항" subtitleClassName="text-[12px]" />
+            <Information />
+          </motion.div>
         </section>
 
         {/* 6.8 Guestbook Section */}
         <section className="py-32 px-6">
-          <SectionTitle title="GUESTBOOK" subtitle="방명록" />
-          <Guestbook />
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+          >
+            <SectionTitle title="GUESTBOOK" subtitle="방명록" subtitleClassName="text-[12px]" />
+            <Guestbook />
+          </motion.div>
         </section>
 
         {/* 6.9 RSVP Section */}
         <section className="py-32 px-6 bg-[#FAF9F6]">
-          <RSVP />
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+          >
+            <RSVP />
+          </motion.div>
         </section>
 
         {/* 7. Shared Footer */}
@@ -850,12 +898,13 @@ export default function WeddingPage() {
           {/* Finish Background Image */}
           <div className="absolute inset-0 z-0">
             <img 
-              src="/wedding/footer_photo.jpg" 
+              src="/wedding/footer_photo_night.jpg" 
               alt="Wedding Finish" 
               className="w-full h-full object-cover"
             />
             {/* Gradient Overlay for Depth and Readability */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/60"></div>
+            <FireworksBackground />
           </div>
           
           <motion.div
@@ -865,9 +914,8 @@ export default function WeddingPage() {
             transition={{ duration: 1.5, ease: "easeOut" }}
             className="relative z-10 px-4"
           >
-            <img src="/wedding/flower_divider.png" alt="Decoration" className="w-16 mx-auto mb-12 invert opacity-50" />
             <p className="mb-6 font-light tracking-[0.5em] uppercase text-[#D1B8A0] text-[10px]">Save our Date</p>
-            <p className="text-6xl font-dancing mb-12 italic text-white drop-shadow-lg">Thank You</p>
+            <p className="text-6xl font-dancing mb-12 italic text-white drop-shadow-lg opacity-30">Thank You</p>
             <div className="h-[1px] w-16 bg-[#D1B8A0] mx-auto mb-12 opacity-50"></div>
             
             <div className="flex flex-col items-center gap-6">
