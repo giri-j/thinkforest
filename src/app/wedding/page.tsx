@@ -667,7 +667,7 @@ export default function WeddingPage() {
               whileInView={{ opacity: 0.6 }}
               viewport={{ once: true }}
               transition={{ duration: 4.0, ease: "easeOut" }}
-              className="absolute top-[-120px] left-1/2 -translate-x-1/2 z-0"
+              className="absolute top-[-160px] left-1/2 -translate-x-1/2 z-0"
             >
               <FlowerAnimation />
             </motion.div>

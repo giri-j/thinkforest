@@ -4,34 +4,34 @@ import React from 'react';
 
 const FlowerAnimation = () => {
   return (
-    <div className="relative w-24 h-24 mx-auto mb-8 flex items-center justify-center pointer-events-none">
+    <div className="relative w-64 h-64 md:w-48 md:h-48 mx-auto mb-10 flex items-center justify-center pointer-events-none">
       {/* Petal containers */}
-      <div className="container1 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[5vw] h-[5vw]">
+      <div className="container1 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[6rem] h-[6rem] md:w-[4rem] md:h-[4rem]">
         <div className="petal" />
       </div>
-      <div className="container2 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[5vw] h-[5vw]">
+      <div className="container2 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[6rem] h-[6rem] md:w-[4rem] md:h-[4rem]">
         <div className="petal" />
       </div>
-      <div className="container3 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[5vw] h-[5vw]">
+      <div className="container3 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[6rem] h-[6rem] md:w-[4rem] md:h-[4rem]">
         <div className="petal" />
       </div>
-      <div className="container4 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[5vw] h-[5vw]">
+      <div className="container4 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[6rem] h-[6rem] md:w-[4rem] md:h-[4rem]">
         <div className="petal" />
       </div>
-      <div className="container5 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[5vw] h-[5vw]">
+      <div className="container5 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[6rem] h-[6rem] md:w-[4rem] md:h-[4rem]">
         <div className="petal" />
       </div>
-      <div className="container6 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[5vw] h-[5vw]">
+      <div className="container6 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[6rem] h-[6rem] md:w-[4rem] md:h-[4rem]">
         <div className="petal" />
       </div>
-      <div className="container7 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[5vw] h-[5vw]">
+      <div className="container7 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[6rem] h-[6rem] md:w-[4rem] md:h-[4rem]">
         <div className="petal" />
       </div>
-      <div className="container8 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[5vw] h-[5vw]">
+      <div className="container8 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[6rem] h-[6rem] md:w-[4rem] md:h-[4rem]">
         <div className="petal" />
       </div>
       
-      <div className="center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1.5vw] h-[1.5vw] bg-orange-400 rounded-full z-[20000]" />
+      <div className="center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1.5rem] h-[1.5rem] md:w-[1rem] md:h-[1rem] bg-orange-400 rounded-full z-[20000]" />
 
       <style jsx>{`
         .container2 { transform: translate(-50%, -50%) rotate(90deg); }
