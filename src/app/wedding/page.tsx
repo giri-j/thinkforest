@@ -687,10 +687,13 @@ export default function WeddingPage() {
               <p className="text-lg text-[#8BA48B] font-light tracking-wide italic mb-10">
                 신랑 전은길, 신부 조인아 드림
               </p>
-              <img 
-                src="/wedding/greeting_illust.png" 
-                alt="Wedding Illustration" 
-                className="w-[200px] mx-auto opacity-90"
+              <video 
+                src="/wedding/dollbow.mp4" 
+                autoPlay 
+                loop 
+                muted 
+                playsInline 
+                className="w-[200px] mx-auto opacity-90 rounded-2xl"
               />
             </div>
           </motion.div>
