@@ -422,7 +422,7 @@ const RSVPModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+        <div key="rsvp-selection" className="fixed inset-0 z-[100] flex items-center justify-center p-6">
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -466,7 +466,7 @@ const RSVPModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }
       )}
 
       {successSide && (
-        <div className="fixed inset-0 z-[110] flex items-center justify-center p-6">
+        <div key="rsvp-success-message" className="fixed inset-0 z-[110] flex items-center justify-center p-6">
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -767,8 +767,8 @@ export default function WeddingPage() {
                   preload="metadata"
                   className="w-[200px] mx-auto opacity-90 rounded-2xl"
                 >
-                  <source src="/wedding/dollbow.webm" type="video/webm" />
                   <source src="/wedding/dollbow.mov" type='video/quicktime; codecs="hvc1"' />
+                  <source src="/wedding/dollbow.webm" type="video/webm" />
                 </video>
               </div>
             </motion.div>
@@ -924,8 +924,8 @@ export default function WeddingPage() {
                 preload="metadata"
                 className="w-full h-full object-cover"
               >
-                <source src="/wedding/sofalaughlow.webm" type="video/webm" />
                 <source src="/wedding/sofalaughlow.mov" type='video/quicktime; codecs="hvc1"' />
+                <source src="/wedding/sofalaughlow.webm" type="video/webm" />
               </video>
             </div>
 
@@ -997,7 +997,7 @@ export default function WeddingPage() {
                   onClick={handleShare}
                   className="w-full flex items-center justify-center gap-2 text-[9px] font-bold tracking-[0.3em] uppercase px-8 py-3 border border-white/30 rounded-full text-white bg-white/5 backdrop-blur-sm hover:bg-white/20 transition-all"
                 >
-                  <Share2 size={12} /> Share our moment
+                  <Share2 size={12} /> 공유하기
                 </button>
                 <button 
                   onClick={() => setIsRSVPModalOpen(true)}
