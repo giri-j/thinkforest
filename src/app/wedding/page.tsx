@@ -8,7 +8,7 @@ import Script from 'next/script';
 import Head from 'next/head';
 
 import FireworksBackground from '@/components/wedding/Fireworks';
-import FlowerAnimation from '@/components/wedding/FlowerAnimation';
+import MagicalFlowers from '@/components/wedding/MagicalFlowers';
 import NaverMap from '@/components/wedding/NaverMap';
 
 // --- Components ---
@@ -521,8 +521,8 @@ export default function WeddingPage() {
     const initSakura = () => {
       if ((window as any).Sakura) {
         sakuraInstance = new (window as any).Sakura('.sakura-frame', {
-          delay: 50,
-          fallSpeed: 3.5,
+          delay: 103,
+          fallSpeed: 4.2,
           colors: [
             {
               gradientColorStart: 'rgba(255, 183, 197, 0.9)',
@@ -536,6 +536,7 @@ export default function WeddingPage() {
             },
           ],
         });
+        (window as any).sakuraStarted = true;
       }
     };
 
@@ -567,8 +568,8 @@ export default function WeddingPage() {
         onReady={() => {
           if (!(window as any).sakuraStarted && (window as any).Sakura) {
             new (window as any).Sakura('.sakura-frame', {
-              delay: 50,
-              fallSpeed: 3.5,
+              delay: 103,
+              fallSpeed: 4.2,
             });
             (window as any).sakuraStarted = true;
           }
@@ -614,14 +615,14 @@ export default function WeddingPage() {
               transition={{ duration: 1.5, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
             >
               <motion.div 
-                className="text-[38px] md:text-[64px] font-great-vibes mb-12 text-white/80 tracking-normal leading-[1.5] pt-16 pb-8 overflow-visible text-center"
+                className="text-[62px] md:text-[83px] font-crafty-girls mb-12 text-white/90 tracking-normal leading-[1.1] pt-16 pb-8 overflow-visible text-center"
               >
                 {/* Line 1: Invite */}
-                <div className="overflow-visible mb-2">
+                <div className="overflow-visible">
                   {"Invite".split("").map((char, i) => (
                     <motion.span
-                      key={i}
-                      className="inline-block overflow-visible"
+                      key={`invite-${i}`}
+                      className="inline-block overflow-visible font-crafty-girls"
                       initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
                       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                       transition={{
@@ -634,21 +635,21 @@ export default function WeddingPage() {
                     </motion.span>
                   ))}
                 </div>
-                {/* Line 2: Our wedding */}
-                <div className="overflow-visible">
-                  {"Our wedding".split("").map((char, i) => (
+                {/* Line 2: wedding */}
+                <div className="overflow-visible mt-[-10px]">
+                  {"wedding".split("").map((char, i) => (
                     <motion.span
-                      key={i + 6}
-                      className="inline-block overflow-visible"
+                      key={`wedding-${i}`}
+                      className="inline-block overflow-visible font-crafty-girls"
                       initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
                       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                       transition={{
                         duration: 0.8,
-                        delay: 1.4 + i * 0.08, // Start slightly after first line
+                        delay: 1.2 + i * 0.08,
                         ease: [0.2, 0.65, 0.3, 0.9],
                       }}
                     >
-                      {char === " " ? "\u00A0" : char}
+                      {char}
                     </motion.span>
                   ))}
                 </div>
@@ -708,7 +709,7 @@ export default function WeddingPage() {
               transition={{ duration: 4.0, ease: "easeOut" }}
               className="absolute top-[-160px] left-1/2 -translate-x-1/2 z-0"
             >
-              <FlowerAnimation />
+              <MagicalFlowers />
             </motion.div>
             
             <motion.div

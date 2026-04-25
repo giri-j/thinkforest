@@ -63,7 +63,19 @@
   }
 
   .font-great-vibes {
-    font-family: 'Great Vibes', cursive;
+    font-family: var(--font-great-vibes), cursive;
+  }
+
+  .font-cherish {
+    font-family: var(--font-cherish), cursive;
+  }
+
+  .font-charmonman {
+    font-family: var(--font-charmonman), cursive;
+  }
+
+  .font-crafty-girls {
+    font-family: var(--font-crafty-girls), cursive;
   }
 
   .bg-radial-gradient {

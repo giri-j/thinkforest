@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Gowun_Batang, Playfair_Display, Dancing_Script } from "next/font/google";
+import { Gowun_Batang, Playfair_Display, Dancing_Script, Great_Vibes, Cherish, Charmonman, Crafty_Girls } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -22,6 +22,30 @@ const dancingScript = Dancing_Script({
   variable: "--font-dancing",
 });
 
+const greatVibes = Great_Vibes({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-great-vibes",
+});
+
+const cherish = Cherish({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-cherish",
+});
+
+const charmonman = Charmonman({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-charmonman",
+});
+
+const craftyGirls = Crafty_Girls({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-crafty-girls",
+});
+
 export const metadata: Metadata = {
   title: "기획의 숲 | Think Forest - Portfolio & Blog",
   description: "기획자 은길전의 포트폴리오와 블로그 공간입니다.",
@@ -36,7 +60,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={`${gowunBatang.variable} ${playfairDisplay.variable} ${dancingScript.variable}`} suppressHydrationWarning>
+    <html lang="ko" className={`${gowunBatang.variable} ${playfairDisplay.variable} ${dancingScript.variable} ${greatVibes.variable} ${cherish.variable} ${charmonman.variable} ${craftyGirls.variable}`} suppressHydrationWarning>
       <body>
         <Navbar />
         {children}
