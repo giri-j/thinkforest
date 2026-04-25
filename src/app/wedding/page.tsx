@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Phone, Copy, ChevronDown, Calendar as CalendarIcon, Heart, Share2, Info, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -113,7 +113,7 @@ const FlipText = ({ items }: { items: { text: string; color: string }[] }) => (
 );
 
 const AccountInfo = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<'groom' | 'bride'>('groom');
   const [copied, setCopied] = useState<string | null>(null);
 
   const copyToClipboard = (text: string, label: string) => {
@@ -122,57 +122,84 @@ const AccountInfo = () => {
     setTimeout(() => setCopied(null), 2000);
   };
 
-  const accounts = [
+  const groomAccounts = [
     { name: '신랑 전은길', bank: '국민은행', number: '061702-04-140015' },
     { name: '신랑측 혼주 전경자', bank: '국민은행', number: '123-45-678901' },
-    { name: '신부 조인아', bank: '우리은행', number: '1002-123-456789' },
-    { name: '신부측 혼주 조OO', bank: '기업은행', number: '123-456-789012' },
   ];
+
+  const brideAccounts = [
+    { name: '신부 조인아', bank: '우리은행', number: '1002-123-456789' },
+    { name: '신부측 혼주 조종섭', bank: '기업은행', number: '123-456-789012' },
+    { name: '신부측 혼주 윤원흥', bank: '기업은행', number: '123-456-789012' },
+  ];
+
+  const currentAccounts = activeTab === 'groom' ? groomAccounts : brideAccounts;
 
   return (
     <div className="max-w-md mx-auto px-6">
-      <button 
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between py-6 px-8 bg-[#FDFCF8] border border-[#F0EBE3] rounded-2xl shadow-sm hover:shadow-md transition-all group"
-      >
-        <div className="flex items-center gap-3 text-[#5C6E5C]">
-          <Heart size={18} className="text-[#D1B8A0] fill-[#D1B8A0] opacity-50" />
-          <span className="text-sm font-medium tracking-widest uppercase">축하의 마음 전하기</span>
+      <div className="text-center mb-8">
+        <div className="flex items-center justify-center gap-3 text-[#5C6E5C] mb-8">
+          <Heart size={20} className="text-[#D1B8A0] fill-[#D1B8A0] opacity-50" />
+          <h3 className="text-lg font-medium tracking-widest uppercase">축하의 마음 전하기</h3>
         </div>
-        <ChevronDown size={18} className={cn("text-[#A0A0A0] transition-transform duration-500", isOpen && "rotate-180")} />
-      </button>
-
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden"
+        
+        <div className="flex gap-2 p-1.5 bg-[#F5F3EF] rounded-2xl">
+          <button
+            onClick={() => setActiveTab('groom')}
+            className={cn(
+              "flex-1 py-3 text-xs font-bold tracking-widest uppercase transition-all duration-300 rounded-xl",
+              activeTab === 'groom' 
+                ? "bg-white text-[#8BA48B] shadow-sm" 
+                : "text-[#A0A0A0] hover:text-[#8BA48B]/60"
+            )}
           >
-            <div className="mt-4 space-y-3 pb-8">
-              {accounts.map((acc, i) => (
-                <div key={i} className="flex items-center justify-between p-5 bg-white border border-[#F0EBE3] rounded-xl shadow-sm">
-                  <div>
-                    <p className="text-[10px] text-[#8BA48B] font-bold uppercase tracking-widest mb-1">{acc.bank}</p>
-                    <p className="text-sm font-medium text-[#5C6E5C] mb-1">{acc.name}</p>
-                    <p className="text-xs text-[#A0A0A0] tracking-tighter">{acc.number}</p>
-                  </div>
-                  <button 
-                    onClick={() => copyToClipboard(acc.number, acc.name)}
-                    className={cn(
-                      "flex items-center gap-2 px-3 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all",
-                      copied === acc.name ? "bg-[#8BA48B] text-white" : "bg-[#FDFCF8] text-[#8BA48B] hover:bg-[#8BA48B]/10 border border-[#F0EBE3]"
-                    )}
-                  >
-                    {copied === acc.name ? 'Copied' : <><Copy size={12} /> Copy</>}
-                  </button>
+            신랑측
+          </button>
+          <button
+            onClick={() => setActiveTab('bride')}
+            className={cn(
+              "flex-1 py-3 text-xs font-bold tracking-widest uppercase transition-all duration-300 rounded-xl",
+              activeTab === 'bride' 
+                ? "bg-white text-[#D1B8A0] shadow-sm" 
+                : "text-[#A0A0A0] hover:text-[#D1B8A0]/60"
+            )}
+          >
+            신부측
+          </button>
+        </div>
+      </div>
+
+      <div className="min-h-[200px]">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            className="space-y-3 pb-10"
+          >
+            {currentAccounts.map((acc, i) => (
+              <div key={i} className="flex items-center justify-between p-5 bg-white border border-[#F0EBE3] rounded-2xl shadow-sm transition-all hover:border-[#8BA48B]/30">
+                <div>
+                  <p className="text-[10px] text-[#8BA48B] font-bold uppercase tracking-widest mb-1">{acc.bank}</p>
+                  <p className="text-[14px] font-medium text-[#5C6E5C] mb-1">{acc.name}</p>
+                  <p className="text-[12px] text-[#A0A0A0] tracking-tight">{acc.number}</p>
                 </div>
-              ))}
-            </div>
+                <button 
+                  onClick={() => copyToClipboard(acc.number, acc.name)}
+                  className={cn(
+                    "flex items-center gap-2 px-3 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all",
+                    copied === acc.name ? "bg-[#8BA48B] text-white" : "bg-[#FDFCF8] text-[#8BA48B] hover:bg-[#8BA48B]/10 border border-[#F0EBE3]"
+                  )}
+                >
+                  {copied === acc.name ? 'Copied' : <><Copy size={12} /> Copy</>}
+                </button>
+              </div>
+            ))}
           </motion.div>
-        )}
-      </AnimatePresence>
+        </AnimatePresence>
+      </div>
     </div>
   );
 };
@@ -387,103 +414,88 @@ const Guestbook = () => {
   );
 };
 
-const RSVP = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const RSVPModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   const [successSide, setSuccessSide] = useState<'groom' | 'bride' | null>(null);
 
   return (
-    <div className="max-w-md mx-auto px-6 text-center">
-      <div className="mb-8 space-y-2">
-        <p className="text-[13px] text-[#6B705C] font-light">함께 해주시는 마음,</p>
-        <p className="text-[13px] text-[#6B705C] font-light">저희도 잘 간직하겠습니다.</p>
-      </div>
-      
-      <button 
-        onClick={() => setIsModalOpen(true)}
-        className="px-10 py-4 bg-[#5C6E5C] text-white text-sm font-bold tracking-[0.2em] uppercase rounded-full shadow-lg hover:bg-[#4A4A4A] transition-all"
-      >
-        참석여부 전달
-      </button>
-
-      <AnimatePresence>
-        {isModalOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsModalOpen(false)}
-              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-            />
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-sm bg-white rounded-[2rem] p-8 shadow-2xl overflow-hidden"
-            >
-              <div className="absolute top-0 left-0 w-full h-2 bg-[#8BA48B]"></div>
-              <h3 className="text-xl font-light text-[#5C6E5C] mb-6 tracking-wide">참석 여부 전달 안내</h3>
-              <p className="text-[14px] text-[#6B705C] leading-[1.8] font-light mb-10 text-left">
-                특별한 날 축하의 마음으로 참석해주시는 모든 분들을 한 분 한 분 더욱 귀하게 모실 수 있도록, 아래 버튼을 클릭하여 신랑, 신부에게 참석여부를 전달부탁드립니다.
-              </p>
-              <div className="flex flex-col gap-3">
-                <button 
-                  className="w-full py-4 bg-[#8BA48B] text-white text-xs font-bold tracking-widest uppercase rounded-2xl shadow-sm hover:opacity-90"
-                  onClick={() => { setSuccessSide('groom'); setIsModalOpen(false); }}
-                >
-                  신랑측 참석여부 전달
-                </button>
-                <button 
-                  className="w-full py-4 bg-[#D1B8A0] text-white text-xs font-bold tracking-widest uppercase rounded-2xl shadow-sm hover:opacity-90"
-                  onClick={() => { setSuccessSide('bride'); setIsModalOpen(false); }}
-                >
-                  신부측 참석여부 전달
-                </button>
-                <button 
-                  onClick={() => setIsModalOpen(false)}
-                  className="mt-4 text-[11px] text-[#A0A0A0] font-bold tracking-widest uppercase hover:text-[#5C6E5C]"
-                >
-                  Close
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
-
-        {successSide && (
-          <div className="fixed inset-0 z-[110] flex items-center justify-center p-6">
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/60 backdrop-blur-md"
-            />
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              className="relative w-full max-w-xs bg-white rounded-[2rem] p-10 shadow-2xl text-center"
-            >
-              <div className="w-16 h-16 bg-[#FDFCF8] rounded-full flex items-center justify-center mx-auto mb-6 border border-[#F0EBE3]">
-                <Heart className="text-[#8BA48B] fill-[#8BA48B]/20" size={32} />
-              </div>
-              <h3 className="text-lg font-medium text-[#5C6E5C] mb-3 leading-relaxed">
-                {successSide === 'groom' ? '신랑측' : '신부측'} 참석여부를<br />전달주셔서 감사합니다.
-              </h3>
-              <p className="text-sm text-[#8BA48B] font-light mb-8">
-                더욱 귀하게 모시도록 하겠습니다.
-              </p>
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+          />
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            className="relative w-full max-w-sm bg-white rounded-[2rem] p-8 shadow-2xl overflow-hidden"
+          >
+            <div className="absolute top-0 left-0 w-full h-2 bg-[#8BA48B]"></div>
+            <h3 className="text-xl font-light text-[#5C6E5C] mb-6 tracking-wide">참석 여부 전달 안내</h3>
+            <p className="text-[14px] text-[#6B705C] leading-[1.8] font-light mb-10 text-left">
+              특별한 날 축하의 마음으로 참석해주시는 모든 분들을 한 분 한 분 더욱 귀하게 모실 수 있도록, 아래 버튼을 클릭하여 신랑, 신부에게 참석여부를 전달부탁드립니다.
+            </p>
+            <div className="flex flex-col gap-3">
               <button 
-                onClick={() => setSuccessSide(null)}
-                className="w-full py-3 bg-[#5C6E5C] text-white text-xs font-bold tracking-widest uppercase rounded-xl shadow-md"
+                className="w-full py-4 bg-[#8BA48B] text-white text-xs font-bold tracking-widest uppercase rounded-2xl shadow-sm hover:opacity-90"
+                onClick={() => { setSuccessSide('groom'); }}
               >
-                확인
+                신랑측 참석여부 전달
               </button>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-    </div>
+              <button 
+                className="w-full py-4 bg-[#D1B8A0] text-white text-xs font-bold tracking-widest uppercase rounded-2xl shadow-sm hover:opacity-90"
+                onClick={() => { setSuccessSide('bride'); }}
+              >
+                신부측 참석여부 전달
+              </button>
+              <button 
+                onClick={onClose}
+                className="mt-4 text-[11px] text-[#A0A0A0] font-bold tracking-widest uppercase hover:text-[#5C6E5C]"
+              >
+                Close
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
+      {successSide && (
+        <div className="fixed inset-0 z-[110] flex items-center justify-center p-6">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 bg-black/60 backdrop-blur-md"
+          />
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="relative w-full max-w-xs bg-white rounded-[2rem] p-10 shadow-2xl text-center"
+          >
+            <div className="w-16 h-16 bg-[#FDFCF8] rounded-full flex items-center justify-center mx-auto mb-6 border border-[#F0EBE3]">
+              <Heart className="text-[#8BA48B] fill-[#8BA48B]/20" size={32} />
+            </div>
+            <h3 className="text-lg font-medium text-[#5C6E5C] mb-3 leading-relaxed">
+              {successSide === 'groom' ? '신랑측' : '신부측'} 참석여부를<br />전달주셔서 감사합니다.
+            </h3>
+            <p className="text-sm text-[#8BA48B] font-light mb-8">
+              더욱 귀하게 모시도록 하겠습니다.
+            </p>
+            <button 
+              onClick={() => { setSuccessSide(null); onClose(); }}
+              className="w-full py-3 bg-[#5C6E5C] text-white text-xs font-bold tracking-widest uppercase rounded-xl shadow-md"
+            >
+              확인
+            </button>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
   );
 };
 
@@ -491,6 +503,14 @@ const RSVP = () => {
 
 export default function WeddingPage() {
   const [scrollY, setScrollY] = useState(0);
+  const [isRSVPModalOpen, setIsRSVPModalOpen] = useState(false);
+  const dollbowVideoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (dollbowVideoRef.current) {
+      dollbowVideoRef.current.playbackRate = 1.5;
+    }
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -502,7 +522,7 @@ export default function WeddingPage() {
       if ((window as any).Sakura) {
         sakuraInstance = new (window as any).Sakura('.sakura-frame', {
           delay: 50,
-          fallSpeed: 2,
+          fallSpeed: 3.5,
           colors: [
             {
               gradientColorStart: 'rgba(255, 183, 197, 0.9)',
@@ -548,7 +568,7 @@ export default function WeddingPage() {
           if (!(window as any).sakuraStarted && (window as any).Sakura) {
             new (window as any).Sakura('.sakura-frame', {
               delay: 50,
-              fallSpeed: 2,
+              fallSpeed: 3.5,
             });
             (window as any).sakuraStarted = true;
           }
@@ -715,11 +735,12 @@ export default function WeddingPage() {
                 </p>
               </div>
 
-              <div className="mt-24 pt-16 border-t border-[#F0EBE3]/50">
+              <div className="mt-12 pt-8 border-t border-[#F0EBE3]/50">
                 <p className="text-lg text-[#8BA48B] font-light tracking-wide italic mb-10">
                   신랑 전은길, 신부 조인아 드림
                 </p>
                 <video 
+                  ref={dollbowVideoRef}
                   autoPlay 
                   loop 
                   muted 
@@ -735,7 +756,7 @@ export default function WeddingPage() {
         </section>
 
         {/* 2.5 Our Introduction Section */}
-        <section className="py-24 px-6 w-full text-center">
+        <section className="pt-12 pb-24 px-6 w-full text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -781,11 +802,16 @@ export default function WeddingPage() {
                 </div>
               </div>
             </div>
+            
+            <div className="mt-20">
+              <SectionTitle title="Gallery" subtitle="우리의 순간" subtitleClassName="text-[12px]" />
+              <Gallery />
+            </div>
           </motion.div>
         </section>
 
         {/* 3. Calendar & Schedule Section */}
-        <section className="py-32 bg-[#FAF9F6]">
+        <section className="py-16 bg-[#FAF9F6]">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -811,7 +837,7 @@ export default function WeddingPage() {
         </section>
 
         {/* 4. Location Section */}
-        <section className="py-32 px-6">
+        <section className="py-16 px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -858,51 +884,9 @@ export default function WeddingPage() {
           </div>
           </motion.div>
         </section>
-
-        {/* 5. Gallery Section */}
-        <section className="py-40">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
-          >
-            <SectionTitle title="Gallery" subtitle="우리의 순간" subtitleClassName="text-[12px]" />
-            <Gallery />
-          </motion.div>
-        </section>
-
-        {/* 6. Giving Heart Section */}
-        <section className="py-32 bg-[#FAF9F6]">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
-          >
-            <SectionTitle title="Giving Heart" subtitle="마음 전하실 곳" subtitleClassName="text-[12px]" />
-          <p className="text-center text-xs font-light text-[#8BA48B] mb-12 px-8 leading-relaxed">
-            축복해 주시는 마음 감사히 받겠습니다.<br />직접 축복을 전하지 못하는 분들을 위해<br />계좌 번호를 안내해 드립니다.
-          </p>
-            <AccountInfo />
-          </motion.div>
-        </section>
-
-        {/* 6.5 Information Section */}
-        <section className="py-32 px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
-          >
-            <SectionTitle title="INFORMATION" subtitle="안내사항" subtitleClassName="text-[12px]" />
-            <Information />
-          </motion.div>
-        </section>
-
+        
         {/* 6.8 Guestbook Section */}
-        <section className="py-32 px-6">
+        <section className="py-16 px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -911,7 +895,7 @@ export default function WeddingPage() {
           >
             <SectionTitle title="GUESTBOOK" subtitle="방명록" subtitleClassName="text-[12px]" />
             
-            <div className="mb-12 overflow-hidden rounded-2xl aspect-[16/7]">
+            <div className="-mt-6 mb-8 overflow-hidden rounded-2xl aspect-[16/6]">
               <video 
                 autoPlay 
                 loop 
@@ -928,17 +912,37 @@ export default function WeddingPage() {
           </motion.div>
         </section>
 
-        {/* 6.9 RSVP Section */}
-        <section className="py-32 px-6 bg-[#FAF9F6]">
+
+        {/* 6. Giving Heart Section */}
+        <section className="py-16 bg-[#FAF9F6]">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
-            <RSVP />
+            <SectionTitle title="Giving Heart" subtitle="마음 전하실 곳" subtitleClassName="text-[12px]" />
+          <p className="text-center text-xs font-light text-[#8BA48B] mb-12 px-8 leading-relaxed">
+            축복해 주시는 마음 감사히 받겠습니다.<br />직접 축복을 전하지 못하는 분들을 위해<br />계좌 번호를 안내해 드립니다.
+          </p>
+            <AccountInfo />
           </motion.div>
         </section>
+
+        {/* 6.5 Information Section */}
+        <section className="py-16 px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+          >
+            <SectionTitle title="INFORMATION" subtitle="안내사항" subtitleClassName="text-[12px]" />
+            <Information />
+          </motion.div>
+        </section>
+
+
 
         {/* 7. Shared Footer */}
         <section className="relative h-[600px] flex flex-col items-center justify-center text-center overflow-hidden">
@@ -967,12 +971,23 @@ export default function WeddingPage() {
             
             <div className="flex flex-col items-center gap-6">
               <p className="text-[11px] tracking-[0.4em] font-light text-white/80 uppercase">전은길 ♥ 조인아</p>
-              <button className="flex items-center gap-2 text-[9px] font-bold tracking-[0.3em] uppercase px-8 py-3 border border-white/30 rounded-full text-white bg-white/5 backdrop-blur-sm hover:bg-white/20 transition-all">
-                <Share2 size={12} /> Share our moment
-              </button>
+              <div className="flex flex-col items-center gap-3 w-full max-w-[200px]">
+                <button className="w-full flex items-center justify-center gap-2 text-[9px] font-bold tracking-[0.3em] uppercase px-8 py-3 border border-white/30 rounded-full text-white bg-white/5 backdrop-blur-sm hover:bg-white/20 transition-all">
+                  <Share2 size={12} /> Share our moment
+                </button>
+                <button 
+                  onClick={() => setIsRSVPModalOpen(true)}
+                  className="w-full flex items-center justify-center gap-2 text-[9px] font-bold tracking-[0.3em] uppercase px-8 py-3 bg-[#D1B8A0] rounded-full text-white shadow-lg hover:bg-[#B89F87] transition-all"
+                >
+                  <Heart size={12} /> 참석여부 전달
+                </button>
+              </div>
             </div>
           </motion.div>
         </section>
+
+        {/* RSVP Modal Rendering */}
+        <RSVPModal isOpen={isRSVPModalOpen} onClose={() => setIsRSVPModalOpen(false)} />
 
         {/* Fixed UI Elements - Constrained to 390px frame */}
         <div className="fixed bottom-8 left-1/2 -translate-x-1/2 w-full max-w-[390px] pointer-events-none z-40 px-6 flex justify-end">
