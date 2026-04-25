@@ -621,69 +621,75 @@ export default function WeddingPage() {
               transition={{ duration: 1.5, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
             >
               <motion.div 
-                className="text-[62px] md:text-[83px] font-crafty-girls mb-12 text-white/90 tracking-normal leading-[1.1] pt-16 pb-8 overflow-visible text-center"
+                className="text-[65px] md:text-[86px] font-cherish mb-12 text-white/90 tracking-normal leading-[1.1] pt-16 pb-8 overflow-visible text-center"
               >
-                {/* Line 1: Invite */}
-                <div className="overflow-visible">
-                  {"Invite".split("").map((char, i) => (
+                <div className="overflow-visible" style={{ transform: 'rotate(-8deg)' }}>
+                  {"We are getting".split("").map((char, i) => (
                     <motion.span
-                      key={`invite-${i}`}
-                      className="inline-block overflow-visible font-crafty-girls"
+                      key={`married-text-line1-${i}`}
+                      className="inline-block overflow-visible font-cherish"
                       initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
                       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                       transition={{
                         duration: 0.8,
-                        delay: 0.8 + i * 0.08,
+                        delay: 0.8 + i * 0.05,
                         ease: [0.2, 0.65, 0.3, 0.9],
                       }}
                     >
-                      {char}
+                      {char === " " ? "\u00A0" : char}
                     </motion.span>
                   ))}
                 </div>
-                {/* Line 2: wedding */}
-                <div className="overflow-visible mt-[-10px]">
-                  {"wedding".split("").map((char, i) => (
+                <div className="overflow-visible mt-[-10px] flex items-center justify-center gap-2" style={{ transform: 'rotate(-9deg)' }}>
+                  {"Married".split("").map((char, i) => (
                     <motion.span
-                      key={`wedding-${i}`}
-                      className="inline-block overflow-visible font-crafty-girls"
+                      key={`married-text-line2-${i}`}
+                      className="inline-block overflow-visible font-cherish"
                       initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
                       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                       transition={{
                         duration: 0.8,
-                        delay: 1.2 + i * 0.08,
+                        delay: 1.5 + i * 0.05,
                         ease: [0.2, 0.65, 0.3, 0.9],
                       }}
                     >
                       {char}
                     </motion.span>
                   ))}
+                  <motion.img 
+                    src="/wedding/handheart.svg" 
+                    alt="Heart"
+                    initial={{ opacity: 0, scale: 0, rotate: -15 }}
+                    animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                    transition={{ delay: 2.2, duration: 0.8, type: "spring" }}
+                    className="w-[62px] h-[62px] md:w-[83px] md:h-[83px] object-contain -mt-2 brightness-0 invert -translate-x-[20%]"
+                  />
                 </div>
               </motion.div>
               
               <div className="flex justify-between items-center w-full max-w-[280px] mx-auto mb-16 px-4">
                 <div className="flex flex-col items-center gap-2">
-                  <p className="text-[10px] tracking-[0.4em] text-white/50 font-sans font-bold uppercase">Groom</p>
-                  <h1 className="text-4xl font-light tracking-tight">전은길</h1>
+                  <p className="text-[10px] tracking-[0.4em] text-white/70 font-aphrodite font-bold uppercase">Groom</p>
+                  <h1 className="text-[40px] font-light tracking-tight font-cherish">EUNKIL</h1>
                 </div>
                 
                 <div className="relative">
-                  <span className="text-2xl font-dancing text-[#D1B8A0] italic">&</span>
+                   <span className="text-2xl font-aphrodite text-[#D1B8A0] italic">&</span>
                 </div>
 
                 <div className="flex flex-col items-center gap-2">
-                  <p className="text-[10px] tracking-[0.4em] text-white/50 font-sans font-bold uppercase">Bride</p>
-                  <h1 className="text-4xl font-light tracking-tight">조인아</h1>
+                  <p className="text-[10px] tracking-[0.4em] text-white/70 font-aphrodite font-bold uppercase">Bride</p>
+                  <h1 className="text-[40px] font-light tracking-tight font-cherish">INA</h1>
                 </div>
               </div>
 
               <div className="h-[1px] w-24 bg-white/40 mx-auto mb-12"></div>
               
               <div className="space-y-3">
-                <p className="text-base font-light tracking-[0.25em] text-white/90">
+                <p className="text-base font-light tracking-[0.25em] text-white/90 font-aphrodite">
                   2026. 06. 28. SUN AM 11:00
                 </p>
-                <p className="text-sm font-light text-white/70 tracking-widest uppercase italic">
+                <p className="text-sm font-light text-white/70 tracking-widest uppercase italic font-aphrodite">
                   Luvel Wedding Hall
                 </p>
               </div>
@@ -741,7 +747,7 @@ export default function WeddingPage() {
 
               <div className="mt-12 pt-8 border-t border-[#F0EBE3]/50">
                 <p className="text-lg text-[#8BA48B] font-light tracking-wide italic mb-10">
-                  신랑 전은길, 신부 조인아 드림
+                  신랑 <span className="font-gowun">전은길</span>, 신부 <span className="font-gowun">조인아</span> 드림
                 </p>
                 <video 
                   ref={dollbowVideoRef}
@@ -779,7 +785,7 @@ export default function WeddingPage() {
                 <div className="text-center space-y-2">
                   <div className="text-[13px] text-[#6B705C] leading-relaxed font-gowun">
                     전안석 · 전경자의 차남<br />
-                    <span className="text-[#4A4A4A] font-bold text-base">전은길</span>
+                    <span className="text-[#4A4A4A] font-bold text-base font-gowun">전은길</span>
                     <div className="text-[12.5px] text-[#8BA48B] mt-1.5 font-medium tracking-wider">파워J 기획자</div>
                   </div>
                 </div>
@@ -793,7 +799,7 @@ export default function WeddingPage() {
                 <div className="text-center space-y-2">
                   <div className="text-[13px] text-[#6B705C] leading-relaxed font-gowun">
                     조종섭 · 윤원흥의 차녀<br />
-                    <span className="text-[#4A4A4A] font-bold text-base">조인아</span>
+                    <span className="text-[#4A4A4A] font-bold text-base font-gowun">조인아</span>
                     <div className="text-[12.5px] text-[#D1B8A0] mt-1.5 font-medium tracking-wider">내조의 여왕</div>
                   </div>
                 </div>
