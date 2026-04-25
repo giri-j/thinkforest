@@ -255,6 +255,7 @@ const MagicalFlowers = () => {
           transform-origin: bottom center;
           z-index: 10;
           --fl-speed: 0.6s;
+          will-change: transform, opacity;
         }
         .flower--1 {
           animation: moving-flower-1 3.1s linear infinite;
@@ -959,6 +960,7 @@ const MagicalFlowers = () => {
           bottom: 25vmin;
           left: -42vmin;
           transform-origin: bottom left;
+          will-change: transform;
         }
         .long-g--1 {
           bottom: 0vmin;

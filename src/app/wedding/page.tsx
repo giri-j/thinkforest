@@ -7,7 +7,9 @@ import { cn } from '@/lib/utils';
 import Script from 'next/script';
 import Head from 'next/head';
 
+import Image from 'next/image';
 import FireworksBackground from '@/components/wedding/Fireworks';
+
 import MagicalFlowers from '@/components/wedding/MagicalFlowers';
 import NaverMap from '@/components/wedding/NaverMap';
 
@@ -504,6 +506,23 @@ const RSVPModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }
 export default function WeddingPage() {
   const [scrollY, setScrollY] = useState(0);
   const [isRSVPModalOpen, setIsRSVPModalOpen] = useState(false);
+  
+  const handleShare = () => {
+    const shareData = {
+      title: '전은길 ♥ 조인아 결혼식에 초대합니다',
+      text: '전은길 ♥ 조인아의 결혼식에 초대합니다. 일시: 2026년 6월 28일',
+      url: window.location.href,
+    };
+
+    if (navigator.share) {
+      navigator.share(shareData).catch((error) => console.log('Error sharing', error));
+    } else {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        alert('청첩장 주소가 복사되었습니다.');
+      });
+    }
+  };
+
   const dollbowVideoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -591,10 +610,12 @@ export default function WeddingPage() {
             transition={{ duration: 2, ease: "easeOut" }}
             className="absolute inset-0 z-0"
           >
-            <img 
+            <Image 
               src="/wedding/main_cover.jpg" 
               alt="Wedding Main" 
-              className="w-full h-full object-cover brightness-[0.9]"
+              fill
+              priority
+              className="object-cover brightness-[0.9]"
             />
             {/* Soft Gradient Overlay for Readability */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40"></div>
@@ -654,9 +675,6 @@ export default function WeddingPage() {
                   ))}
                 </div>
               </motion.div>
-              <p className="text-[11px] tracking-[0.6em] mb-12 font-light uppercase text-white/80 animate-pulse-subtle">
-                Wedding Invitation
-              </p>
               
               <div className="flex justify-between items-center w-full max-w-[280px] mx-auto mb-16 px-4">
                 <div className="flex flex-col items-center gap-2">
@@ -704,10 +722,10 @@ export default function WeddingPage() {
             {/* Background Animation Layer */}
             <motion.div 
               initial={{ opacity: 0 }}
-              whileInView={{ opacity: 0.6 }}
+              whileInView={{ opacity: 0.5 }}
               viewport={{ once: true }}
               transition={{ duration: 4.0, ease: "easeOut" }}
-              className="absolute top-[-160px] left-1/2 -translate-x-1/2 z-0"
+              className="absolute top-[-190px] left-1/2 -translate-x-1/2 z-0"
             >
               <MagicalFlowers />
             </motion.div>
@@ -746,10 +764,11 @@ export default function WeddingPage() {
                   loop 
                   muted 
                   playsInline 
+                  preload="metadata"
                   className="w-[200px] mx-auto opacity-90 rounded-2xl"
                 >
-                  <source src="/wedding/dollbow.mov" type='video/quicktime; codecs="hvc1"' />
                   <source src="/wedding/dollbow.webm" type="video/webm" />
+                  <source src="/wedding/dollbow.mov" type='video/quicktime; codecs="hvc1"' />
                 </video>
               </div>
             </motion.div>
@@ -902,10 +921,11 @@ export default function WeddingPage() {
                 loop 
                 muted 
                 playsInline 
+                preload="metadata"
                 className="w-full h-full object-cover"
               >
-                <source src="/wedding/sofalaughlow.mov" type='video/quicktime; codecs="hvc1"' />
                 <source src="/wedding/sofalaughlow.webm" type="video/webm" />
+                <source src="/wedding/sofalaughlow.mov" type='video/quicktime; codecs="hvc1"' />
               </video>
             </div>
 
@@ -973,7 +993,10 @@ export default function WeddingPage() {
             <div className="flex flex-col items-center gap-6">
               <p className="text-[11px] tracking-[0.4em] font-light text-white/80 uppercase">전은길 ♥ 조인아</p>
               <div className="flex flex-col items-center gap-3 w-full max-w-[200px]">
-                <button className="w-full flex items-center justify-center gap-2 text-[9px] font-bold tracking-[0.3em] uppercase px-8 py-3 border border-white/30 rounded-full text-white bg-white/5 backdrop-blur-sm hover:bg-white/20 transition-all">
+                <button 
+                  onClick={handleShare}
+                  className="w-full flex items-center justify-center gap-2 text-[9px] font-bold tracking-[0.3em] uppercase px-8 py-3 border border-white/30 rounded-full text-white bg-white/5 backdrop-blur-sm hover:bg-white/20 transition-all"
+                >
                   <Share2 size={12} /> Share our moment
                 </button>
                 <button 

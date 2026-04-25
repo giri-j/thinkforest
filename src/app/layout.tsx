@@ -5,45 +5,52 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 const gowunBatang = Gowun_Batang({
-  subsets: ["latin"],
   weight: ["400", "700"],
   variable: "--font-gowun",
+  display: 'swap',
+  preload: false,
 });
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
   weight: ["400", "700"],
   variable: "--font-playfair",
+  display: 'swap',
 });
 
 const dancingScript = Dancing_Script({
   subsets: ["latin"],
   weight: ["400", "700"],
   variable: "--font-dancing",
+  display: 'swap',
 });
 
 const greatVibes = Great_Vibes({
   subsets: ["latin"],
   weight: ["400"],
   variable: "--font-great-vibes",
+  display: 'swap',
 });
 
 const cherish = Cherish({
   subsets: ["latin"],
   weight: ["400"],
   variable: "--font-cherish",
+  display: 'swap',
 });
 
 const charmonman = Charmonman({
   subsets: ["latin"],
   weight: ["400", "700"],
   variable: "--font-charmonman",
+  display: 'swap',
 });
 
 const craftyGirls = Crafty_Girls({
   subsets: ["latin"],
   weight: ["400"],
   variable: "--font-crafty-girls",
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
