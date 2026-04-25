@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Gowun_Batang, Playfair_Display, Dancing_Script, Great_Vibes, Cherish, Charmonman, Crafty_Girls } from "next/font/google";
+import { Gowun_Batang, Playfair_Display, Dancing_Script, Crafty_Girls } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -25,27 +25,6 @@ const dancingScript = Dancing_Script({
   display: 'swap',
 });
 
-const greatVibes = Great_Vibes({
-  subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-great-vibes",
-  display: 'swap',
-});
-
-const cherish = Cherish({
-  subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-cherish",
-  display: 'swap',
-});
-
-const charmonman = Charmonman({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-charmonman",
-  display: 'swap',
-});
-
 const craftyGirls = Crafty_Girls({
   subsets: ["latin"],
   weight: ["400"],
@@ -67,7 +46,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={`${gowunBatang.variable} ${playfairDisplay.variable} ${dancingScript.variable} ${greatVibes.variable} ${cherish.variable} ${charmonman.variable} ${craftyGirls.variable}`} suppressHydrationWarning>
+    <html lang="ko" className={`${gowunBatang.variable} ${playfairDisplay.variable} ${dancingScript.variable} ${craftyGirls.variable}`} suppressHydrationWarning>
       <body>
         <Navbar />
         {children}

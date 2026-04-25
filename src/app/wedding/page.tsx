@@ -97,22 +97,7 @@ const Calendar = ({ date }: { date: Date }) => {
   );
 };
 
-const FlipText = ({ items }: { items: { text: string; color: string }[] }) => (
-  <div className="h-[30px] overflow-hidden mt-2 flex flex-col items-center">
-    <div className="animate-flip-show">
-      {items.map((item, idx) => (
-        <div key={idx} className="h-[30px] mb-[20px] flex items-center justify-center">
-          <span 
-            className="text-white text-[11px] px-2.5 py-1 rounded font-bold uppercase tracking-tight"
-            style={{ backgroundColor: item.color }}
-          >
-            {item.text}
-          </span>
-        </div>
-      ))}
-    </div>
-  </div>
-);
+
 
 const AccountInfo = () => {
   const [activeTab, setActiveTab] = useState<'groom' | 'bride'>('groom');
@@ -725,7 +710,7 @@ export default function WeddingPage() {
               whileInView={{ opacity: 0.5 }}
               viewport={{ once: true }}
               transition={{ duration: 4.0, ease: "easeOut" }}
-              className="absolute top-[-190px] left-1/2 -translate-x-1/2 z-0"
+              className="absolute top-[-160px] left-1/2 -translate-x-1/2 z-0"
             >
               <MagicalFlowers />
             </motion.div>
@@ -795,11 +780,7 @@ export default function WeddingPage() {
                   <div className="text-[13px] text-[#6B705C] leading-relaxed font-gowun">
                     전안석 · 전경자의 차남<br />
                     <span className="text-[#4A4A4A] font-bold text-base">전은길</span>
-                    <FlipText items={[
-                      { text: "IT 기획자", color: "#4ec7f3" },
-                      { text: "소년의 심장", color: "#42c58a" },
-                      { text: "3대 500", color: "#DC143C" }
-                    ]} />
+                    <div className="text-[12.5px] text-[#8BA48B] mt-1.5 font-medium tracking-wider">파워J 기획자</div>
                   </div>
                 </div>
               </div>
@@ -813,11 +794,7 @@ export default function WeddingPage() {
                   <div className="text-[13px] text-[#6B705C] leading-relaxed font-gowun">
                     조종섭 · 윤원흥의 차녀<br />
                     <span className="text-[#4A4A4A] font-bold text-base">조인아</span>
-                    <FlipText items={[
-                      { text: "대기업 비서", color: "#4ec7f3" },
-                      { text: "내조의 여왕", color: "#42c58a" },
-                      { text: "심리학 전문가", color: "#DC143C" }
-                    ]} />
+                    <div className="text-[12.5px] text-[#D1B8A0] mt-1.5 font-medium tracking-wider">내조의 여왕</div>
                   </div>
                 </div>
               </div>

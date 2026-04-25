@@ -117,6 +117,12 @@ const MagicalFlowers = () => {
           justify-content: center;
         }
 
+        @media (min-width: 600px) {
+          .flowers {
+            transform: scale(0.2) translateY(80px);
+          }
+        }
+
         .flower {
           position: absolute;
           bottom: 10vmin;
