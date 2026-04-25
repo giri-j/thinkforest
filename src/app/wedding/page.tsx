@@ -1015,7 +1015,10 @@ export default function WeddingPage() {
 
         {/* Fixed UI Elements - Constrained to 390px frame */}
         <div className="fixed bottom-8 left-1/2 -translate-x-1/2 w-full max-w-[390px] pointer-events-none z-40 px-6 flex justify-end">
-          <button className="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full shadow-lg flex items-center justify-center text-[#8BA48B] border border-[#F0EBE3] hover:scale-110 transition-all active:scale-95 pointer-events-auto">
+          <button 
+            onClick={handleShare}
+            className="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full shadow-lg flex items-center justify-center text-[#8BA48B] border border-[#F0EBE3] hover:scale-110 transition-all active:scale-95 pointer-events-auto"
+          >
             <Share2 size={16} />
           </button>
         </div>
