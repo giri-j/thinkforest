@@ -24,7 +24,7 @@ export default function TableOfContents({ content }: { content: string }) {
                 // For simplicity, we'll assume standard slugification
                 const id = text
                     .toLowerCase()
-                    .replace(/[^\w\s-]/g, '')
+                    .replace(/[^\w\s-가-힣]/g, '')
                     .replace(/\s+/g, '-')
 
                 return { id, text, level }
@@ -57,9 +57,9 @@ export default function TableOfContents({ content }: { content: string }) {
         <nav className="space-y-6">
             <p className="text-[10px] uppercase tracking-[0.2em] font-black text-[#1C2E24]/20 px-2 pb-2 border-b border-[#E5EBE8]">Contents</p>
             <div className="space-y-1">
-                {headings.map((heading) => (
+                {headings.map((heading, index) => (
                     <a
-                        key={heading.id}
+                        key={`${heading.id}-${index}`}
                         href={`#${heading.id}`}
                         onClick={(e) => {
                             e.preventDefault()

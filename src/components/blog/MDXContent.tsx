@@ -5,10 +5,17 @@ import { serialize } from 'next-mdx-remote/serialize'
 import { useEffect, useState } from 'react'
 import { Lightbulb } from 'lucide-react'
 
+const generateId = (children: any): string => {
+    if (typeof children === 'string') return children.toLowerCase().replace(/[^\w\s-가-힣]/g, '').replace(/\s+/g, '-');
+    if (Array.isArray(children)) return children.map(generateId).join('');
+    if (children && children.props && children.props.children) return generateId(children.props.children);
+    return '';
+};
+
 const components = {
     h1: (props: any) => <h1 className="text-3xl font-bold mt-12 mb-6" {...props} />,
-    h2: (props: any) => <h2 className="text-2xl font-bold mt-10 mb-5 pb-2 border-b border-[#E5EBE8]" {...props} />,
-    h3: (props: any) => <h3 className="text-xl font-bold mt-8 mb-4" {...props} />,
+    h2: (props: any) => <h2 id={generateId(props.children)} className="text-2xl font-bold mt-10 mb-5 pb-2 border-b border-[#E5EBE8]" {...props} />,
+    h3: (props: any) => <h3 id={generateId(props.children)} className="text-xl font-bold mt-8 mb-4" {...props} />,
     p: (props: any) => <p className="mb-6 leading-[1.8]" {...props} />,
     ul: (props: any) => <ul className="list-disc pl-6 mb-6 space-y-2 text-[#1C2E24]/80" {...props} />,
     ol: (props: any) => <ol className="list-decimal pl-6 mb-6 space-y-2 text-[#1C2E24]/80" {...props} />,
