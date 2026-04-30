@@ -12,6 +12,9 @@ import FireworksBackground from '@/components/wedding/Fireworks';
 
 import MagicalFlowers from '@/components/wedding/MagicalFlowers';
 import NaverMap from '@/components/wedding/NaverMap';
+import { createClient } from '@/lib/supabase';
+
+const supabase = createClient();
 
 // --- Components ---
 
@@ -102,11 +105,16 @@ const Calendar = ({ date }: { date: Date }) => {
 const AccountInfo = () => {
   const [activeTab, setActiveTab] = useState<'groom' | 'bride'>('groom');
   const [copied, setCopied] = useState<string | null>(null);
+  const [showToast, setShowToast] = useState(false);
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
     setCopied(label);
-    setTimeout(() => setCopied(null), 2000);
+    setShowToast(true);
+    setTimeout(() => {
+      setCopied(null);
+      setShowToast(false);
+    }, 1300);
   };
 
   const groomAccounts = [
@@ -123,7 +131,7 @@ const AccountInfo = () => {
   const currentAccounts = activeTab === 'groom' ? groomAccounts : brideAccounts;
 
   return (
-    <div className="max-w-md mx-auto px-6">
+    <div className="max-w-md mx-auto px-6 relative">
       <div className="text-center mb-8">
         <div className="flex items-center justify-center gap-3 text-[#5C6E5C] mb-8">
           <Heart size={20} className="text-[#D1B8A0] fill-[#D1B8A0] opacity-50" />
@@ -187,6 +195,20 @@ const AccountInfo = () => {
           </motion.div>
         </AnimatePresence>
       </div>
+
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {showToast && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, x: '-50%' }}
+            animate={{ opacity: 1, y: 0, x: '-50%' }}
+            exit={{ opacity: 0, y: 10, x: '-50%' }}
+            className="fixed bottom-24 left-1/2 z-[100] px-6 py-3 bg-[#5C6E5C] text-white text-[12px] font-medium rounded-full shadow-xl whitespace-nowrap"
+          >
+            계좌번호가 복사되었습니다!
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
@@ -194,12 +216,7 @@ const AccountInfo = () => {
 const Gallery = () => {
   const images = [
     '/wedding/main.png',
-    '/wedding/gallery_1.jpg',
-    '/wedding/gallery_2.jpg',
-    '/wedding/gallery_3.jpg',
-    '/wedding/gallery_4.jpg',
-    '/wedding/gallery_5.jpg',
-    '/wedding/main_cover.jpg',
+    '/wedding/coming_soon.png',
   ];
   
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -325,26 +342,69 @@ const Information = () => {
 };
 
 const Guestbook = () => {
-  const [messages, setMessages] = useState([
-    { name: 'Taylor Swift', content: '두 분 너무 잘 어울려요! 행복하게 잘 사세요~ :)', date: '2026.04.22' },
-    { name: 'David Beckham', content: '결혼 진심으로 축하드립니다! 꽃길만 걸으시길!', date: '2026.04.21' },
-  ]);
+  const [messages, setMessages] = useState<any[]>([]);
   const [newName, setNewName] = useState('');
   const [newContent, setNewContent] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    fetchMessages();
+  }, []);
+
+  const fetchMessages = async () => {
+    const { data, error } = await supabase
+      .from('guestbook')
+      .select('*')
+      .order('created_at', { ascending: false });
+      
+    if (error) {
+      console.error('Error fetching messages:', error);
+      // Fallback data if table doesn't exist yet
+      if (messages.length === 0) {
+         setMessages([
+           { id: 1, name: '안내', content: 'Supabase DB 연결이 필요합니다. guestbook 테이블(id, name, content, created_at)을 생성해주세요.', date: new Date().toLocaleDateString('ko-KR').replace(/\. /g, '.').replace(/\.$/, '') }
+         ]);
+      }
+      return;
+    }
+    
+    if (data) {
+      setMessages(data.map(msg => ({
+        id: msg.id,
+        name: msg.name,
+        content: msg.content,
+        date: new Date(msg.created_at).toLocaleDateString('ko-KR').replace(/\. /g, '.').replace(/\.$/, ''),
+      })));
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newName || !newContent) return;
+    if (!newName || !newContent || isLoading) return;
     
-    const newMessage = {
-      name: newName,
-      content: newContent,
-      date: new Date().toLocaleDateString('ko-KR').replace(/\. /g, '.').replace(/\.$/, ''),
-    };
+    setIsLoading(true);
     
-    setMessages([newMessage, ...messages]);
-    setNewName('');
-    setNewContent('');
+    const { data, error } = await supabase
+      .from('guestbook')
+      .insert([{ name: newName, content: newContent }])
+      .select();
+      
+    if (error) {
+      console.error('Error inserting message:', error);
+      alert('메시지 등록에 실패했습니다. DB 설정을 확인해주세요.');
+    } else if (data) {
+      const insertedMsg = {
+        id: data[0].id,
+        name: data[0].name,
+        content: data[0].content,
+        date: new Date(data[0].created_at).toLocaleDateString('ko-KR').replace(/\. /g, '.').replace(/\.$/, ''),
+      };
+      setMessages([insertedMsg, ...messages]);
+      setNewName('');
+      setNewContent('');
+    }
+    
+    setIsLoading(false);
   };
 
   return (
@@ -361,6 +421,7 @@ const Guestbook = () => {
             placeholder="이름" 
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
+            disabled={isLoading}
             className="w-full px-4 py-3 bg-[#FDFCF8] border border-[#F0EBE3] rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[#8BA48B]"
           />
         </div>
@@ -368,14 +429,16 @@ const Guestbook = () => {
           placeholder="축복의 메시지를 남겨주세요." 
           value={newContent}
           onChange={(e) => setNewContent(e.target.value)}
+          disabled={isLoading}
           rows={3}
           className="w-full px-4 py-3 bg-[#FDFCF8] border border-[#F0EBE3] rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[#8BA48B] resize-none"
         />
         <button 
           type="submit"
-          className="w-full py-3 bg-[#8BA48B] text-white text-xs font-bold tracking-widest uppercase rounded-xl hover:bg-[#5C6E5C] transition-all"
+          disabled={isLoading}
+          className="w-full py-3 bg-[#8BA48B] text-white text-xs font-bold tracking-widest uppercase rounded-xl hover:bg-[#5C6E5C] transition-all disabled:opacity-50"
         >
-          축복 남기기
+          {isLoading ? '등록 중...' : '축복 남기기'}
         </button>
       </form>
 
@@ -383,7 +446,7 @@ const Guestbook = () => {
         <AnimatePresence initial={false}>
           {messages.map((msg, i) => (
             <motion.div 
-              key={i + msg.name}
+              key={msg.id || i + msg.name}
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               className="p-5 bg-[#FAF9F6] border border-[#F0EBE3] rounded-2xl"
