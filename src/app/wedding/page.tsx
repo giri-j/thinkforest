@@ -659,7 +659,7 @@ export default function WeddingPage() {
             className="absolute inset-0 z-0"
           >
             <Image 
-              src="/wedding/main_cover.jpg" 
+              src="/wedding/main.png" 
               alt="Wedding Main" 
               fill
               priority
