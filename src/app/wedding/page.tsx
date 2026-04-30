@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, Phone, Copy, ChevronDown, Calendar as CalendarIcon, Heart, Share2, Info, ChevronLeft, ChevronRight } from 'lucide-react';
+import { MapPin, Phone, Copy, ChevronDown, Calendar as CalendarIcon, Heart, Share2, Info, ChevronLeft, ChevronRight, Volume2, VolumeX } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Script from 'next/script';
 import Head from 'next/head';
@@ -17,6 +17,47 @@ import { createClient } from '@/lib/supabase';
 const supabase = createClient();
 
 // --- Components ---
+
+const BGMPlayer = () => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    // Attempt to auto-play on mount
+    if (audioRef.current) {
+      audioRef.current.play().then(() => {
+        setIsPlaying(true);
+      }).catch((e) => {
+        console.log("Autoplay prevented by browser, waiting for user interaction.", e);
+      });
+    }
+  }, []);
+
+  const togglePlay = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      } else {
+        audioRef.current.play();
+        setIsPlaying(true);
+      }
+    }
+  };
+
+  return (
+    <>
+      <audio ref={audioRef} src="/wedding/amusement_park.mp3" loop preload="auto" />
+      <button 
+        onClick={togglePlay}
+        className="absolute top-6 right-6 z-50 w-10 h-10 bg-white/30 backdrop-blur-md border border-white/40 rounded-full flex items-center justify-center text-white/90 shadow-lg hover:bg-white/40 transition-all hover:scale-105"
+      >
+        {isPlaying ? <Volume2 size={18} /> : <VolumeX size={18} />}
+      </button>
+    </>
+  );
+};
+
 
 const SectionTitle = ({ title, subtitle, titleClassName, subtitleClassName }: { title: string; subtitle?: string; titleClassName?: string; subtitleClassName?: string }) => (
   <div className="text-center mb-16 px-4">
@@ -648,6 +689,7 @@ export default function WeddingPage() {
         style={{ width: '390px' }} 
         className="sakura-frame min-h-screen bg-[#FDFCF8] text-[#4A4A4A] selection:bg-[#E2D1C3] selection:text-white font-gowun shadow-2xl relative ring-1 ring-inset ring-[#E0E0E0] overflow-x-hidden flex flex-col"
       >
+        <BGMPlayer />
         
         {/* 1. Hero Cover Section */}
         <section className="relative h-[682px] flex flex-col items-center justify-center text-center px-4 overflow-hidden font-playfair">
