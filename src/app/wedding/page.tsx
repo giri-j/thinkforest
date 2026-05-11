@@ -165,8 +165,8 @@ const AccountInfo = () => {
 
   const brideAccounts = [
     { name: '신부 조인아', bank: '하나은행', number: '222-910235-10507' },
-    { name: '신부측 혼주 조종섭', bank: '기업은행', number: '123-456-789012' },
-    { name: '신부측 혼주 윤원흥', bank: '기업은행', number: '123-456-789012' },
+    { name: '신부측 혼주 조종섭', bank: '신한은행', number: '34206204478' },
+    { name: '신부측 혼주 윤원흥', bank: '기업은행', number: '24802388503011' },
   ];
 
   const currentAccounts = activeTab === 'groom' ? groomAccounts : brideAccounts;
@@ -388,8 +388,11 @@ const Information = () => {
   );
 };
 
+const MESSAGES_PER_PAGE = 3;
+
 const Guestbook = () => {
   const [messages, setMessages] = useState<any[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
   const [newName, setNewName] = useState('');
   const [newContent, setNewContent] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -397,6 +400,12 @@ const Guestbook = () => {
   useEffect(() => {
     fetchMessages();
   }, []);
+
+  const totalPages = Math.ceil(messages.length / MESSAGES_PER_PAGE);
+  const paginatedMessages = messages.slice(
+    (currentPage - 1) * MESSAGES_PER_PAGE,
+    currentPage * MESSAGES_PER_PAGE
+  );
 
   const fetchMessages = async () => {
     const { data, error } = await supabase
@@ -447,6 +456,7 @@ const Guestbook = () => {
         date: new Date(data[0].created_at).toLocaleDateString('ko-KR').replace(/\. /g, '.').replace(/\.$/, ''),
       };
       setMessages([insertedMsg, ...messages]);
+      setCurrentPage(1);
       setNewName('');
       setNewContent('');
     }
@@ -489,13 +499,15 @@ const Guestbook = () => {
         </button>
       </form>
 
-      <div className="space-y-4 max-h-[400px] overflow-y-auto no-scrollbar pb-10">
-        <AnimatePresence initial={false}>
-          {messages.map((msg, i) => (
+      <div className="space-y-4 pb-4">
+        <AnimatePresence initial={false} mode="popLayout">
+          {paginatedMessages.map((msg, i) => (
             <motion.div 
               key={msg.id || i + msg.name}
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 10 }}
+              transition={{ duration: 0.3 }}
               className="p-5 bg-[#FAF9F6] border border-[#F0EBE3] rounded-2xl"
             >
               <div className="flex justify-between items-center mb-2">
@@ -507,6 +519,38 @@ const Guestbook = () => {
           ))}
         </AnimatePresence>
       </div>
+
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-6 mt-6 pb-10">
+          <button 
+            onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+            disabled={currentPage === 1}
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-[#F0EBE3] text-[#8BA48B] disabled:opacity-20 transition-all active:scale-90"
+          >
+            <ChevronLeft size={18} />
+          </button>
+          
+          <div className="flex items-center gap-2">
+            {Array.from({ length: totalPages }).map((_, i) => (
+              <div 
+                key={i}
+                className={cn(
+                  "w-1.5 h-1.5 rounded-full transition-all duration-300",
+                  currentPage === i + 1 ? "bg-[#8BA48B] w-4" : "bg-[#D1B8A0]/30"
+                )}
+              />
+            ))}
+          </div>
+
+          <button 
+            onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+            disabled={currentPage === totalPages}
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-[#F0EBE3] text-[#8BA48B] disabled:opacity-20 transition-all active:scale-90"
+          >
+            <ChevronRight size={18} />
+          </button>
+        </div>
+      )}
     </div>
   );
 };
