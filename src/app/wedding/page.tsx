@@ -160,7 +160,7 @@ const AccountInfo = () => {
 
   const groomAccounts = [
     { name: '신랑 전은길', bank: '국민은행', number: '061702-04-140015' },
-    { name: '신랑측 혼주 전경자', bank: '국민은행', number: '123-45-678901' },
+    { name: '신랑측 혼주 전경자', bank: '국민은행', number: '727602-95-102179' },
   ];
 
   const brideAccounts = [
