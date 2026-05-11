@@ -256,8 +256,14 @@ const AccountInfo = () => {
 
 const Gallery = () => {
   const images = [
-    '/wedding/main.png',
-    '/wedding/coming_soon.png',
+    '/wedding/gallery_1.jpg',
+    '/wedding/gallery_2.jpg',
+    '/wedding/gallery_3.jpg',
+    '/wedding/gallery_4.jpg',
+    '/wedding/gallery_5.jpg',
+    '/wedding/gallery_6.jpg',
+    '/wedding/gallery_7.jpg',
+    '/wedding/gallery_8.jpg',
   ];
   
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -1087,12 +1093,7 @@ export default function WeddingPage() {
                 >
                   <Share2 size={12} /> 공유하기
                 </button>
-                <button 
-                  onClick={() => setIsRSVPModalOpen(true)}
-                  className="w-full flex items-center justify-center gap-2 text-[9px] font-bold tracking-[0.3em] uppercase px-8 py-3 bg-[#D1B8A0] rounded-full text-white shadow-lg hover:bg-[#B89F87] transition-all"
-                >
-                  <Heart size={12} /> 참석여부 전달
-                </button>
+
               </div>
             </div>
           </motion.div>
