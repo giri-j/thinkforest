@@ -344,7 +344,7 @@ const Information = () => {
 
   const tabs = [
     { id: 'meal', label: '식사', title: '식사 안내', content: '식사권은 축의금 데스크에서 필요한 수량만큼 받아주세요.' },
-    { id: 'parking', label: '주차', title: '주차 안내', content: '하객은 2시간 무료이며, 총 350대로 넉넉하게 주차 가능합니다.' },
+    { id: 'parking', label: '주차', title: '주차 안내', content: '하객은 2시간 무료이며, 35층 연회장 앞 태블릿 PC로 직접 등록하실 수 있습니다.' },
   ];
 
   return (
@@ -751,7 +751,7 @@ export default function WeddingPage() {
             className="absolute inset-0 z-0"
           >
             <Image 
-              src="/wedding/main.png" 
+              src="/wedding/gallery_6.jpg" 
               alt="Wedding Main" 
               fill
               priority
