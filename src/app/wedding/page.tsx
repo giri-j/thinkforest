@@ -165,8 +165,8 @@ const AccountInfo = () => {
 
   const brideAccounts = [
     { name: '신부 조인아', bank: '하나은행', number: '222-910235-10507' },
-    { name: '신부측 혼주 조종섭', bank: '신한은행', number: '34206204478' },
-    { name: '신부측 혼주 윤원흥', bank: '기업은행', number: '24802388503011' },
+    { name: '신부측 혼주 조종섭', bank: '신한은행', number: '342-062-04478' },
+    { name: '신부측 혼주 윤원흥', bank: '기업은행', number: '248-023885-03-011' },
   ];
 
   const currentAccounts = activeTab === 'groom' ? groomAccounts : brideAccounts;
@@ -949,7 +949,7 @@ export default function WeddingPage() {
               {/* Bride Profile */}
               <div className="flex-1 flex flex-col items-center gap-6">
                 <div className="w-[155px] h-[155px] rounded-full overflow-hidden bg-[#EAE7E1] border border-[#F0EBE3] shadow-inner">
-                   <img src="/wedding/bride.jpg" className="w-full h-full object-cover scale-x-[-1]" alt="Bride" />
+                   <img src="/wedding/bride_v2.jpg" className="w-full h-full object-cover scale-[2.6] object-[center_65%]" alt="Bride" />
                 </div>
                 <div className="text-center space-y-2">
                   <div className="text-[13px] text-[#6B705C] leading-relaxed font-gowun">
