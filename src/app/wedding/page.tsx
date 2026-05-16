@@ -949,7 +949,7 @@ export default function WeddingPage() {
               {/* Bride Profile */}
               <div className="flex-1 flex flex-col items-center gap-6">
                 <div className="w-[155px] h-[155px] rounded-full overflow-hidden bg-[#EAE7E1] border border-[#F0EBE3] shadow-inner">
-                   <img src="/wedding/bride_v2.jpg" className="w-full h-full object-cover scale-[2.6] object-[center_65%]" alt="Bride" />
+                   <img src="/wedding/bride_v2.jpg" className="w-full h-full object-cover" style={{ transform: 'scale(2.6) translateY(4%)' }} alt="Bride" />
                 </div>
                 <div className="text-center space-y-2">
                   <div className="text-[13px] text-[#6B705C] leading-relaxed font-gowun">
