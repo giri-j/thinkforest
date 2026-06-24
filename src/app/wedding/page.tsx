@@ -164,7 +164,7 @@ const AccountInfo = () => {
   ];
 
   const brideAccounts = [
-    { name: '신부 조인아', bank: '하나은행', number: '222-910235-10507' },
+    { name: '신부 조인아', bank: '수협은행', number: '103-01295945-8' },
     { name: '신부측 혼주 조종섭', bank: '신한은행', number: '342-062-04478' },
     { name: '신부측 혼주 윤원흥', bank: '기업은행', number: '248-023885-03-011' },
   ];
