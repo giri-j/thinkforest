@@ -162,33 +162,210 @@ body {
   overflow-x: hidden;
 }
 
-/* Intro Overlay Styles */
-.intro-overlay {
-  position: fixed;
+/* === Hero: 아치 통과 연출 === */
+
+/* 스크롤 트랙: 이 높이만큼 스크롤하는 동안 화면이 고정된 채 줌 진행 */
+.hero-track {
+  position: relative;
+  height: 300vh;
+  background: #1c2e24;
+}
+
+.hero-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.hero-video-wrap {
+  position: absolute;
   inset: 0;
-  background-color: black;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  will-change: transform;
+}
+
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 아치문: 화면 중앙 기준으로 확대되어야 "통과"가 됩니다 */
+.hero-arch {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  transform-origin: center 55%; /* 통과 지점 = 아치 구멍 위치. 구멍이 위/아래에 있으면 % 조절 */
+  will-change: transform, opacity;
   pointer-events: none;
 }
 
-/* Home Section Styles */
-.home-container {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-  background: #000;
-}
-
-.home-layer {
+.hero-vignette {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center;
+  z-index: 8;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 55%,
+    rgba(10, 20, 14, 0.55) 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-track { height: 100vh; }
+}
+
+
+/* --- 빛내림 --- */
+.hero-rays {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.ray {
+  position: absolute;
+  top: -25%;
+  height: 150%;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 248, 214, 0.35),
+    rgba(255, 248, 214, 0) 75%
+  );
+  transform: rotate(14deg);
+  filter: blur(14px);
+  mix-blend-mode: screen;
+  animation: rayBreath 9s ease-in-out infinite alternate;
+}
+
+.ray-1 { left: 12%; width: 16vw; }
+.ray-2 { left: 40%; width: 9vw;  animation-duration: 12s; animation-delay: 2s; }
+.ray-3 { left: 65%; width: 20vw; animation-duration: 10s; animation-delay: 4s; }
+
+@keyframes rayBreath {
+  from { opacity: 0.2; }
+  to   { opacity: 0.6; }
+}
+
+
+/* --- 반딧불이 입자 --- */
+.hero-particles {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 250, 215, 0.95),
+    rgba(255, 250, 215, 0) 70%
+  );
+  opacity: 0;
+  animation-name: particleFloat;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes particleFloat {
+  0%   { transform: translate3d(0, 0, 0); opacity: 0; }
+  15%  { opacity: 0.9; }
+  50%  { transform: translate3d(10px, -45px, 0); }
+  85%  { opacity: 0.6; }
+  100% { transform: translate3d(-6px, -100px, 0); opacity: 0; }
+}
+
+/* --- 타이틀 --- */
+.hero-title {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   will-change: transform;
+  pointer-events: none;
+}
+
+.hero-title h1 {
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-weight: 700;
+  color: #fdfcf7;
+  letter-spacing: 0.08em;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+}
+
+.hero-title p {
+  margin-top: 1rem;
+  font-size: clamp(0.9rem, 1.6vw, 1.15rem);
+  color: rgba(253, 252, 247, 0.85);
+  letter-spacing: 0.2em;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  animation-delay: 0.5s !important;
+}
+
+/* --- 전경 오브젝트 --- */
+.hero-object { z-index: 6; pointer-events: none; }
+
+/* --- 스크롤 유도 --- */
+.hero-scroll-cue {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.hero-scroll-text {
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  color: #ffffff;
+  text-transform: uppercase;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
+}
+
+.hero-scroll-line {
+  width: 1.5px;
+  height: 42px;
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+  transform-origin: top;
+  animation: scrollLine 2.2s ease-in-out infinite;
+}
+
+@keyframes scrollLine {
+  0%   { transform: scaleY(0); }
+  50%  { transform: scaleY(1); }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* --- 모션 최소화 설정 사용자 배려 --- */
+@media (prefers-reduced-motion: reduce) {
+  .cloud-drift-1,
+  .cloud-drift-2,
+  .ray,
+  .particle,
+  .hero-scroll-line {
+    animation: none;
+  }
+  .particle { display: none; }
 }
 
 /* Wedding Neon Animation */
