@@ -393,3 +393,249 @@ body {
 .animate-neon {
   animation: neon .08s ease-in-out infinite alternate;
 }
+
+/* ===================================================
+   Home Paths — 숲의 네 갈래 길
+   =================================================== */
+
+.paths-root {
+  position: relative;
+  width: 100%;
+  padding: clamp(6rem, 14vh, 10rem) 1.5rem clamp(7rem, 16vh, 12rem);
+  overflow: hidden;
+  background: #0f1a14;
+  isolation: isolate;
+}
+
+/* 배경 숲 — 블러 + 저채도로 눌러서 텍스트 가독성 확보 */
+.paths-bg {
+  position: absolute;
+  inset: -6%;
+  z-index: -2;
+  filter: blur(14px) saturate(0.75) brightness(0.42);
+  transform: scale(1.08);
+}
+
+/* 위쪽은 완전히 어둡게 → 히어로 끝과 이음매 없이 연결됩니다 */
+.paths-veil {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(
+      to bottom,
+      #0f1a14 0%,
+      rgba(15, 26, 20, 0.86) 22%,
+      rgba(15, 26, 20, 0.78) 60%,
+      #0f1a14 100%
+    ),
+    radial-gradient(
+      ellipse at 50% 0%,
+      rgba(255, 245, 205, 0.1) 0%,
+      transparent 60%
+    );
+}
+
+/* --- 반딧불이 --- */
+.paths-embers {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.ember {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 248, 205, 0.9),
+    rgba(255, 248, 205, 0) 70%
+  );
+  opacity: 0;
+  animation-name: emberFloat;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes emberFloat {
+  0%   { transform: translate3d(0, 0, 0); opacity: 0; }
+  20%  { opacity: 0.85; }
+  50%  { transform: translate3d(14px, -50px, 0); }
+  80%  { opacity: 0.5; }
+  100% { transform: translate3d(-8px, -110px, 0); opacity: 0; }
+}
+
+/* --- 본문 --- */
+.paths-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+.paths-head {
+  text-align: center;
+  margin-bottom: clamp(3.5rem, 8vh, 6rem);
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 1.1s ease, transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.paths-head.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.paths-eyebrow {
+  display: inline-block;
+  margin-bottom: 1.1rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: rgba(200, 225, 210, 0.6);
+}
+
+.paths-head h2 {
+  font-size: clamp(1.7rem, 3.6vw, 2.7rem);
+  font-weight: 700;
+  color: #f2f7f3;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
+
+.paths-head p {
+  margin-top: 1rem;
+  font-size: clamp(0.9rem, 1.4vw, 1.02rem);
+  color: rgba(214, 232, 220, 0.62);
+  letter-spacing: 0.05em;
+}
+
+/* --- 카드 그리드 --- */
+.paths-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(1.2rem, 2.4vw, 2rem);
+}
+
+@media (max-width: 720px) {
+  .paths-grid { grid-template-columns: 1fr; }
+}
+
+.path-card {
+  position: relative;
+  display: block;
+  padding: clamp(1.9rem, 3vw, 2.6rem) clamp(1.6rem, 2.6vw, 2.4rem);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.045);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  overflow: hidden;
+  text-decoration: none;
+
+  opacity: 0;
+  transform: translateY(34px);
+  transition:
+    opacity 0.9s ease,
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.4s ease,
+    background 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.path-card.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 왼쪽 세로선 — 호버 시 위에서 아래로 자라납니다 */
+.path-line {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: var(--path-color);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.path-no {
+  display: block;
+  margin-bottom: 0.9rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  color: var(--path-color);
+  opacity: 0.65;
+}
+
+.path-title {
+  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  font-weight: 700;
+  color: #f2f7f3;
+  letter-spacing: 0.01em;
+}
+
+.path-desc {
+  margin-top: 0.6rem;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: rgba(214, 232, 220, 0.6);
+}
+
+.path-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1.6rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  color: var(--path-color);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.path-arrow {
+  transition: transform 0.4s ease;
+}
+
+/* --- 호버 --- */
+@media (hover: hover) {
+  .path-card:hover {
+    transform: translateY(-6px);
+    border-color: color-mix(in srgb, var(--path-color) 45%, transparent);
+    background: rgba(255, 255, 255, 0.075);
+    box-shadow:
+      0 18px 44px rgba(0, 0, 0, 0.45),
+      0 0 32px color-mix(in srgb, var(--path-color) 18%, transparent);
+  }
+
+  .path-card:hover .path-line { transform: scaleY(1); }
+
+  .path-card:hover .path-more {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .path-card:hover .path-arrow { transform: translateX(5px); }
+}
+
+/* 터치 기기에서는 안내 문구를 항상 보이게 */
+@media (hover: none) {
+  .path-more { opacity: 0.85; transform: none; }
+  .path-line { transform: scaleY(1); }
+}
+
+/* --- 모션 최소화 배려 --- */
+@media (prefers-reduced-motion: reduce) {
+  .ember { display: none; }
+  .paths-head,
+  .path-card {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
