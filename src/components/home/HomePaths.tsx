@@ -10,28 +10,28 @@ const PATHS = [
     title: "Planning",
     desc: "복잡함 속에서 본질을 찾는 기록",
     href: "/blog/category/Planning",
-    color: "#7FD1AE", // 청록 — 숲의 이끼
+    color: "var(--path-planning)", // 청록 — 숲의 이끼
   },
   {
     no: "02",
     title: "Reverse Engineering",
     desc: "서비스의 구조를 해부하다",
     href: "/blog/category/Reverse Engineering",
-    color: "#8FA8E8", // 남보라 — 새벽 안개
+    color: "var(--path-reverse)", // 남보라 — 새벽 안개
   },
   {
     no: "03",
     title: "Journey",
     desc: "경험이 기획이 되는 순간",
     href: "/blog/category/Journey",
-    color: "#E8C07F", // 호박색 — 빛내림
+    color: "var(--path-journey)", // 호박색 — 빛내림
   },
   {
     no: "04",
     title: "Cutlet Lab",
     desc: "일상의 구조를 탐구하다",
     href: "/blog/category/Cutlet Lab",
-    color: "#D99B7C", // 따뜻한 갈색 — 나무껍질
+    color: "var(--path-cutlet)", // 따뜻한 갈색 — 나무껍질
   },
 ];
 

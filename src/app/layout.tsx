@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Gowun_Batang, Playfair_Display, Dancing_Script, Crafty_Girls } from "next/font/google";
+import { Gowun_Batang } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -7,29 +7,8 @@ import Footer from "@/components/Footer";
 const gowunBatang = Gowun_Batang({
   weight: ["400", "700"],
   variable: "--font-gowun",
-  display: 'swap',
+  display: "swap",
   preload: false,
-});
-
-const playfairDisplay = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-playfair",
-  display: 'swap',
-});
-
-const dancingScript = Dancing_Script({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-dancing",
-  display: 'swap',
-});
-
-const craftyGirls = Crafty_Girls({
-  subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-crafty-girls",
-  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -46,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={`${gowunBatang.variable} ${playfairDisplay.variable} ${dancingScript.variable} ${craftyGirls.variable}`} suppressHydrationWarning>
+    <html lang="ko" className={gowunBatang.variable} suppressHydrationWarning>
       <body>
         <Navbar />
         {children}

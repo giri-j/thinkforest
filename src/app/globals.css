@@ -37,22 +37,6 @@
   font-display: swap;
 }
 
-@font-face {
-  font-family: 'GowunBatang';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunBatang-Regular.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'GowunBatang';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunBatang-Bold.woff') format('woff');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
 @layer base {
   :root {
     --background: 150 7% 97%;
@@ -93,7 +77,7 @@
   }
 
   .font-gowun {
-    font-family: 'GowunBatang', var(--font-gowun), serif;
+    font-family: var(--font-gowun), serif;
   }
 
 
@@ -103,10 +87,6 @@
 
   .font-cherish {
     font-family: 'Cherishline', cursive;
-  }
-
-  .font-crafty-girls {
-    font-family: var(--font-crafty-girls), cursive;
   }
 
   .bg-radial-gradient {
@@ -638,4 +618,26 @@ body {
     transform: none;
     transition: none;
   }
+}
+
+/* ===================================================
+   THINK FOREST — 전역 색 시스템 (숲의 팔레트)
+   =================================================== */
+:root {
+  /* 숲의 바탕 */
+  --forest-deep: #0F1A14;      /* 가장 어두운 숲 — 다크 섹션 배경 */
+  --forest-shadow: #1C2E24;    /* 나무 그늘 — 보조 배경 */
+  --forest-text: #F2F7F3;      /* 달빛 — 다크 배경 위 본문 */
+  --forest-text-dim: rgba(214, 232, 220, 0.62); /* 흐린 안개 — 보조 텍스트 */
+  --forest-glass: rgba(255, 255, 255, 0.045);   /* 유리 패널 */
+  --forest-glass-line: rgba(255, 255, 255, 0.1); /* 패널 테두리 */
+
+  /* 네 갈래 길 — 사이트 전체의 포인트 컬러 */
+  --path-planning: #7FD1AE;   /* 이끼 청록 */
+  --path-reverse: #8FA8E8;    /* 안개 남보라 */
+  --path-journey: #E8C07F;    /* 빛내림 호박 */
+  --path-cutlet: #D99B7C;     /* 나무껍질 갈색 */
+
+  /* 빛 */
+  --forest-glow: rgba(255, 248, 205, 0.9); /* 반딧불이 */
 }
