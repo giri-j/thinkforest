@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
-import Practice2 from '@/components/practice2/Practice2'
-import AppleSequence from '@/components/practice3/AppleSequence'
+import Practice3 from '@/components/practice3/Practice3'
 
 export const metadata: Metadata = {
   title: '기획의 숲 — The Grammar of Planning (v3)',
@@ -8,5 +7,5 @@ export const metadata: Metadata = {
 }
 
 export default function Practice3Page() {
-  return <Practice2 afterHero={<AppleSequence />} />
+  return <Practice3 />
 }

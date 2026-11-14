@@ -1,6 +1,7 @@
-/* 기획의 숲 — /practice3 사과나무 → 황금 도시 시퀀스 (매거진 칼럼 안에서 sticky) */
+/* 기획의 숲 — /practice3 히어로 + 사과나무 → 황금 도시 시퀀스 (매거진 칼럼 안에서 sticky) */
 
-.seq { position: relative; height: 700vh; background: #0b0f0c; }
+/* 높이 = (END 7.2 + 1) × 100vh — AppleSequence.tsx의 END와 맞춘다 */
+.seq { position: relative; height: 820vh; background: #0b0f0c; }
 .stage { position: sticky; top: 0; height: 100vh; overflow: hidden; background: #0d1220; }
 .canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: grab; touch-action: pan-y; }
 .canvasDrag { cursor: grabbing; }
@@ -12,6 +13,30 @@
     linear-gradient(to top, rgba(8, 11, 9, 0.7) 0%, rgba(8, 11, 9, 0.2) 34%, transparent 56%),
     linear-gradient(to bottom, rgba(11, 15, 12, 0.55) 0%, transparent 16%);
 }
+
+/* ---------- 히어로 (사과나무 위) ---------- */
+/* 왼쪽에서 걷히는 어두운 막 — 노을 하늘 위에서도 흰 헤드라인이 읽히도록 */
+.heroShade {
+  position: absolute; inset: 0; pointer-events: none; will-change: opacity;
+  background:
+    linear-gradient(90deg, rgba(7, 10, 8, 0.82) 0%, rgba(7, 10, 8, 0.6) 32%, rgba(7, 10, 8, 0.18) 62%, rgba(7, 10, 8, 0) 80%),
+    linear-gradient(to top, rgba(7, 10, 8, 0.55) 0%, transparent 30%);
+}
+.hero {
+  position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 0 6%;
+  will-change: opacity, transform;
+}
+.heroInner { position: relative; }
+.heroH1 { text-shadow: 0 2px 40px rgba(0, 0, 0, 0.35); }
+.heroSub { color: rgba(255, 255, 255, 0.82); text-shadow: 0 1px 18px rgba(0, 0, 0, 0.5); }
+.hero .heroMeta {
+  margin-top: 40px;
+  color: #f2ede3; text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6);
+}
+.dragHint { flex-basis: 100%; margin-top: 6px; color: rgba(242, 237, 227, 0.6); }
+
 .bloom {
   position: absolute; left: 0; top: 0; width: 200px; height: 200px; margin: -100px 0 0 -100px;
   border-radius: 50%; pointer-events: none; opacity: 0; mix-blend-mode: screen; will-change: transform, opacity;
@@ -22,7 +47,7 @@
   background: radial-gradient(circle at 50% 50%, #fffbe9 0%, #ffe6a6 45%, #f1bd63 100%);
 }
 
-.copy { position: absolute; left: 6%; right: 6%; bottom: clamp(72px, 13vh, 130px); pointer-events: none; will-change: opacity, transform; }
+.copy { position: absolute; left: 6%; right: 6%; bottom: clamp(72px, 13vh, 130px); pointer-events: none; will-change: opacity, transform; z-index: 2; }
 .copyCenter { text-align: center; opacity: 0; }
 .eyebrow { margin: 0 0 18px; font-family: var(--font-tf-mono), monospace; font-size: 11px; letter-spacing: 0.24em; color: #e1b970; text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6); }
 .line {
@@ -33,12 +58,30 @@
 .lineBig { font-size: clamp(30px, 4.4vw, 64px); }
 .gold { color: #e1b970; }
 
-.meta {
-  position: absolute; left: 6%; right: 6%; bottom: 30px; display: flex; justify-content: space-between; gap: 16px;
-  font-family: var(--font-tf-mono), monospace; font-size: 10.5px; letter-spacing: 0.18em; color: rgba(242, 237, 227, 0.85);
-  pointer-events: none; text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6);
+/* ---------- 엔딩 ---------- */
+/* 가장자리부터 밤이 내려앉는 비네트 — 등불과 강물 반사는 그대로 살고, 서명이 읽힌다 */
+.endShade {
+  position: absolute; inset: 0; pointer-events: none; z-index: 1; will-change: opacity;
+  background:
+    radial-gradient(120% 95% at 50% 40%, transparent 42%, rgba(5, 8, 12, 0.6) 100%),
+    linear-gradient(to top, rgba(5, 8, 10, 0.78) 0%, rgba(5, 8, 10, 0.25) 26%, transparent 48%);
 }
+.sig {
+  position: absolute; left: 6%; right: 6%; bottom: 28px; z-index: 3;
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px 20px;
+  padding-top: 16px; border-top: 1px solid rgba(242, 237, 227, 0.18);
+  font-family: var(--font-tf-mono), monospace; font-size: 11px; letter-spacing: 0.06em;
+  color: rgba(242, 237, 227, 0.72); will-change: opacity, transform;
+}
+.toTop {
+  padding: 8px 16px; border: 1px solid rgba(225, 185, 112, 0.6); border-radius: 999px;
+  background: transparent; color: #e1b970; font: inherit; letter-spacing: 0.12em; cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+.toTop:hover { background: #e1b970; color: #0b0f0c; }
 
 @media (max-width: 760px) {
-  .meta span:last-child { display: none; }
+  .dragHint { display: none; }
+  .hero .heroMeta { margin-top: 28px; }
+  .sig { justify-content: center; text-align: center; }
 }
