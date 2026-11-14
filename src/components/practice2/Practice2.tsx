@@ -442,7 +442,7 @@ function Coda() {
 
 /* ---------------- Page ---------------- */
 
-export default function Practice2() {
+export default function Practice2({ afterHero }: { afterHero?: React.ReactNode } = {}) {
   const root = useRef<HTMLDivElement>(null)
   const reduced = useReducedMotion()
 
@@ -582,6 +582,7 @@ export default function Practice2() {
           <SideDrawerTab />
           <main className={`relative z-10 ${s.column}`}>
           <Hero />
+          {afterHero}
           <Marquee />
           <Prologue />
           {chapters.map((c) => <ChapterSection key={c.id} c={c} />)}
