@@ -13,8 +13,11 @@ export default function Navbar() {
   const isHome = pathname === '/'
   const isContact = pathname === '/contact'
   const isWedding = pathname === '/wedding'
+  const isPractice = pathname.startsWith('/practice')
 
-  if (isWedding) return null
+  const isVanSchneider = pathname.startsWith('/vanschneider')
+
+  if (isWedding || isPractice || isVanSchneider) return null
 
   useEffect(() => {
     const handleScroll = () => {

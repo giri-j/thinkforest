@@ -12,8 +12,11 @@ export default function Footer() {
     const [isExpanded, setIsExpanded] = useState(false)
     const pathname = usePathname()
     const isWedding = pathname === '/wedding'
+    const isPractice = pathname.startsWith('/practice')
 
-    if (isWedding) return null
+    const isVanSchneider = pathname.startsWith('/vanschneider')
+
+    if (isWedding || isPractice || isVanSchneider) return null
 
     return (
         <footer className="bg-white border-t border-border mt-auto">
