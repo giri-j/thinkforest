@@ -42,7 +42,7 @@
 }
 .heroInner { position: relative; }
 .heroH1 { text-shadow: 0 2px 40px rgba(0, 0, 0, 0.35); }
-.heroSub { color: rgba(255, 255, 255, 0.82); text-shadow: 0 1px 18px rgba(0, 0, 0, 0.5); }
+.heroSub { word-break: keep-all; text-wrap: balance; color: rgba(255, 255, 255, 0.82); text-shadow: 0 1px 18px rgba(0, 0, 0, 0.5); }
 /* 스크롤 안내: "Scroll down. Gravity does the rest." */
 .cue {
   display: inline-flex; align-items: center; gap: 12px;
@@ -278,7 +278,7 @@
 .cardEyebrow { margin: 0 0 10px; text-shadow: none; }
 .cardTitle {
   margin: 0 0 12px; font-family: var(--p2-sans), var(--font-tf-sans), sans-serif; font-weight: 700;
-  font-size: 22px; line-height: 1.25; letter-spacing: -0.03em; color: #f2ede3;
+  font-size: 22px; line-height: 1.25; letter-spacing: -0.03em; color: #f2ede3; word-break: keep-all;
 }
 .cardBody { margin: 0 0 10px; font-size: 13.5px; line-height: 1.75; color: rgba(242, 237, 227, 0.86); word-break: keep-all; }
 .cardLast {

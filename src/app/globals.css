@@ -1,4 +1,7 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+/* 운영 페이지 기본 서체 — Pretendard Variable 다이내믹 서브셋(페이지에 쓰인 글자 묶음만 받는다).
+   위의 정적 Pretendard는 /wedding · /vanschneider 등이 'Pretendard' 이름으로 직접 쓰고 있어 남겨 둔다. */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
 
 
 @tailwind base;
@@ -624,6 +627,10 @@ body {
    THINK FOREST — 전역 색 시스템 (숲의 팔레트)
    =================================================== */
 :root {
+  /* 기본 서체(한글+영문). 이름은 그대로 두고 가리키는 폰트만 Pretendard로 —
+     /practice · /practice2는 자기 layout에서 이 변수를 Noto Sans KR로 다시 선언하므로 영향이 없다 */
+  --font-tf-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+
   /* 숲의 바탕 */
   --forest-deep: #0F1A14;      /* 가장 어두운 숲 — 다크 섹션 배경 */
   --forest-shadow: #1C2E24;    /* 나무 그늘 — 보조 배경 */
