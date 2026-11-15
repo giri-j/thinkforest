@@ -10,15 +10,15 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const pathname = usePathname()
-  const isHome = pathname === '/'
-  const isContact = pathname === '/contact'
-  const isWedding = pathname === '/wedding'
-  const isPractice = pathname.startsWith('/practice')
+  // 이 Navbar는 예전 디자인 페이지(이전 홈 /practice3, 관리자)에서만 쓴다.
+  // 홈 · 블로그 · About · Contact · 케이스 스터디 · 404는 공용 잡지 프레임(왼쪽 내비 탭)을 쓴다.
+  const isLegacyHome = pathname === '/practice3'
+  const isHome = isLegacyHome
+  const isContact = false
+  const showLegacyChrome = isLegacyHome || pathname.startsWith('/admin')
 
-  const isVanSchneider = pathname.startsWith('/vanschneider')
-
-  if (isWedding || isPractice || isVanSchneider) return null
-
+  // 훅은 숨김 여부와 상관없이 항상 같은 순서로 불러야 한다.
+  // (숨기는 페이지 → 보이는 페이지로 클라이언트 이동할 때 "Rendered more hooks" 에러가 나던 원인)
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20)
@@ -26,6 +26,8 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  if (!showLegacyChrome) return null
 
   const navLinks = [
     { name: 'Blog', href: '/blog' },

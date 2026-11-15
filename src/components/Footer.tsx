@@ -6,17 +6,14 @@ import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronUp } from 'lucide-react'
-import { cn } from '@/lib/utils'
 
 export default function Footer() {
     const [isExpanded, setIsExpanded] = useState(false)
     const pathname = usePathname()
-    const isWedding = pathname === '/wedding'
-    const isPractice = pathname.startsWith('/practice')
+    // 예전 디자인 페이지(이전 홈 /practice3, 관리자)에서만 보인다. 나머지는 공용 잡지 프레임의 서명 줄을 쓴다.
+    const showLegacyChrome = pathname === '/practice3' || pathname.startsWith('/admin')
 
-    const isVanSchneider = pathname.startsWith('/vanschneider')
-
-    if (isWedding || isPractice || isVanSchneider) return null
+    if (!showLegacyChrome) return null
 
     return (
         <footer className="bg-white border-t border-border mt-auto">

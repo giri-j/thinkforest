@@ -1,15 +1,55 @@
 'use client'
 
-/* 히어로(SEED; TREE; FOREST.) → 사과나무 → 황금 사과 낙하 → 금빛 확대 → 황금 숲의 도시(엔딩).
-   매거진 칼럼 안에서 sticky로 고정되고, 스크롤한 만큼만 프레임이 넘어간다.
+/* 히어로(THINK; PLAN; BUILD.) → 사과나무 → 황금 사과 낙하 → 금빛 확대 → 황금 숲의 도시(엔딩).
+   매거진 칼럼 안에서 sticky로 고정되고, 스크롤한 만큼 장면이 진행된다.
+   가만히 있어도 살아 있도록: 나무는 천천히 좌우로 돌고(드래그하면 손이 우선), 도시는 프레임이 계속 흐르며,
+   두 장면 모두 숨 쉬듯 미세하게 확대되고 마우스를 따라 살짝 기울어지며 빛 입자가 떠다닌다.
    프레임: public/practice3/{o,f,c}/NNN.webp (o=나무 회전, f=사과 낙하, c=도시) */
 
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
+import Link from 'next/link'
 import { heroP2 } from '@/components/practice2/extra'
 import { coda } from '@/components/practice2/content'
 import p2 from '@/components/practice2/practice2.module.css'
 import { useHairlineIntro } from './useHairlineIntro'
+import { HUD_NODES } from './appleNodes'
 import s from './apple.module.css'
+
+/* practice3 전용 히어로 문구 — 공용 heroP2는 건드리지 않고 lines·subtitle만 덮어쓴다 */
+const heroP3 = {
+  ...heroP2,
+  lines: ['THINK;', 'PLAN;', 'BUILD.'],
+  meta: 'PLANNING PRAXIS EST. 2021',
+  subtitle: '생각이 아이디어로 열리고, 기획으로 익어, 하나의 숲이 됩니다.',
+}
+
+/* 엔딩 서명 — 공용 coda.signature는 두고 홈에서만 덮어쓴다 */
+const SIGNATURE = '당신의 생각도, 이 숲의 다음 열매가 될 수 있습니다.'
+
+/* 회전 프레임별 황금 사과 중심 (1280×720 원본 좌표). index = orb 프레임 */
+const APPLE_TRACK: [number, number][] = [[753,360],[753,360],[754,359],[754,360],[753,359],[753,359],[753,359],[753,359],[754,358],[754,358],[753,358],[754,358],[752,357],[753,357],[752,356],[752,356],[752,356],[752,356],[753,356],[751,355],[752,354],[752,355],[751,354],[750,354],[751,354],[752,354],[750,353],[750,352],[750,352],[749,352],[749,352],[749,351],[748,351],[748,351],[747,350],[746,350],[746,349],[746,349],[745,349],[744,349],[744,348],[744,348],[743,348],[742,347],[742,347],[742,346],[741,346],[741,346],[743,346],[743,345],[741,345],[741,345],[741,344],[740,344],[738,344],[738,344],[736,344],[736,343],[735,343],[734,342],[734,342],[734,341],[734,341],[734,340],[733,339],[733,339],[732,339],[731,339],[729,338],[728,338],[727,337],[726,337],[725,336],[724,336],[723,335],[722,335],[721,334],[720,334],[719,334],[717,333],[717,333],[715,332],[712,332],[711,332],[710,331],[708,330],[706,330],[705,330],[702,329],[701,328],[700,328],[698,328],[696,328],[695,327],[694,327]]
+
+/* 황금 사과 카드 — 뉴턴의 사과. 생각 → 번뜩임(아이디어) → 다듬기(기획) → 세상의 구조(사업)라는
+   기획의 숲의 흐름을 실제 이야기 하나로 보여 준다. */
+const NEWTON = {
+  eyebrow: '1666 · WOOLSTHORPE MANOR',
+  title: '뉴턴의 사과',
+  paras: [
+    ['흑사병으로 대학이 문을 닫자, 스물세 살의 뉴턴은 고향 울스소프로 돌아왔습니다.', '정원에서 사과 하나가 떨어지던 날,', '수없이 스쳐 간 생각 중 하나에 불이 켜졌습니다.'],
+    ['그는 그 번뜩임을 21년 동안 다듬어 『프린키피아』로 엮었고,', '사과 한 알은 세상이 움직이는 방식이 되었습니다.'],
+  ],
+  last: '— 한 알의 생각이 세상의 구조가 되기까지. 기획은 그 사이를 잇는 일입니다.',
+}
+
+/* 우하단 장면 번호 — sv(화면 높이 단위)가 이 값을 넘으면 다음 장면 */
+const SCENES = [
+  /* 기획의 숲의 흐름: 생각 → 아이디어 → 기획 → 사업 */
+  { name: 'Thought', until: 1.65 }, /* 사과나무 — 수많은 생각, SCENE 01 카피가 떠 있는 동안 */
+  { name: 'Idea', until: 2.75 }, /* 빛나는 사과가 떨어짐 — 번뜩인 아이디어 */
+  { name: 'Plan', until: 3.75 }, /* 금빛이 차오름 — 아이디어를 다듬어 기획으로 */
+  { name: 'Business', until: Infinity }, /* 황금 숲의 도시 — 사업이 됨 */
+]
+const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/—·+'
 
 const BASE = '/practice3'
 const N_O = 95
@@ -21,14 +61,15 @@ const APPLE = { x: 805 / 1280, y: 627 / 720 }
    0 ~ 0.6   히어로 (사과나무 위의 SEED; TREE; FOREST.) → 스크롤하면 어두운 막이 걷힘
    0.9 ~ 3.4 사과 낙하 → 금빛 확대
    3.4 ~ 6.3 황금 도시
-   6.3 ~ END 엔딩 홀드 — 마지막 장면에 머물며 천천히 다가가고, 카피·서명이 내려앉는다 */
+   6.3 ~ 7.2 엔딩 홀드 — 마지막 장면에 머물며 천천히 다가가고, 카피·서명이 내려앉는다
+   7.2 ~ END 브랜드 — 「기획의 숲」이 스르륵 떠오른다 */
 const T = {
   hero0: 0.1, hero1: 0.55,
   fall0: 0.9, fall1: 2.3, zoom0: 2.3, zoom1: 3.4,
   rev0: 3.4, rev1: 4.1, city0: 3.9, city1: 6.3,
-  end0: 6.3,
+  end0: 6.3, brand0: 7.2,
 }
-const END = 7.2
+const END = 8.7
 /* 섹션 높이 = (END + 1) × 100vh — 고정 100vh + 스크롤 END×100vh. CSS의 .seq 높이와 맞춘다 */
 
 type Frame = { src: string; img: HTMLImageElement | null; ok: boolean }
@@ -38,6 +79,8 @@ const seg = (v: number, a: number, b: number) => clamp((v - a) / (b - a), 0, 1)
 const ease = (t: number) => t * t * (3 - 2 * t)
 const easeIn = (t: number) => t * t * t
 const easeOut = (t: number) => 1 - (1 - t) * (1 - t) * (1 - t)
+/* 프레임레이트와 무관한 지수 감쇠 계수: rate가 클수록 빨리 따라간다 */
+const damp = (rate: number, dt: number) => 1 - Math.exp(-rate * dt)
 
 export default function AppleSequence() {
   const seqRef = useRef<HTMLElement>(null)
@@ -51,16 +94,56 @@ export default function AppleSequence() {
   const copy2Ref = useRef<HTMLDivElement>(null)
   const endShadeRef = useRef<HTMLDivElement>(null)
   const sigRef = useRef<HTMLDivElement>(null)
+  const momentRef = useRef<HTMLParagraphElement>(null)
+  const brandRef = useRef<HTMLDivElement>(null)
+  /* 황금 사과 호버 */
+  const popRef = useRef<HTMLDivElement>(null)
+  const anchorRef = useRef<HTMLDivElement>(null)
+  const btnRef = useRef<HTMLButtonElement>(null)
+  const linkRef = useRef<SVGPathElement>(null)
+  const cardPosRef = useRef<HTMLDivElement>(null)
+  const cardRef = useRef<HTMLDivElement>(null)
+  /* 모서리 마이크로타이포 · 도면 주석 */
+  const chromeRef = useRef<HTMLDivElement>(null)
+  const tlRef = useRef<HTMLDivElement>(null)
+  const trRef = useRef<HTMLDivElement>(null)
+  const blRef = useRef<HTMLDivElement>(null)
+  const brRef = useRef<HTMLDivElement>(null)
+  const sceneNoRef = useRef<HTMLSpanElement>(null)
+  const sceneNameRef = useRef<HTMLSpanElement>(null)
+  const progRef = useRef<HTMLElement>(null)
+  const loadBarRef = useRef<HTMLElement>(null)
+  const loadTxtRef = useRef<HTMLSpanElement>(null)
+  const hudRef = useRef<SVGSVGElement>(null)
+  const hudPathRef = useRef<SVGPathElement>(null)
 
-  useHairlineIntro(heroRef, p2.hairline)
+  /* 헤드라인 선 그리기가 끝난 뒤부터 힌트 링을 시작한다 */
+  const onIntroDone = useCallback(() => {
+    popRef.current?.classList.add(s.popReady)
+    chromeRef.current?.classList.add(s.chromeIn)
+  }, [])
+  /* 암전: 검은 화면 위에서 글자가 그려지고, 채워지기 시작할 때 장면이 서서히 드러난다 */
+  const blackoutRef = useRef<HTMLDivElement>(null)
+  const onReveal = useCallback(() => blackoutRef.current?.classList.add(s.blackoutOff), [])
+  useHairlineIntro(heroRef, p2.hairline, onIntroDone, onReveal)
 
   useEffect(() => {
     const seq = seqRef.current, stage = stageRef.current, cv = cvRef.current
     const hero = heroRef.current, heroShade = heroShadeRef.current
     const bloom = bloomRef.current, flood = floodRef.current
     const copy1 = copy1Ref.current, copy2 = copy2Ref.current
-    const endShade = endShadeRef.current, sig = sigRef.current
-    if (!seq || !stage || !cv || !hero || !heroShade || !bloom || !flood || !copy1 || !copy2 || !endShade || !sig) return
+    const endShade = endShadeRef.current, sig = sigRef.current, moment = momentRef.current
+    const pop = popRef.current, anchor = anchorRef.current, btn = btnRef.current
+    const link = linkRef.current, cardPos = cardPosRef.current, card = cardRef.current
+    if (!seq || !stage || !cv || !hero || !heroShade || !bloom || !flood || !copy1 || !copy2 || !endShade || !sig || !moment) return
+    if (!pop || !anchor || !btn || !link || !cardPos || !card) return
+    const chrome = chromeRef.current, tl = tlRef.current, tr = trRef.current, bl = blRef.current, br = brRef.current
+    const sceneNo = sceneNoRef.current, sceneName = sceneNameRef.current, prog = progRef.current
+    const hud = hudRef.current, hudPath = hudPathRef.current
+    const brand = brandRef.current
+    const loadBar = loadBarRef.current, loadTxt = loadTxtRef.current
+    if (!chrome || !tl || !tr || !bl || !br || !sceneNo || !sceneName || !prog || !hud || !hudPath || !loadBar || !loadTxt || !brand) return
+    const hudNodes = Array.from(hud.querySelectorAll<SVGGElement>('[data-node]'))
     const ctx = cv.getContext('2d')
     if (!ctx) return
 
@@ -70,21 +153,46 @@ export default function AppleSequence() {
     const O = mk('o', N_O), F = mk('f', N_F), C = mk('c', N_C)
 
     let alive = true
-    let dirty = true
+    const TOTAL = N_O + N_F + N_C
+    let settled = 0
+    /* 디코딩까지 끝난 프레임만 ok로 표시한다 — 그리는 순간에 메인 스레드에서 디코딩하며 버벅이지 않도록 */
     const load = (fr: Frame) =>
       new Promise<void>((res) => {
         if (fr.img) return res()
         const im = new Image()
         im.decoding = 'async'
-        im.onload = () => { fr.ok = true; dirty = true; res() }
-        im.onerror = () => res()
         im.src = fr.src
         fr.img = im
+        im.decode()
+          .then(() => { fr.ok = true })
+          .catch(() => {})
+          .finally(() => { settled++; res() })
       })
-    const loadAll = async (list: Frame[]) => {
-      let i = 0
-      const worker = async () => { while (alive && i < list.length) await load(list[i++]) }
-      await Promise.all(Array.from({ length: 6 }, worker))
+    /* 로딩 순서: 세 시퀀스 모두 성기게(8장 간격) 먼저 받고 → 4 → 2 → 1장 간격으로 촘촘하게 채운다.
+       같은 간격 안에서는 지금 보고 있는 장면의 시퀀스가 먼저다 — 빠르게 스크롤해도 근처 프레임이 이미 있다 */
+    const order = () => (sv < T.fall0 ? [O, F, C] : sv < T.rev0 ? [F, C, O] : [C, F, O])
+    const pick = (): Frame | null => {
+      for (const step of [8, 4, 2, 1]) {
+        for (const list of order()) {
+          for (let i = 0; i < list.length; i += step) if (!list[i].img) return list[i]
+        }
+      }
+      return null
+    }
+    const worker = async () => {
+      while (alive) {
+        const fr = pick()
+        if (!fr) return
+        await load(fr)
+      }
+    }
+    /* 두 프레임 사이를 섞어 그린다 — 프레임 수가 적어도 움직임이 끊기지 않게 */
+    const blendDraw = (list: Frame[], idx: number, scale: number, ox: number, oy: number) => {
+      const i = clamp(idx, 0, list.length - 1)
+      const a = Math.floor(i), b = Math.min(list.length - 1, a + 1), f = i - a
+      const ia = list[a]?.ok ? list[a].img : nearest(list, i)
+      draw(ia, scale, ox, oy, 1)
+      if (f > 0.02 && list[b]?.ok) draw(list[b].img, scale, ox, oy, f)
     }
     const nearest = (list: Frame[], idx: number) => {
       const k = clamp(Math.round(idx), 0, list.length - 1)
@@ -100,7 +208,6 @@ export default function AppleSequence() {
       const dpr = Math.min(window.devicePixelRatio || 1, 1.5)
       W = stage.clientWidth; H = stage.clientHeight
       cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr)
-      dirty = true
     }
     const ro = new ResizeObserver(resize)
     ro.observe(stage)
@@ -121,7 +228,12 @@ export default function AppleSequence() {
 
     /* 스크롤 진행도 (vh 단위) */
     let svT = 0, sv = 0
-    const onScroll = () => { svT = -seq.getBoundingClientRect().top / window.innerHeight }
+    const onScroll = () => {
+      const top = seq.getBoundingClientRect().top
+      svT = -top / window.innerHeight
+      /* 무대가 화면 위에 붙기 전(잡지 페이지 상단 여백 구간)엔 하단 모서리를 그만큼 올려 첫 화면에서도 보이게 */
+      chrome.style.setProperty('--lift', `${Math.max(0, top).toFixed(0)}px`)
+    }
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', onScroll)
     onScroll()
@@ -129,8 +241,10 @@ export default function AppleSequence() {
 
     /* 드래그로 나무 돌리기 — 히어로 구간(시퀀스 시작 지점)에서만 */
     let orbT = 0, orb = 0, dragging = false, lastX = 0
+    const IDLE_AMP = 26, IDLE_PERIOD = 16
+    let idleBase = 0, idlePhase = 0, idleW = 0, lastInput = -10
     const canDrag = () => svT < 0.12
-    const down = (e: PointerEvent) => { if (!canDrag()) return; dragging = true; lastX = e.clientX; cv.classList.add(s.canvasDrag) }
+    const down = (e: PointerEvent) => { if (!canDrag()) return; dragging = true; orbT = orb; idleW = 0; lastX = e.clientX; cv.classList.add(s.canvasDrag) }
     const move = (e: PointerEvent) => {
       if (!dragging) return
       orbT = clamp(orbT + (e.clientX - lastX) * (N_O / Math.max(600, W)) * 1.1, 0, N_O - 1)
@@ -142,18 +256,181 @@ export default function AppleSequence() {
     window.addEventListener('pointerup', up)
     window.addEventListener('pointercancel', up)
 
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    /* 마우스를 따라 장면이 살짝 기운다 */
+    let mx = 0, my = 0, smx = 0, smy = 0
+    const onMove = (e: PointerEvent) => {
+      const r = stage.getBoundingClientRect()
+      mx = clamp(((e.clientX - r.left) / r.width) * 2 - 1, -1, 1)
+      my = clamp(((e.clientY - r.top) / r.height) * 2 - 1, -1, 1)
+    }
+    window.addEventListener('pointermove', onMove)
+
+    /* 빛 입자 — 미리 그린 스프라이트를 가산 합성으로 */
+    const sprite = document.createElement('canvas')
+    sprite.width = sprite.height = 64
+    {
+      const g = sprite.getContext('2d')!
+      const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32)
+      gr.addColorStop(0, 'rgba(255,248,220,1)')
+      gr.addColorStop(0.18, 'rgba(255,222,150,0.85)')
+      gr.addColorStop(0.45, 'rgba(255,180,80,0.25)')
+      gr.addColorStop(1, 'rgba(255,160,60,0)')
+      g.fillStyle = gr
+      g.fillRect(0, 0, 64, 64)
+    }
+    type Mote = { x: number; y: number; z: number; vx: number; vy: number; ph: number; sp: number }
+    const motes: Mote[] = Array.from({ length: 70 }, () => ({
+      x: Math.random(), y: Math.random(), z: 0.35 + Math.random() * 0.65,
+      vx: (Math.random() - 0.5) * 0.006, vy: -(0.004 + Math.random() * 0.012),
+      ph: Math.random() * Math.PI * 2, sp: 0.6 + Math.random() * 1.6,
+    }))
+    const drawMotes = (t: number, dt: number, amount: number, k: number) => {
+      if (amount <= 0.01) return
+      ctx.save()
+      ctx.globalCompositeOperation = 'lighter'
+      const n = Math.round(motes.length * Math.min(1, amount))
+      for (let i = 0; i < n; i++) {
+        const m = motes[i]
+        m.x += (m.vx + Math.sin(t * 0.4 + m.ph) * 0.004) * dt * m.z
+        m.y += m.vy * dt * m.z
+        if (m.y < -0.05) { m.y = 1.05; m.x = Math.random() }
+        if (m.x < -0.05) m.x = 1.05
+        if (m.x > 1.05) m.x = -0.05
+        const tw = 0.45 + 0.55 * Math.sin(t * m.sp + m.ph)
+        const r = (4 + 10 * m.z) * k
+        const px = (m.x * W + smx * 18 * m.z) * k, py = (m.y * H + smy * 10 * m.z) * k
+        ctx.globalAlpha = Math.max(0, tw) * 0.75 * amount * m.z
+        ctx.drawImage(sprite, px - r, py - r, r * 2, r * 2)
+      }
+      ctx.restore()
+    }
+
+    /* ---------- 황금 사과 호버 카드 ----------
+       열림/닫힘은 클래스 하나(popOpen)로 전환하고, 순서(빛 → 선 → 카드)는 CSS transition-delay가 맡는다.
+       위치는 매 프레임 사과를 따라 ref로 직접 갱신한다. */
+    let popOpen = false, popActive = false, frozen = false, prevOrb = 0
+    let closeTimer = 0
+    let downAt: { x: number; y: number; type: string; onBtn: boolean; onCard?: boolean } | null = null
+    const setOpen = (v: boolean) => {
+      window.clearTimeout(closeTimer)
+      scrambles.forEach((v) => window.clearInterval(v))
+      if (v === popOpen) return
+      popOpen = v
+      pop.classList.toggle(s.popOpen, v)
+      btn.setAttribute('aria-expanded', String(v))
+    }
+    const scheduleClose = () => { window.clearTimeout(closeTimer); closeTimer = window.setTimeout(() => setOpen(false), 250) }
+    const cancelClose = () => window.clearTimeout(closeTimer)
+
+    const onBtnEnter = (e: PointerEvent) => { if (e.pointerType === 'mouse' && popActive && !dragging) setOpen(true) }
+    const onBtnLeave = (e: PointerEvent) => { if (e.pointerType === 'mouse') scheduleClose() }
+    const onCardEnter = () => cancelClose()
+    const onCardLeave = (e: PointerEvent) => { if (e.pointerType === 'mouse') scheduleClose() }
+    /* 버튼 위에서 시작한 pointerdown도 나무 드래그로 넘긴다 */
+    const onBtnDown = (e: PointerEvent) => { downAt = { x: e.clientX, y: e.clientY, type: e.pointerType, onBtn: true }; down(e) }
+    const onCvDown = (e: PointerEvent) => { downAt = { x: e.clientX, y: e.clientY, type: e.pointerType, onBtn: false } }
+    const onCardDown = (e: PointerEvent) => { downAt = { x: e.clientX, y: e.clientY, type: e.pointerType, onBtn: false, onCard: true } }
+    const onDragMove = (e: PointerEvent) => {
+      /* 실제로 끌기 시작하면(8px 이상) 카드를 닫아 나무 돌리기에 자리를 내준다 */
+      if (downAt && dragging && Math.hypot(e.clientX - downAt.x, e.clientY - downAt.y) >= 8) setOpen(false)
+    }
+    const onUp = (e: PointerEvent) => {
+      const d = downAt
+      downAt = null
+      if (!d || d.type === 'mouse') return
+      const tap = Math.hypot(e.clientX - d.x, e.clientY - d.y) < 8
+      /* 터치: 이동 8px 미만이면 탭 → 사과는 열고 닫기, 카드(좁은 화면에선 사과 가까이 뜬다)는 닫기 */
+      if (tap && d.onBtn && popActive) setOpen(!popOpen)
+      else if (tap && d.onCard) setOpen(false)
+    }
+    /* 카드 밖이나 사과 밖을 누르면 닫힌다 */
+    const onDocDown = (e: PointerEvent) => {
+      const tgt = e.target as Node
+      if (popOpen && !card.contains(tgt) && !btn.contains(tgt)) setOpen(false)
+    }
+    /* 키보드: 포커스 = 호버, Enter/Space = 토글 */
+    /* 마우스로 눌러 생긴 포커스는 무시하고, 키보드 포커스(:focus-visible)일 때만 연다 */
+    const onFocus = () => { if (popActive && btn.matches(':focus-visible')) setOpen(true) }
+    const onBlur = () => scheduleClose()
+    const onClick = (e: MouseEvent) => { if (e.detail === 0 && popActive) setOpen(!popOpen) }
+    btn.addEventListener('pointerenter', onBtnEnter)
+    btn.addEventListener('pointerleave', onBtnLeave)
+    btn.addEventListener('pointerdown', onBtnDown)
+    btn.addEventListener('focus', onFocus)
+    btn.addEventListener('blur', onBlur)
+    btn.addEventListener('click', onClick)
+    card.addEventListener('pointerenter', onCardEnter)
+    card.addEventListener('pointerleave', onCardLeave)
+    card.addEventListener('pointerdown', onCardDown)
+    cv.addEventListener('pointerdown', onCvDown)
+    window.addEventListener('pointermove', onDragMove)
+    window.addEventListener('pointerup', onUp)
+    document.addEventListener('pointerdown', onDocDown, true)
+
+    /* ---------- 장면 번호: 글자가 해독되듯 바뀐다 ---------- */
+    const scrambles = new Map<HTMLElement, number>()
+    const scrambleTo = (el: HTMLElement, text: string) => {
+      window.clearInterval(scrambles.get(el))
+      if (reduce) { el.textContent = text; return }
+      let step = 0
+      const total = 14
+      const id = window.setInterval(() => {
+        step++
+        const done = Math.floor((step / total) * text.length)
+        el.textContent = text.split('').map((ch, i) => (i < done || ch === ' ' ? ch : GLYPHS[(Math.random() * GLYPHS.length) | 0])).join('')
+        if (step >= total) { window.clearInterval(id); el.textContent = text }
+      }, 32)
+      scrambles.set(el, id)
+    }
+    let scene = -1
+    let shownSettled = -1
+    /* 장면 카피의 아이브로도 처음 나타날 때 한 번 해독된다 */
+    const copyEyebrows = [copy1, copy2].map((el) => el.querySelector<HTMLElement>('[data-scramble]'))
+    const copyShown = [false, false]
+
+    /* 나무 자동 회전 — 정면(0)에서 IDLE_AMP 프레임까지 천천히 오가는 카메라 흔들림.
+       드래그하면 멈추고, 손을 뗀 뒤 잠시 후 그 자리에서 이어서 다시 흔들린다. */
+    /* 도시 프레임 흐름 — 영상 전체를 천천히 앞뒤로 오간다 */
+    const CITY_PERIOD = 22
+    let cityPhase = 0
+
     let raf = 0
-    let prevKey = ''
+    let last = performance.now()
     const frame = () => {
       raf = requestAnimationFrame(frame)
+      const now = performance.now()
+      const dt = Math.min(0.05, (now - last) / 1000)
+      last = now
+      const t = now / 1000
       if (svT < -1.2 || svT > END + 0.4) return /* 화면 밖이면 쉬기 */
-      sv += (svT - sv) * 0.16
+      /* 시간 기반 감쇠 — 60Hz든 120Hz든 같은 무게감 (60fps에서 프레임당 0.16과 같은 값) */
+      sv += (svT - sv) * damp(10.5, dt)
       if (Math.abs(svT - sv) < 0.0005) sv = svT
       const locked = !canDrag()
-      if (locked) { orbT = 0; dragging = false }
-      orb += (orbT - orb) * (locked ? 0.12 : 0.22)
-      if (Math.abs(orbT - orb) < 0.01) orb = orbT
+      if (locked) { orbT = 0; dragging = false; idleW = 0; idlePhase = 0; idleBase = 0 }
+      if (dragging) { lastInput = t; idleW = 0 }
+      /* 카드가 열려 있는 동안엔 나무를 부드럽게 멈춘다 — 지금 속도로 조금 더 미끄러진 자리에서 정지.
+         닫히면 기존 idle 재시작 로직(lastInput + 1.6초)이 그대로 이어받는다 */
+      if (popOpen) {
+        if (!frozen) { orbT = clamp(orb + (orb - prevOrb) * 10, 0, N_O - 1); idleW = 0; frozen = true }
+        lastInput = t
+      } else frozen = false
+      prevOrb = orb
+      let target = orbT
+      if (!locked && !dragging && !reduce && t - lastInput > 1.6) {
+        if (idleW === 0) { idleBase = Math.min(orbT, N_O - 1 - IDLE_AMP); idlePhase = 0 }
+        idleW = Math.min(1, idleW + dt / 1.5)
+        idlePhase += (dt / IDLE_PERIOD) * Math.PI * 2
+        target = idleBase + (orbT - idleBase) * (1 - idleW) + idleW * IDLE_AMP * (1 - Math.cos(idlePhase)) / 2
+      }
+      orb += (target - orb) * damp(locked ? 7.7 : 13.4, dt) /* 60fps에서 0.12 / 0.2 */
+      if (Math.abs(target - orb) < 0.005) orb = target
       cv.classList.toggle(s.canvasLocked, locked)
+
+      smx += (mx - smx) * damp(2.2, dt)
+      smy += (my - smy) * damp(2.2, dt)
 
       const c = cover()
       const ax = c.x + APPLE.x * c.w, ay = c.y + APPLE.y * c.h
@@ -161,24 +438,41 @@ export default function AppleSequence() {
       const zoomP = seg(sv, T.zoom0, T.zoom1)
       const revP = seg(sv, T.rev0, T.rev1)
       const cityP = seg(sv, T.city0, T.city1)
-      const endP = seg(sv, T.end0, END)
-      const key = [orb.toFixed(2), sv.toFixed(4), W, H].join('|')
-      if (!dirty && key === prevKey) return
-      prevKey = key; dirty = false
+      const endP = seg(sv, T.end0, T.brand0)
+      const brandP = seg(sv, T.brand0, END)
+      /* 장면 전체 변형: 숨 쉬는 확대 + 마우스 기울기 (가장자리가 비지 않도록 기본 3.5% 확대) */
+      const live = reduce ? 0 : 1
+      const breathe = 1.035 + live * 0.012 * Math.sin(t * 0.35)
+      const pxOff = live * -smx * 16, pyOff = live * -smy * 9
+      const kk = cv.width / W
+      const tx = (x: number) => W / 2 + (x - W / 2) * breathe + pxOff
+      const ty = (y: number) => H / 2 + (y - H / 2) * breathe + pyOff
 
+      ctx.setTransform(1, 0, 0, 1, 0, 0)
       ctx.fillStyle = '#0d1220'
       ctx.fillRect(0, 0, cv.width, cv.height)
+      ctx.setTransform(breathe, 0, 0, breathe, (W / 2 * (1 - breathe) + pxOff) * kk, (H / 2 * (1 - breathe) + pyOff) * kk)
+      let motesAmt = 0
       if (revP > 0) {
-        /* 도시: 금빛 속에서 1.12 → 1.0으로 내려앉고, 엔딩 홀드에서는 다시 아주 천천히 다가간다 */
+        /* 도시: 금빛 속에서 1.12 → 1.0으로 내려앉고, 엔딩 홀드에서는 다시 아주 천천히 다가간다.
+           프레임은 스크롤과 상관없이 계속 흐르고, 스크롤은 그 흐름을 앞으로 살짝 밀어준다. */
         const settle = 1.12 - 0.12 * ease(revP)
         const push = 1 + 0.045 * easeOut(seg(sv, T.city1 - 1.2, END))
-        draw(nearest(C, cityP * (N_C - 1)), settle * push, W / 2, H * 0.46)
+        if (!reduce) cityPhase += (dt / CITY_PERIOD) * Math.PI * 2
+        const flow = reduce ? cityP : (1 - Math.cos(cityPhase)) / 2
+        const idx = clamp(flow * 0.8 + cityP * 0.2, 0, 1) * (N_C - 1)
+        blendDraw(C, idx, settle * push, W / 2, H * 0.46)
+        motesAmt = ease(revP)
       } else if (orb > 0.6 || sv <= T.fall0) {
-        draw(nearest(O, orb), 1, 0, 0)
+        blendDraw(O, orb, 1, 0, 0)
         if (orb <= 1 && F[0].ok) draw(F[0].img, 1, 0, 0, 1 - orb) /* 낙하 영상 첫 프레임으로 자연스럽게 정착 */
+        motesAmt = 0.45
       } else {
-        draw(nearest(F, fallP * (N_F - 1)), 1 + easeIn(zoomP) * 13, ax, ay)
+        blendDraw(F, fallP * (N_F - 1), 1 + easeIn(zoomP) * 13, ax, ay)
+        motesAmt = 0.45 * (1 - zoomP)
       }
+      ctx.setTransform(1, 0, 0, 1, 0, 0)
+      if (!reduce) drawMotes(t, dt, motesAmt, kk)
 
       /* 히어로: 스크롤하면 위로 살짝 떠오르며 사라지고, 왼쪽의 어두운 막이 걷힌다 */
       const heroOut = ease(seg(sv, T.hero0, T.hero1))
@@ -186,24 +480,115 @@ export default function AppleSequence() {
       hero.style.transform = `translateY(${-48 * heroOut}px)`
       hero.style.visibility = heroOut >= 1 ? 'hidden' : 'visible'
       heroShade.style.opacity = String(1 - ease(seg(sv, T.hero0, T.hero1 + 0.25)))
+      /* 글자가 그려지는 중에 먼저 스크롤하면 기다리지 않고 암전을 걷는다 */
+      if (sv > T.hero0 && blackoutRef.current) blackoutRef.current.classList.add(s.blackoutOff)
+
+      /* 황금 사과 위치: 원본 좌표(프레임 보간) → cover() → 장면 변형 tx/ty */
+      const active = canDrag() && heroOut < 0.5 && O[0].ok
+      if (active !== popActive) {
+        popActive = active
+        pop.classList.toggle(s.popActive, active)
+        btn.tabIndex = active ? 0 : -1
+        if (!active) { setOpen(false); if (document.activeElement === btn) btn.blur() }
+      }
+      if (active) {
+        const fi = clamp(orb, 0, APPLE_TRACK.length - 1)
+        const a0 = Math.floor(fi), a1 = Math.min(APPLE_TRACK.length - 1, a0 + 1), af = fi - a0
+        const ox = APPLE_TRACK[a0][0] + (APPLE_TRACK[a1][0] - APPLE_TRACK[a0][0]) * af
+        const oy = APPLE_TRACK[a0][1] + (APPLE_TRACK[a1][1] - APPLE_TRACK[a0][1]) * af
+        const kc = c.w / 1280
+        const px = tx(c.x + ox * kc), py = ty(c.y + oy * kc)
+        const pr = (18 + (28 - 18) * (fi / 94)) * kc * breathe
+        anchor.style.transform = `translate(${px.toFixed(1)}px,${py.toFixed(1)}px)`
+        anchor.style.setProperty('--r', `${pr.toFixed(1)}px`)
+
+        /* 카드: 사과 오른쪽 위 (중심 +60, −40)에 왼쪽 아래 모서리. 오른쪽이 넘치면 왼쪽 위로 뒤집는다 */
+        if (window.innerWidth > 760) {
+          const cw = card.offsetWidth, ch = card.offsetHeight
+          const dir = px + 60 + cw > W - 16 ? -1 : 1
+          const cornerX = px + dir * 60, cornerY = py - 40
+          const left = dir === 1 ? cornerX : cornerX - cw
+          const top = clamp(cornerY - ch, 16, H - ch - 16)
+          cardPos.style.transform = `translate(${left.toFixed(1)}px,${top.toFixed(1)}px)`
+          /* 헤어라인: 사과 가장자리 → 살짝 꺾여 → 카드 모서리 */
+          const sx = px + dir * pr * 0.78, sy = py - pr * 0.78
+          /* 화면 높이가 모자라 카드가 아래로 밀려도, 선은 카드의 실제 아래 모서리에 닿는다 */
+          const ey = top + ch
+          const elbowX = sx + dir * Math.min(18, Math.abs(cornerX - sx) * 0.5)
+          link.setAttribute('d', `M${sx.toFixed(1)} ${sy.toFixed(1)} L${elbowX.toFixed(1)} ${ey.toFixed(1)} L${cornerX.toFixed(1)} ${ey.toFixed(1)}`)
+        } else {
+          cardPos.style.transform = ''
+        }
+      }
+
+      /* 도면 주석: 황금 사과(2021)에서 시작해 해마다 늘어난 열매를 얇은 선으로 잇는다 */
+      if (active) {
+        const fi = clamp(orb, 0, N_O - 1)
+        const a0 = Math.floor(fi), a1 = Math.min(N_O - 1, a0 + 1), af = fi - a0
+        const kc = c.w / 1280
+        const at = (tr2: number[]) => {
+          const x = tr2[a0 * 2] + (tr2[a1 * 2] - tr2[a0 * 2]) * af
+          const y = tr2[a0 * 2 + 1] + (tr2[a1 * 2 + 1] - tr2[a0 * 2 + 1]) * af
+          return [tx(c.x + x * kc), ty(c.y + y * kc)]
+        }
+        const g0 = APPLE_TRACK[a0], g1 = APPLE_TRACK[a1]
+        const pts = [[tx(c.x + (g0[0] + (g1[0] - g0[0]) * af) * kc), ty(c.y + (g0[1] + (g1[1] - g0[1]) * af) * kc)], ...HUD_NODES.map((n) => at(n.track))]
+        hudPath.setAttribute('d', pts.map(([x, y], i) => `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`).join(' '))
+        hudNodes.forEach((n, i) => n.setAttribute('transform', `translate(${pts[i][0].toFixed(1)} ${pts[i][1].toFixed(1)})`))
+      }
+
+      /* 모서리: 매니페스토·스크롤 안내는 히어로와 함께 사라지고, 로고와 장면 번호는 끝까지 남는다.
+         금빛이 화면을 채울 땐 글자색이 금빛 위에서 읽히는 짙은 갈색으로 바뀐다 */
+      const floodO = revP > 0 ? 1 - ease(revP) : ease(seg(zoomP, 0.55, 1))
+      chrome.classList.toggle(s.chromeOnGold, floodO > 0.5)
+      tr.style.opacity = String(popOpen ? 0 : 1 - heroOut) // 카드가 열리면 선언문은 잠시 비킨다
+      bl.style.opacity = String(1 - heroOut)
+      br.style.opacity = String(1 - ease(seg(endP, 0.2, 0.5)))
+      tl.style.opacity = String(1 - 0.35 * ease(seg(endP, 0.2, 0.6)))
+      const sc = SCENES.findIndex((x) => sv < x.until)
+      if (sc !== scene) {
+        scene = sc
+        scrambleTo(sceneNo, String(sc + 1).padStart(2, '0'))
+        scrambleTo(sceneName, SCENES[sc].name)
+      }
+      prog.style.transform = `scaleX(${clamp(sv / END, 0, 1).toFixed(4)})`
+      /* 로딩 진행: 받은 만큼 진행선 뒤에 옅게 깔리고, 다 받으면 Ready로 해독된 뒤 사라진다 */
+      if (settled !== shownSettled) {
+        shownSettled = settled
+        const pct = Math.round((settled / TOTAL) * 100)
+        loadBar.style.transform = `scaleX(${(settled / TOTAL).toFixed(3)})`
+        if (settled >= TOTAL) {
+          scrambleTo(loadTxt, 'Ready')
+          window.setTimeout(() => loadTxt.classList.add(s.loadDone), 1400)
+        } else {
+          loadTxt.textContent = `Loading ${String(pct).padStart(3, '0')}`
+        }
+      }
 
       /* 떨어진 사과의 빛이 화면 전체로 커진다 */
       const diag = Math.hypot(W, H)
       const bs = 0.5 + easeIn(zoomP) * ((diag * 3.4) / 200)
-      const bx = ax + (W / 2 - ax) * ease(zoomP), by = ay + (H / 2 - ay) * ease(zoomP)
+      const bx = tx(ax) + (W / 2 - tx(ax)) * ease(zoomP), by = ty(ay) + (H / 2 - ty(ay)) * ease(zoomP)
       bloom.style.transform = `translate(${bx}px,${by}px) scale(${bs})`
       bloom.style.opacity = String(revP > 0 ? 0 : seg(zoomP, 0, 0.18))
       flood.style.opacity = String(revP > 0 ? 1 - ease(revP) : ease(seg(zoomP, 0.55, 1)))
+      /* 금빛이 화면을 채우는 순간의 한 줄 — 금빛이 걷힐 때 함께 사라진다 */
+      moment.style.opacity = String(revP > 0 ? 1 - ease(seg(revP, 0, 0.5)) : ease(seg(zoomP, 0.6, 0.95)))
 
       /* SCENE 01 카피 — 히어로가 걷힌 뒤 잠깐 */
       const o1 = ease(seg(sv, 0.45, 0.8)) * (1 - ease(seg(sv, 1.25, 1.65)))
       copy1.style.opacity = String(o1)
+      if (o1 > 0.05 && !copyShown[0] && copyEyebrows[0]) { copyShown[0] = true; scrambleTo(copyEyebrows[0], copyEyebrows[0].dataset.scramble || '') }
+      if (o1 < 0.01) copyShown[0] = false
       copy1.style.transform = `translateY(${18 * (1 - ease(seg(sv, 0.45, 0.8))) - 28 * seg(sv, 1.25, 1.65)}px)`
 
       /* SCENE 02 카피 — 도시가 다 펼쳐질 즈음 떠오르고, 엔딩에서 살짝 위로 자리를 내준다 */
       const t2 = ease(seg(sv, T.city1 - 1.1, T.city1 - 0.3))
-      copy2.style.opacity = String(t2)
-      copy2.style.transform = `translateY(${24 * (1 - t2) - 36 * ease(seg(endP, 0.15, 0.7))}px)`
+      const out2 = ease(seg(brandP, 0, 0.2))
+      copy2.style.opacity = String(t2 * (1 - out2))
+      if (t2 > 0.05 && !copyShown[1] && copyEyebrows[1]) { copyShown[1] = true; scrambleTo(copyEyebrows[1], copyEyebrows[1].dataset.scramble || '') }
+      if (t2 < 0.01) copyShown[1] = false
+      copy2.style.transform = `translateY(${24 * (1 - t2) - 36 * ease(seg(endP, 0.15, 0.7)) - 48 * out2}px)`
 
       /* 엔딩: 가장자리부터 밤이 내려앉고, 서명이 마지막으로 남는다 */
       endShade.style.opacity = String(ease(endP))
@@ -211,13 +596,16 @@ export default function AppleSequence() {
       sig.style.opacity = String(so)
       sig.style.transform = `translateY(${16 * (1 - so)}px)`
       sig.style.pointerEvents = so > 0.6 ? 'auto' : 'none'
+
+      /* 브랜드: 앞 문구가 빠지자마자 흐림 → 선명 페이드인 (딤 없이 도시 위에 바로) */
+      brand.classList.toggle(s.brandIn, brandP > 0.16)
     }
 
-    /* 첫 프레임 먼저, 나머지는 순서대로 백그라운드 로드 */
+    /* 첫 프레임 먼저(그동안은 <img> 포스터가 같은 장면을 보여 준다), 나머지는 우선순위대로 백그라운드 로드 */
     Promise.all([load(O[0]), load(F[0])]).then(() => {
       if (!alive) return
       raf = requestAnimationFrame(frame)
-      loadAll(O).then(() => loadAll(F)).then(() => loadAll(C))
+      Promise.all(Array.from({ length: 6 }, worker))
     })
 
     return () => {
@@ -226,54 +614,138 @@ export default function AppleSequence() {
       ro.disconnect()
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onScroll)
+      window.removeEventListener('pointermove', onMove)
       cv.removeEventListener('pointerdown', down)
       window.removeEventListener('pointermove', move)
       window.removeEventListener('pointerup', up)
       window.removeEventListener('pointercancel', up)
+      window.clearTimeout(closeTimer)
+      btn.removeEventListener('pointerenter', onBtnEnter)
+      btn.removeEventListener('pointerleave', onBtnLeave)
+      btn.removeEventListener('pointerdown', onBtnDown)
+      btn.removeEventListener('focus', onFocus)
+      btn.removeEventListener('blur', onBlur)
+      btn.removeEventListener('click', onClick)
+      card.removeEventListener('pointerenter', onCardEnter)
+      card.removeEventListener('pointerleave', onCardLeave)
+      card.removeEventListener('pointerdown', onCardDown)
+      cv.removeEventListener('pointerdown', onCvDown)
+      window.removeEventListener('pointermove', onDragMove)
+      window.removeEventListener('pointerup', onUp)
+      document.removeEventListener('pointerdown', onDocDown, true)
     }
   }, [])
 
   return (
     <section ref={seqRef} aria-label="사과나무에서 황금 숲의 도시로" className={s.seq}>
       <div ref={stageRef} className={s.stage}>
+        {/* 첫 프레임 포스터 — JS가 프레임을 받아 캔버스에 그리기 전까지 빈 화면 대신 같은 장면을 보여 준다 */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={`${BASE}/f/001.webp`} alt="" aria-hidden="true" className={s.poster} fetchPriority="high" decoding="async" />
         <canvas ref={cvRef} className={s.canvas} aria-hidden="true" />
         <div className={s.shade} />
         <div ref={heroShadeRef} className={s.heroShade} />
+        <div ref={blackoutRef} className={s.blackout} aria-hidden="true" />
         <div ref={bloomRef} className={s.bloom} />
         <div ref={floodRef} className={s.flood} />
+        <p ref={momentRef} className={s.moment} style={{ opacity: 0 }} aria-hidden="true">아이디어가 기획이 되는 순간.</p>
 
         {/* 히어로 — 사과나무를 배경으로 */}
         <div ref={heroRef} className={s.hero}>
           <div className={s.heroInner}>
-            <p data-after className={p2.eyebrow} style={{ opacity: 0 }}>{heroP2.eyebrow}</p>
             <div data-hero style={{ opacity: 0 }}>
               <h1 className={`${p2.h1} ${s.heroH1}`}>
-                {heroP2.lines.map((l) => <span key={l} className={p2.hLine}>{l}</span>)}
+                {heroP3.lines.map((l) => <span key={l} className={p2.hLine}>{l}</span>)}
               </h1>
             </div>
-            <p data-after className={`${p2.subtitle} ${s.heroSub}`} style={{ opacity: 0 }}>{heroP2.subtitle}</p>
-            {/* 메타는 부제 아래 흐름에 둔다 — 첫 화면(페이지 상단 여백 72px)에서도 잘리지 않도록 */}
-            <div data-after className={`${p2.heroMeta} ${s.heroMeta}`} style={{ opacity: 0 }}>
-              <span>{heroP2.meta}</span>
-              <span className={p2.metaDim}>{heroP2.role}</span>
-              <span className={p2.metaDim}>{heroP2.scroll} ↓</span>
-              <span className={`${p2.metaDim} ${s.dragHint}`}>← 좌우로 드래그해서 나무를 돌려보세요 →</span>
+            <p data-after className={`${p2.subtitle} ${s.heroSub}`} style={{ opacity: 0 }}>{heroP3.subtitle}</p>
+          </div>
+        </div>
+
+        {/* 황금 사과 — 힌트 링 · 빛 · 히트 영역 · 헤어라인 · 카드 */}
+        <div ref={popRef} className={s.pop}>
+          <svg ref={hudRef} className={s.hud} aria-hidden="true">
+            <path ref={hudPathRef} pathLength={1} />
+            {[2021, ...HUD_NODES.map((n) => n.year)].map((y, i) => (
+              <g key={y} data-node className={i === 0 ? s.hudGold : undefined} style={{ '--i': i } as React.CSSProperties}>
+                <path d="M-4 0H4M0 -4V4" />
+                <text x="9" y="-7">{y}</text>
+              </g>
+            ))}
+          </svg>
+          <svg className={s.popLine} aria-hidden="true"><path ref={linkRef} pathLength={1} /></svg>
+          <div ref={anchorRef} className={s.anchor}>
+            <span className={s.glow} aria-hidden="true" />
+            <span className={s.ring} aria-hidden="true" />
+            <button ref={btnRef} type="button" className={s.appleBtn} tabIndex={-1}
+              aria-label="뉴턴의 사과 이야기 보기" aria-expanded="false" aria-controls="newton-card" />
+          </div>
+          <div ref={cardPosRef} className={s.cardPos}>
+            <div ref={cardRef} id="newton-card" role="note" aria-label={NEWTON.title} className={s.card}>
+              <p className={`${s.eyebrow} ${s.cardEyebrow}`} style={{ '--i': 0 } as React.CSSProperties}>{NEWTON.eyebrow}</p>
+              <p className={s.cardTitle} style={{ '--i': 1 } as React.CSSProperties}>{NEWTON.title}</p>
+              {NEWTON.paras.map((lines, pi) => (
+                <p key={pi} className={s.cardBody} style={{ '--i': pi + 2 } as React.CSSProperties}>
+                  {lines.map((l, li) => <span key={li}>{l}{li < lines.length - 1 && <br />}</span>)}
+                </p>
+              ))}
+              <p className={s.cardLast} style={{ '--i': NEWTON.paras.length + 2 } as React.CSSProperties}>{NEWTON.last}</p>
             </div>
           </div>
         </div>
 
+        {/* 네 모서리 마이크로타이포 */}
+        <div ref={chromeRef} className={s.chrome}>
+          <div ref={tlRef} className={`${s.corner} ${s.tl}`}>
+            <span className={s.cStrong}>{'// '}{heroP3.eyebrow.split(' · ')[0]}</span>
+            <span>{heroP3.meta}</span>
+            <span className={s.cDim}>Service planner · PM — Seoul</span>
+          </div>
+          <div ref={trRef} className={`${s.corner} ${s.tr}`}>
+            <span className={s.cStrong}>{'////// Manifesto'}</span>
+            <span>생각을 모으고,</span>
+            <span>아이디어를 다듬어,</span>
+            <span>사업으로 짓습니다.</span>
+          </div>
+          <div ref={blRef} className={`${s.corner} ${s.bl}`}>
+            <div className={s.cue}>
+              <span className={s.cueTrack} aria-hidden="true"><i /></span>
+              <span>Scroll down.</span>
+              <span className={s.cueDim}>Gravity does the rest.</span>
+            </div>
+          </div>
+          <div ref={brRef} className={`${s.corner} ${s.br}`} aria-live="off">
+            <span ref={loadTxtRef} className={`${s.cDim} ${s.loadTxt}`}>Loading 000</span>
+            <span className={s.sceneRow}>
+              <span ref={sceneNoRef} className={s.cStrong}>01</span>
+              <span className={s.cDim}>/ {String(SCENES.length).padStart(2, '0')}</span>
+              <span ref={sceneNameRef}>{SCENES[0].name}</span>
+            </span>
+            <span className={s.prog} aria-hidden="true"><i ref={loadBarRef} className={s.progLoad} /><i ref={progRef} /></span>
+          </div>
+        </div>
+
         <div ref={copy1Ref} className={s.copy} style={{ opacity: 0 }}>
-          <p className={s.eyebrow}>SCENE 01 · THE APPLE</p>
-          <p className={s.line}>모든 기획은<br />하나의 질문에서 떨어집니다.</p>
+          <p className={s.eyebrow} data-scramble="[ 01 ] — Thought">[ 01 ] — Thought</p>
+          <p className={s.line}>수많은 생각 중 하나에,<br />어느 날 <span className={s.gold}>불이 켜집니다.</span></p>
         </div>
 
         <div ref={endShadeRef} className={s.endShade} style={{ opacity: 0 }} />
         <div ref={copy2Ref} className={`${s.copy} ${s.copyCenter}`}>
-          <p className={s.eyebrow}>SCENE 02 · THE GOLDEN FOREST</p>
-          <p className={`${s.line} ${s.lineBig}`}>그 열매들이 모여, <span className={s.gold}>숲이 되었습니다.</span></p>
+          <p className={s.eyebrow} data-scramble="[ 04 ] — Business">[ 04 ] — Business</p>
+          <p className={`${s.line} ${s.lineBig}`}>생각은 숲이 되고,<br /><span className={s.gold}>눈부신 발전을 이룹니다.</span></p>
+        </div>
+        <div ref={brandRef} className={s.brand}>
+          <span className={s.brandGlow} aria-hidden="true" />
+          <p className={s.brandEyebrow}>{'// Forest of Thought'}</p>
+          <h2 className={s.brandWord}>기획의 숲</h2>
+          <div className={s.brandFoot}>
+            <span className={s.brandRule} aria-hidden="true" />
+            <p className={s.brandTag}>Think; Plan; Build.</p>
+          </div>
         </div>
         <div ref={sigRef} className={s.sig} style={{ opacity: 0 }}>
-          <span>{coda.signature}</span>
+          <span>{SIGNATURE} <Link href="/blog" className={s.sigLink}>이 숲의 열매들 →</Link></span>
           <button type="button" className={s.toTop} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>처음으로 ↑</button>
           <span>{coda.copyright}</span>
         </div>

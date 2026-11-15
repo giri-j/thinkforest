@@ -4,10 +4,15 @@
    가는 외곽선이 글자를 따라 그려진 뒤 채움이 차오르고, [data-after] 요소가 뒤따른다.
    SVG <text> 복제본을 실제 <h1> 위에 정확히 겹치고, 끝나면 SVG를 걷어내 실제 텍스트로 넘긴다. */
 
-import { useEffect, type RefObject } from 'react'
+import { useEffect, useRef, type RefObject } from 'react'
 import gsap from 'gsap'
 
-export function useHairlineIntro(rootRef: RefObject<HTMLElement | null>, hairlineClass: string) {
+/** onDone: 헤드라인과 뒤따르는 요소가 모두 자리를 잡은 뒤 한 번 호출 (모션 줄이기면 즉시)
+ *  onReveal: 외곽선이 다 그려지고 글자가 채워지기 시작하는 순간 한 번 호출 — 암전을 걷는 타이밍 */
+export function useHairlineIntro(rootRef: RefObject<HTMLElement | null>, hairlineClass: string, onDone?: () => void, onReveal?: () => void) {
+  const doneRef = useRef(onDone)
+  const revealRef = useRef(onReveal)
+  useEffect(() => { doneRef.current = onDone; revealRef.current = onReveal }, [onDone, onReveal])
   useEffect(() => {
     const root = rootRef.current
     if (!root) return
@@ -19,6 +24,8 @@ export function useHairlineIntro(rootRef: RefObject<HTMLElement | null>, hairlin
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduce) {
       gsap.set([heroBlock, ...after], { opacity: 1 })
+      revealRef.current?.()
+      doneRef.current?.()
       return
     }
 
@@ -81,9 +88,10 @@ export function useHairlineIntro(rootRef: RefObject<HTMLElement | null>, hairlin
         svg.remove()
       }
       const DRAW = 1.8
-      tl = gsap.timeline({ delay: 0.25, onComplete: () => cleanup() })
+      tl = gsap.timeline({ delay: 0.25, onComplete: () => { cleanup(); doneRef.current?.() } })
         .to(texts, { strokeDashoffset: 0, duration: DRAW, ease: 'power2.inOut', stagger: 0.18 }, 0)
         .to(texts, { attr: { 'fill-opacity': 1 }, duration: 0.9, ease: 'power1.inOut', stagger: 0.18 }, DRAW - 0.55)
+        .call(() => revealRef.current?.(), [], DRAW - 0.35)
         .to(texts, { attr: { 'stroke-opacity': 0 }, duration: 0.6, ease: 'power1.out', stagger: 0.18 }, DRAW + 0.1)
         .to(after, { opacity: 1, filter: 'blur(0px)', y: 0, duration: 0.8, ease: 'power2.out', stagger: 0.1, clearProps: 'filter,transform' }, DRAW + 0.4)
     }

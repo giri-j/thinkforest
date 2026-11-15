@@ -1,0 +1,16 @@
+/* 다크 컬럼 안의 밝은 문서. 케이스 페이지들은 Tailwind 색을 직접 지정하지만,
+   상속에 기대는 글자는 .desk의 밝은 잉크색을 받으므로 여기서 어두운 색으로 되돌린다. */
+.paper {
+  position: relative;
+  margin: 28px 0 0;
+  background: #fff;
+  color: #1c2e24;
+  font-family: 'Pretendard Variable', Pretendard, var(--font-tf-sans), sans-serif;
+  word-break: keep-all;
+}
+/* 페이지 안의 '리스트로 돌아가기' 띠: 화면 고정 대신 종이 상단에 붙인다 */
+.paper > div > nav:first-child { position: absolute; top: 0; left: 0; }
+.paper ::selection { background: #e1b970; color: #0b0f0c; }
+@media (max-width: 760px) {
+  .paper { margin-top: 16px; }
+}

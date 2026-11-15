@@ -1,8 +1,13 @@
 /* 기획의 숲 — /practice3 히어로 + 사과나무 → 황금 도시 시퀀스 (매거진 칼럼 안에서 sticky) */
 
 /* 높이 = (END 7.2 + 1) × 100vh — AppleSequence.tsx의 END와 맞춘다 */
-.seq { position: relative; height: 820vh; background: #0b0f0c; }
+.seq { position: relative; height: 970vh; background: #0b0f0c; }
 .stage { position: sticky; top: 0; height: 100vh; overflow: hidden; background: #0d1220; }
+.poster {
+  /* 캔버스의 기본 확대(숨쉬기 1.035)와 맞춰, 캔버스가 덮을 때 장면이 튀지 않게 */
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.035);
+  pointer-events: none; user-select: none;
+}
 .canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: grab; touch-action: pan-y; }
 .canvasDrag { cursor: grabbing; }
 .canvasLocked { cursor: default; }
@@ -22,6 +27,13 @@
     linear-gradient(90deg, rgba(7, 10, 8, 0.82) 0%, rgba(7, 10, 8, 0.6) 32%, rgba(7, 10, 8, 0.18) 62%, rgba(7, 10, 8, 0) 80%),
     linear-gradient(to top, rgba(7, 10, 8, 0.55) 0%, transparent 30%);
 }
+/* 암전 — 처음엔 검은 화면 위에서 THINK; PLAN; BUILD. 가 그려지고, 글자가 채워질 때 장면이 드러난다 */
+.blackout {
+  position: absolute; inset: 0; pointer-events: none; will-change: opacity;
+  background: #070907; opacity: 1;
+  transition: opacity 2.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.blackoutOff { opacity: 0; }
 .hero {
   position: absolute; inset: 0; z-index: 3; pointer-events: none;
   display: flex; flex-direction: column; justify-content: center;
@@ -31,11 +43,29 @@
 .heroInner { position: relative; }
 .heroH1 { text-shadow: 0 2px 40px rgba(0, 0, 0, 0.35); }
 .heroSub { color: rgba(255, 255, 255, 0.82); text-shadow: 0 1px 18px rgba(0, 0, 0, 0.5); }
-.hero .heroMeta {
-  margin-top: 40px;
+/* 스크롤 안내: "Scroll down. Gravity does the rest." */
+.cue {
+  display: inline-flex; align-items: center; gap: 12px;
+  font-family: var(--font-tf-mono), monospace; font-size: 11.5px; letter-spacing: 0.04em;
   color: #f2ede3; text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6);
 }
-.dragHint { flex-basis: 100%; margin-top: 6px; color: rgba(242, 237, 227, 0.6); }
+.cueDim { color: rgba(242, 237, 227, 0.55); }
+.cueTrack { position: relative; width: 1px; height: 24px; background: linear-gradient(rgba(242, 237, 227, 0.05), rgba(242, 237, 227, 0.35)); }
+.cueTrack i {
+  position: absolute; left: -2.5px; top: 0; width: 6px; height: 6px; border-radius: 50%;
+  background: #e1b970; box-shadow: 0 0 10px rgba(225, 185, 112, 0.85);
+  transform-origin: 50% 100%;
+  animation: cueFall 2.6s infinite;
+}
+/* 중력: 처음엔 느리게, 점점 빨라지다(ease-in) 바닥에서 툭 — 살짝 찌그러졌다가 스며든다 */
+@keyframes cueFall {
+  0% { transform: translateY(-4px) scale(1, 1); opacity: 0; animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45); }
+  12% { opacity: 1; }
+  58% { transform: translateY(19px) scale(1, 1); opacity: 1; animation-timing-function: ease-out; }
+  64% { transform: translateY(20px) scale(1.5, 0.6); }
+  72% { transform: translateY(19px) scale(0.95, 1.05); opacity: 1; }
+  100% { transform: translateY(19px) scale(1, 1); opacity: 0; }
+}
 
 .bloom {
   position: absolute; left: 0; top: 0; width: 200px; height: 200px; margin: -100px 0 0 -100px;
@@ -52,10 +82,10 @@
 .eyebrow { margin: 0 0 18px; font-family: var(--font-tf-mono), monospace; font-size: 11px; letter-spacing: 0.24em; color: #e1b970; text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6); }
 .line {
   margin: 0; font-family: var(--p2-sans), var(--font-tf-sans), sans-serif; font-weight: 700;
-  font-size: clamp(26px, 3.6vw, 52px); line-height: 1.25; letter-spacing: -0.03em; color: #fff;
+  font-size: clamp(20px, 2.3vw, 32px); line-height: 1.35; letter-spacing: -0.025em; color: #fff; font-weight: 600;
   word-break: keep-all; text-shadow: 0 2px 28px rgba(0, 0, 0, 0.55);
 }
-.lineBig { font-size: clamp(30px, 4.4vw, 64px); }
+.lineBig { font-size: clamp(24px, 3vw, 42px); }
 .gold { color: #e1b970; }
 
 /* ---------- 엔딩 ---------- */
@@ -79,9 +109,216 @@
   transition: background 0.3s, color 0.3s;
 }
 .toTop:hover { background: #e1b970; color: #0b0f0c; }
+/* 홈 → 블로그 다리: 스토리를 끝낸 사람이 다음 장(숲의 기록)으로 */
+.sigLink { margin-left: 14px; color: #e1b970; white-space: nowrap; border-bottom: 1px solid rgba(225, 185, 112, 0.4); transition: border-color 0.3s; }
+.sigLink:hover { border-color: #e1b970; }
+
+/* ---------- 브랜드 — 「기획의 숲」 ---------- */
+.brand {
+  /* 화면 정가운데 — 단어(.brandWord)의 중심이 화면 중심에 오도록. 아래 줄(.brandFoot)은 absolute라 중심 계산에서 빠진다 */
+  position: absolute; left: 6%; right: 6%; top: 50%; z-index: 4; pointer-events: none;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  transform: translateY(-50%);
+}
+/* 선과 태그라인은 제목 아래로 흘려, 제목 블록의 위치를 흔들지 않게 */
+.brandFoot { position: absolute; left: 0; right: 0; top: 100%; display: flex; flex-direction: column; align-items: center; }
+.brandGlow {
+  position: absolute; left: 50%; top: 55%; width: min(92vw, 1100px); aspect-ratio: 2 / 1;
+  background: radial-gradient(closest-side, rgba(225, 185, 112, 0.3), rgba(225, 185, 112, 0.08) 55%, transparent);
+  opacity: 0; transform: translate(-50%, -50%); transition: opacity 1.2s ease;
+}
+/* 흐릿하게 번져 있다가 선명해지며 나타나는 페이드인 — 블록 전체가 한 번에 */
+.brandEyebrow, .brand .brandWord, .brandFoot {
+  opacity: 0; filter: blur(12px);
+  transition: opacity 0.9s ease-out, filter 0.9s ease-out;
+}
+.brandEyebrow {
+  position: relative; margin: 0 0 18px; text-shadow: 0 1px 12px rgba(0, 0, 0, 0.7); font-family: var(--font-tf-mono), monospace; font-size: 11px;
+  letter-spacing: 0.24em; color: #e1b970;
+}
+.brand .brandWord {
+  position: relative; margin: 0; white-space: nowrap;
+  font-family: var(--p2-sans), var(--font-tf-sans), sans-serif; font-weight: 700;
+  font-size: clamp(40px, 7vw, 104px); line-height: 1; letter-spacing: -0.05em; color: #f2ede3;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35), 0 6px 48px rgba(0, 0, 0, 0.6);
+}
+.brandFoot { transition-delay: 0.15s; }
+.brandRule { position: relative; display: block; width: min(220px, 40vw); height: 1px; margin: 22px 0 14px; background: #e1b970; }
+.brandTag {
+  position: relative; margin: 0; font-family: var(--font-tf-mono), monospace; font-size: 12px;
+  letter-spacing: 0.3em; color: rgba(242, 237, 227, 0.85); text-shadow: 0 1px 12px rgba(0, 0, 0, 0.7);
+}
+.brandIn .brandGlow, .brandIn :is(.brandEyebrow, .brandWord, .brandFoot) { opacity: 1; filter: none; }
+/* 거슬러 올라갈 땐 더 빨리 걷힌다 */
+.brand:not(.brandIn) :is(.brandGlow, .brandEyebrow, .brandWord, .brandFoot) { transition-duration: 0.4s; transition-delay: 0s; }
+
+/* ---------- 네 모서리 마이크로타이포 (igloo식) ---------- */
+.chrome {
+  position: absolute; inset: 0; z-index: 5; pointer-events: none;
+  --ink: #f2ede3;
+  opacity: 0; transition: opacity 1s ease-out;
+}
+.chromeIn { opacity: 1; }
+.chromeOnGold { --ink: #5a4214; }
+.corner {
+  position: absolute; display: flex; flex-direction: column; gap: 2px;
+  font-family: var(--font-tf-mono), monospace; font-size: 11px; line-height: 1.5; letter-spacing: 0.02em;
+  color: var(--ink); transition: color 0.5s, transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45); will-change: opacity;
+  transform: translateY(6px);
+}
+.chromeIn .corner { transform: none; }
+.chromeOnGold .corner { text-shadow: none; }
+.tl { left: 40px; top: 34px; }
+.tr { right: 40px; top: 34px; text-align: right; align-items: flex-end; transition: color 0.5s, transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.35s ease; transition-delay: 0.08s, 0.08s, 0s; }
+.bl { left: 40px; bottom: calc(34px + var(--lift, 0px)); transition-delay: 0.16s; }
+.br { right: 40px; bottom: calc(34px + var(--lift, 0px)); align-items: flex-end; gap: 10px; transition-delay: 0.24s; }
+.cStrong { color: var(--ink); }
+.cDim { opacity: 0.55; }
+.tr span:not(.cStrong) { opacity: 0.82; }
+.tr .cStrong { margin-bottom: 6px; }
+.sceneRow { display: inline-flex; gap: 8px; align-items: baseline; }
+.prog { position: relative; display: block; width: 132px; height: 1px; background: color-mix(in srgb, var(--ink) 12%, transparent); overflow: hidden; }
+.prog i { position: absolute; inset: 0; display: block; background: var(--ink); transform-origin: 0 50%; transform: scaleX(0); }
+.prog .progLoad { background: color-mix(in srgb, var(--ink) 30%, transparent); transition: transform 0.4s ease-out; }
+.loadTxt { font-variant-numeric: tabular-nums; transition: opacity 0.8s ease-out; }
+.loadDone { opacity: 0 !important; }
+
+/* ---------- 나무 위 도면 주석 (HUD) ---------- */
+.hud { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; opacity: 0; transition: opacity 0.5s; }
+.popActive .hud { opacity: 1; }
+.popOpen .hud { opacity: 0.16; }
+.hud > path {
+  fill: none; stroke: rgba(242, 237, 227, 0.5); stroke-width: 0.8;
+  stroke-dasharray: 1; stroke-dashoffset: 1;
+}
+.popReady .hud > path { stroke-dashoffset: 0; transition: stroke-dashoffset 2.4s cubic-bezier(0.65, 0, 0.35, 1) 0.2s; }
+.hud g { opacity: 0; }
+.popReady .hud g { opacity: 1; transition: opacity 0.6s ease-out calc(0.3s + var(--i, 0) * 0.38s); }
+.hud g path { fill: none; stroke: rgba(242, 237, 227, 0.92); stroke-width: 1; }
+.hud g text {
+  font-family: var(--font-tf-mono), monospace; font-size: 10px; letter-spacing: 0.06em;
+  fill: rgba(242, 237, 227, 0.92); stroke: rgba(8, 11, 9, 0.4); stroke-width: 3px; paint-order: stroke;
+}
+.hudGold path { stroke: #e1b970 !important; }
+.hudGold text { fill: #e1b970; }
+
+/* ---------- 금빛 확대 순간의 한 줄 ---------- */
+.moment {
+  position: absolute; left: 6%; right: 6%; top: 50%; margin: 0; transform: translateY(-50%); z-index: 2;
+  text-align: center; pointer-events: none; will-change: opacity;
+  font-family: var(--font-tf-mono), monospace; font-size: 13.5px; letter-spacing: 0.32em; color: #5a4214;
+}
+
+/* ---------- 황금 사과 호버 카드 ---------- */
+.pop { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
+.popLine { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.popLine path {
+  fill: none; stroke: #e1b970; stroke-opacity: 0.85; stroke-width: 1;
+  stroke-dasharray: 1; stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.2s ease-in;
+}
+.popOpen .popLine path { stroke-dashoffset: 0; transition: stroke-dashoffset 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s; }
+
+/* 사과 중심에 붙는 기준점 — JS가 translate와 --r(화면상 반지름)을 매 프레임 갱신 */
+.anchor { position: absolute; left: 0; top: 0; width: 0; height: 0; --r: 22px; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0s 0.3s; }
+.popActive .anchor { opacity: 1; visibility: visible; transition: opacity 0.3s; }
+.anchor > * { position: absolute; left: 0; top: 0; transform: translate(-50%, -50%); border-radius: 50%; }
+
+/* 평상시 힌트: 4초마다 한 번, 얇은 금색 원이 천천히 퍼지며 사라진다 */
+.ring {
+  width: calc(var(--r) * 2.1); height: calc(var(--r) * 2.1);
+  border: 1px solid rgba(255, 214, 140, 0.5); opacity: 0; pointer-events: none;
+}
+.popReady.popActive .ring { animation: ringPulse 4s ease-out infinite; }
+.popOpen .ring { animation: none !important; opacity: 0; }
+@keyframes ringPulse {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+  40% { transform: translate(-50%, -50%) scale(1.8); opacity: 0; }
+  100% { transform: translate(-50%, -50%) scale(1.8); opacity: 0; }
+}
+
+/* 호버하면 사과 위의 따뜻한 빛이 은은하게 밝아진다 */
+.glow {
+  width: calc(var(--r) * 4.2); height: calc(var(--r) * 4.2); pointer-events: none;
+  background: radial-gradient(circle, rgba(255, 240, 190, 0.8) 0%, rgba(255, 206, 110, 0.38) 28%, rgba(255, 180, 80, 0.12) 48%, transparent 66%);
+  mix-blend-mode: screen; opacity: 0; transition: opacity 0.3s ease-out;
+}
+.popOpen .glow { opacity: 1; transition: opacity 0.4s ease-out; }
+
+/* 히트 영역 — 반지름의 약 2.2배 원 */
+.appleBtn {
+  width: calc(var(--r) * 4.4); height: calc(var(--r) * 4.4);
+  padding: 0; border: 0; background: transparent; cursor: pointer; pointer-events: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.popActive .appleBtn { pointer-events: auto; }
+.appleBtn:focus-visible { outline: 1px solid rgba(225, 185, 112, 0.75); outline-offset: -8px; }
+
+.cardPos { position: absolute; left: 0; top: 0; width: 300px; pointer-events: none; will-change: transform; }
+.card {
+  width: 300px; padding: 22px; border-radius: 4px;
+  background: rgba(11, 15, 12, 0.62);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  border: 1px solid rgba(225, 185, 112, 0.28);
+  box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.6);
+  opacity: 0; filter: blur(8px); transform: translateY(8px); pointer-events: none;
+  /* 닫힘: 역순으로 빠르게 */
+  transition: opacity 0.28s ease-in, filter 0.28s ease-in, transform 0.28s ease-in;
+}
+.popOpen .card {
+  opacity: 1; filter: blur(0); transform: none; pointer-events: auto;
+  transition: opacity 0.5s ease-out 0.35s, filter 0.55s ease-out 0.35s, transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) 0.35s;
+}
+.card > * { opacity: 0; transform: translateY(6px); transition: opacity 0.18s, transform 0.18s; }
+.popOpen .card > * {
+  opacity: 1; transform: none;
+  transition: opacity 0.45s ease-out calc(0.42s + var(--i, 0) * 0.06s), transform 0.5s ease-out calc(0.42s + var(--i, 0) * 0.06s);
+}
+.cardEyebrow { margin: 0 0 10px; text-shadow: none; }
+.cardTitle {
+  margin: 0 0 12px; font-family: var(--p2-sans), var(--font-tf-sans), sans-serif; font-weight: 700;
+  font-size: 22px; line-height: 1.25; letter-spacing: -0.03em; color: #f2ede3;
+}
+.cardBody { margin: 0 0 10px; font-size: 13.5px; line-height: 1.75; color: rgba(242, 237, 227, 0.86); word-break: keep-all; }
+.cardLast {
+  margin: 14px 0 0; padding-top: 12px; border-top: 1px solid rgba(225, 185, 112, 0.2);
+  font-family: var(--font-tf-serif), serif; font-style: italic; font-size: 13.5px; line-height: 1.7; color: #e1b970; word-break: keep-all;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card, .popOpen .card, .card > *, .popOpen .card > *, .glow, .popOpen .glow {
+    filter: none !important; transform: none !important;
+    transition: opacity 0.2s linear !important;
+  }
+  .popLine { display: none; }
+  .blackout { transition-duration: 0.6s; }
+  .brand :is(.brandGlow, .brandEyebrow, .brandWord, .brandFoot) { filter: none !important; transition: opacity 0.4s linear !important; }
+  .ring, .popReady.popActive .ring { animation: none !important; }
+  .cueTrack i { animation: none; opacity: 1; transform: translateY(19px); }
+  .hud > path, .popReady .hud > path { stroke-dashoffset: 0; transition: none; }
+  .popReady .hud g { transition: none; }
+  .corner { transform: none; transition: color 0.2s; }
+}
 
 @media (max-width: 760px) {
-  .dragHint { display: none; }
-  .hero .heroMeta { margin-top: 28px; }
+  .tr, .hud, .cueDim { display: none; }
+  .tl, .bl { left: 20px; }
+  .br { right: 20px; }
+  .tl { top: 22px; }
+  .bl, .br { bottom: calc(22px + var(--lift, 0px)); }
+  .prog { width: 84px; }
   .sig { justify-content: center; text-align: center; }
+  /* 좁은 화면은 서명 줄이 두 줄로 높아져서, 태그라인은 빼고 금색 선만 남긴다 */
+  .brandTag { display: none; }
+  .brandRule { margin: 16px 0 0; }
+  /* 좁은 화면: 카드는 화면 아래쪽 가운데, 헤어라인 생략 */
+  .cardPos { left: 50%; top: auto; bottom: 24px; width: 260px; transform: translateX(-50%); }
+  .card { width: 260px; padding: 16px 18px; }
+  /* 좁은 화면에선 카드를 낮게 — 위쪽의 빛나는 사과가 가려지지 않게 */
+  .cardEyebrow { margin-bottom: 6px; font-size: 10px; }
+  .cardTitle { margin-bottom: 8px; font-size: 18px; }
+  .cardBody { margin-bottom: 8px; font-size: 12px; line-height: 1.6; }
+  .cardLast { margin-top: 10px; padding-top: 9px; font-size: 12px; line-height: 1.55; }
+  .popLine { display: none; }
 }

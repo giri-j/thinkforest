@@ -1,68 +1,75 @@
-import { getAllPosts, getCategories } from '@/lib/blog'
 import Link from 'next/link'
-import { Card } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Clock, Eye, TrendingUp } from 'lucide-react'
-import { formatDate } from '@/lib/utils'
-import BlogListClient from '@/components/blog/BlogListClient'
+import { CATEGORIES, getAllPosts, getCategoryCounts, stagesOf, threadOf } from '@/lib/blog'
+import PostTable, { numberPosts } from '@/components/blog/desk/PostTable'
+import DeskHero from '@/components/blog/desk/DeskHero'
+import SubjectBar from '@/components/blog/desk/SubjectBar'
+import s from '@/components/blog/desk/desk.module.css'
 
 export const metadata = {
-    title: '기획의 숲 블로그 | Planning, Reverse Engineering, Journey, Cutlet Lab, Personal Notes',
-    description: '기획의 숲에서 길을 만든 흔적들. 기획, 역기획, 여행, 돈까스, Personal Notes에 대한 공간입니다.',
+    title: 'Forest Desk — 기획의 숲 블로그',
+    description: '기획의 숲의 책상. Idea, Trials, Personal, Life — 생각과 시도와 공간의 기록.',
 }
 
-export default async function BlogPage() {
-    const posts = await getAllPosts()
-    const categories = await getCategories()
+const PER_PAGE = 48
+const FIRST_YEAR = 2021 // 기획을 시작한 해
 
-    // Mock views for now - will be replaced with real data from Supabase
-    const popularPosts = posts.slice(0, 3)
-    const latestPosts = posts.slice(0, 10)
+export default async function BlogPage(props: { searchParams: Promise<{ page?: string }> }) {
+    const { page: pageParam } = await props.searchParams
+    const posts = await getAllPosts()
+    const counts = await getCategoryCounts()
+    const numbers = numberPosts(posts)
+    const stages = stagesOf(posts)
+
+    /* 히어로 숫자: 올해 심은 글, 사업까지 간 실 */
+    const year = new Date().getFullYear()
+    const thisYear = posts.filter((p) => new Date(p.date).getFullYear() === year).length
+    const grown = new Set(posts.map((p) => threadOf(p, posts)).filter((t) => t?.stage === 'forest').map((t) => t!.name)).size
+
+    const pages = Math.max(1, Math.ceil(posts.length / PER_PAGE))
+    const page = Math.min(pages, Math.max(1, Number(pageParam) || 1))
+    const slice = posts.slice((page - 1) * PER_PAGE, page * PER_PAGE)
 
     return (
-        <div className="min-h-screen bg-[#F6F8F7]">
-            <div className="max-w-7xl mx-auto px-6 py-32">
-                <header className="mb-20 text-center">
-                    <h1 className="text-5xl md:text-7xl font-bold text-[#1C2E24] mb-6 tracking-tight font-maple">생각의 기록</h1>
-                    <p className="text-[#1C2E24]/70 text-lg md:text-xl">기획의 숲에서 길을 만든 흔적들</p>
-                </header>
+        <>
+            <DeskHero total={posts.length} firstYear={FIRST_YEAR} thisYear={thisYear} grown={grown} />
+            <SubjectBar counts={counts} total={posts.length} />
 
-                {/* Popular Posts Section */}
-                <section className="mb-24">
-                    <div className="flex items-center gap-2 mb-8">
-                        <TrendingUp className="text-[#E8B86D]" size={24} />
-                        <h2 className="text-2xl font-bold text-[#1C2E24]">Popular Posts</h2>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {popularPosts.map((post) => (
-                            <Link href={`/blog/${post.slug}`} key={post.slug} className="group">
-                                <Card className="h-full border-[#E5EBE8] bg-white overflow-hidden hover:shadow-xl transition-all duration-300 border-l-4 border-l-transparent group-hover:border-l-[#1C2E24]">
-                                    <div className="p-8 flex flex-col h-full">
-                                        <div className="mb-4">
-                                            <Badge variant="secondary" className="bg-[#E5EBE8] text-[#1C2E24] hover:bg-[#E5EBE8] border-none">
-                                                {post.category}
-                                            </Badge>
-                                        </div>
-                                        <h3 className="text-xl font-bold text-[#1C2E24] mb-3 group-hover:text-[#355BE5] transition-colors line-clamp-2">
-                                            {post.title}
-                                        </h3>
-                                        <p className="text-[#1C2E24]/60 text-sm mb-6 line-clamp-3">
-                                            {post.summary}
-                                        </p>
-                                        <div className="mt-auto flex items-center gap-4 text-xs text-[#1C2E24]/40 font-medium">
-                                            <span>{formatDate(post.date)}</span>
-                                            <span className="flex items-center gap-1"><Clock size={12} /> {post.readingTime}</span>
-                                            <span className="flex items-center gap-1"><Eye size={12} /> 1,234</span>
-                                        </div>
-                                    </div>
-                                </Card>
+            <section id="entries" className={`${s.section} ${s.pad}`} style={{ scrollMarginTop: 24 }}>
+                <h2 className={`${s.secHead} ${s.mono}`}>
+                    <span><b>[ 01 ]</b> — Entries</span>
+                    <Link href="/blog/archive">Browse by year →</Link>
+                </h2>
+                <PostTable posts={slice} latestSlug={posts[0]?.slug} numbers={numbers} stages={stages} />
+                <div className={`${s.pager} ${s.mono}`}>
+                    <span>{page > 1 ? <Link href={`/blog?page=${page - 1}`}>← Later entries</Link> : null}</span>
+                    <span>Page {page} of {pages} · {posts.length} entries</span>
+                    <span>{page < pages ? <Link href={`/blog?page=${page + 1}`}>Earlier entries →</Link> : null}</span>
+                </div>
+            </section>
+
+            <section className={`${s.section} ${s.pad}`}>
+                <h2 className={`${s.secHead} ${s.mono}`}>
+                    <span><b>[ 02 ]</b> — Subjects</span>
+                    <span>생각 → 시도 → 숲, 그리고 그 곁의 글들</span>
+                </h2>
+                <div className={s.subjectGrid}>
+                    {CATEGORIES.map((c) => (
+                        <div key={c.key} className={s.subject}>
+                            <Link href={`/blog/category/${c.slug}`}>
+                                <span className={`${s.mono} ${s.gold}`}>[ {c.no} ] · {String(counts[c.key]).padStart(2, '0')}</span>
+                                <h3>{c.key}</h3>
+                                <span className={`${s.mono} ${s.sceneTag}`}>{c.scene}</span>
+                                <p>{c.description}</p>
                             </Link>
-                        ))}
-                    </div>
-                </section>
+                        </div>
+                    ))}
+                </div>
+            </section>
 
-                <BlogListClient posts={posts} categories={categories} />
-            </div>
-        </div>
+            <section className={`${s.note} ${s.pad}`}>
+                <p>사과 하나가 떨어지듯 떠오른 질문을,</p>
+                <p>그냥 흘려보내지 않으려고 <span className={s.gold}>이 책상을 두었습니다.</span></p>
+            </section>
+        </>
     )
 }
