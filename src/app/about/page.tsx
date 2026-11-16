@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
     return (
-        <ForestFrame header={<PageChrome section="About — 기리 (전은길)" right={['Manifesto', '현장에서 듣고,', '구조를 고치고,', '끝까지 만듭니다.']} />}>
+        <ForestFrame header={<PageChrome section="About — 기리 (전은길)" />}>
             <AboutForest />
         </ForestFrame>
     )

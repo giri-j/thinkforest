@@ -108,7 +108,6 @@ export default function AppleSequence() {
   /* 모서리 마이크로타이포 · 도면 주석 */
   const chromeRef = useRef<HTMLDivElement>(null)
   const tlRef = useRef<HTMLDivElement>(null)
-  const trRef = useRef<HTMLDivElement>(null)
   const blRef = useRef<HTMLDivElement>(null)
   const brRef = useRef<HTMLDivElement>(null)
   const sceneNoRef = useRef<HTMLSpanElement>(null)
@@ -139,12 +138,12 @@ export default function AppleSequence() {
     const link = linkRef.current, cardPos = cardPosRef.current, card = cardRef.current
     if (!seq || !stage || !cv || !hero || !heroShade || !bloom || !flood || !copy1 || !copy2 || !endShade || !sig || !moment) return
     if (!pop || !anchor || !btn || !link || !cardPos || !card) return
-    const chrome = chromeRef.current, tl = tlRef.current, tr = trRef.current, bl = blRef.current, br = brRef.current
+    const chrome = chromeRef.current, tl = tlRef.current, bl = blRef.current, br = brRef.current
     const sceneNo = sceneNoRef.current, sceneName = sceneNameRef.current, prog = progRef.current
     const hud = hudRef.current, hudPath = hudPathRef.current
     const brand = brandRef.current
     const loadBar = loadBarRef.current, loadTxt = loadTxtRef.current
-    if (!chrome || !tl || !tr || !bl || !br || !sceneNo || !sceneName || !prog || !hud || !hudPath || !loadBar || !loadTxt || !brand) return
+    if (!chrome || !tl || !bl || !br || !sceneNo || !sceneName || !prog || !hud || !hudPath || !loadBar || !loadTxt || !brand) return
     const hudNodes = Array.from(hud.querySelectorAll<SVGGElement>('[data-node]'))
     const ctx = cv.getContext('2d')
     if (!ctx) return
@@ -543,7 +542,6 @@ export default function AppleSequence() {
          금빛이 화면을 채울 땐 글자색이 금빛 위에서 읽히는 짙은 갈색으로 바뀐다 */
       const floodO = revP > 0 ? 1 - ease(revP) : ease(seg(zoomP, 0.55, 1))
       chrome.classList.toggle(s.chromeOnGold, floodO > 0.5)
-      tr.style.opacity = String(popOpen ? 0 : 1 - heroOut) // 카드가 열리면 선언문은 잠시 비킨다
       bl.style.opacity = String(1 - heroOut)
       br.style.opacity = String(1 - ease(seg(endP, 0.2, 0.5)))
       tl.style.opacity = String(1 - 0.35 * ease(seg(endP, 0.2, 0.6)))
@@ -701,13 +699,6 @@ export default function AppleSequence() {
           <div ref={tlRef} className={`${s.corner} ${s.tl}`}>
             <span className={s.cStrong}>{'// '}{heroP3.eyebrow.split(' · ')[0]}</span>
             <span>{heroP3.meta}</span>
-            <span className={s.cDim}>Service planner · PM — Seoul</span>
-          </div>
-          <div ref={trRef} className={`${s.corner} ${s.tr}`}>
-            <span className={s.cStrong}>{'////// Manifesto'}</span>
-            <span>생각을 모으고,</span>
-            <span>아이디어를 다듬어,</span>
-            <span>사업으로 짓습니다.</span>
           </div>
           <div ref={blRef} className={`${s.corner} ${s.bl}`}>
             <div className={s.cue}>

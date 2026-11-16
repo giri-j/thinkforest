@@ -170,13 +170,10 @@
 .chromeIn .corner { transform: none; }
 .chromeOnGold .corner { text-shadow: none; }
 .tl { left: 40px; top: 34px; }
-.tr { right: 40px; top: 34px; text-align: right; align-items: flex-end; transition: color 0.5s, transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.35s ease; transition-delay: 0.08s, 0.08s, 0s; }
 .bl { left: 40px; bottom: calc(34px + var(--lift, 0px)); transition-delay: 0.16s; }
 .br { right: 40px; bottom: calc(34px + var(--lift, 0px)); align-items: flex-end; gap: 10px; transition-delay: 0.24s; }
 .cStrong { color: var(--ink); }
 .cDim { opacity: 0.55; }
-.tr span:not(.cStrong) { opacity: 0.82; }
-.tr .cStrong { margin-bottom: 6px; }
 .sceneRow { display: inline-flex; gap: 8px; align-items: baseline; }
 .prog { position: relative; display: block; width: 132px; height: 1px; background: color-mix(in srgb, var(--ink) 12%, transparent); overflow: hidden; }
 .prog i { position: absolute; inset: 0; display: block; background: var(--ink); transform-origin: 0 50%; transform: scaleX(0); }
@@ -302,7 +299,7 @@
 }
 
 @media (max-width: 760px) {
-  .tr, .hud, .cueDim { display: none; }
+  .hud, .cueDim { display: none; }
   .tl, .bl { left: 20px; }
   .br { right: 20px; }
   .tl { top: 22px; }

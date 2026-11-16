@@ -54,6 +54,8 @@ export interface Post {
     tags: string[]
     summary: string
     cover?: string
+    /* 목록 카드에 실제로 쓰는 이미지 — cover 파일이 있으면 그것, 없으면 주제 장면의 한 프레임 (blog.ts가 채운다) */
+    image: string
     place?: string
     /* 같은 실로 묶을 때 쓰는 이름 (frontmatter: thread) */
     thread?: string

@@ -52,6 +52,7 @@
 .corner { display: flex; flex-direction: column; gap: 2px; text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45); }
 .corner strong { font-weight: 400; color: var(--ink); }
 .corner span { color: var(--ink2); }
+.cornerR { align-items: flex-end; text-align: right; } /* About 외 페이지(Contact · 케이스 스터디 · 404)의 우상단 */
 
 /* ---------- hero (황금 숲 마지막 프레임 위) ---------- */
 .hero {
@@ -159,6 +160,40 @@
 .pager { display: flex; justify-content: space-between; gap: 16px; padding: 16px 0; color: var(--grey); }
 .pager a { color: var(--gold); }
 
+/* ---------- magazine grid (큰 세로 이미지 카드) ---------- */
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 56px 32px; }
+.card { position: relative; min-width: 0; }
+.cardImg {
+  position: relative; display: block; aspect-ratio: 4 / 5; overflow: hidden;
+  background: var(--panel); border-radius: 2px;
+}
+.cardImg img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transform: scale(1.02); transition: transform 1.2s var(--ease), opacity 0.6s;
+}
+.card:hover .cardImg img { transform: scale(1.07); }
+.cardImg::after {
+  /* 사진 아래쪽을 살짝 눌러 번호·배지가 어떤 사진 위에서도 읽히게 */
+  content: ''; position: absolute; inset: auto 0 0 0; height: 36%;
+  background: linear-gradient(to top, rgba(11, 15, 12, 0.55), transparent); pointer-events: none;
+}
+.cardNo { position: absolute; left: 14px; bottom: 12px; z-index: 1; color: rgba(242, 237, 227, 0.8); }
+.cardBadge { position: absolute; right: 12px; top: 12px; z-index: 1; margin: 0; background: rgba(11, 15, 12, 0.55); backdrop-filter: blur(6px); }
+.desk .cardTitle {
+  margin: 18px 0 8px; font-family: var(--sans); font-weight: 600;
+  font-size: clamp(17px, 1.45vw, 21px); line-height: 1.4; letter-spacing: -0.02em;
+  color: var(--ink); word-break: keep-all; text-wrap: pretty;
+}
+.cardTitle a { transition: color 0.3s; }
+.card:hover .cardTitle a { color: var(--gold); }
+.cardMeta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin: 0; color: var(--grey); }
+.cardMeta a { color: var(--grey); transition: color 0.3s; }
+.cardMeta a:hover { color: var(--gold); }
+.cardDot { color: var(--line); }
+.cardMeta .stageTag { color: var(--grey); }
+.cardMeta .st_forest { color: var(--gold); }
+.gridWrap { padding-top: 44px; }
+
 /* ---------- subjects ---------- */
 .subjectGrid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--rule); }
 .subject { position: relative; padding: 26px 22px 30px 0; border-bottom: 1px solid var(--line); }
@@ -182,6 +217,11 @@
 
 /* ---------- category / archive / search 헤더 ---------- */
 .pageHead { padding: 96px 0 40px; }
+/* 매거진 머리 — 목차·주제 페이지. 큰 히어로 대신 제목 한 줄과 설명, 바로 아래 주제 줄 */
+.magHead { padding: 56px var(--px) 28px; }
+.desk .magHead .pageTitle { font-size: clamp(44px, 6.4vw, 88px); margin-bottom: 14px; }
+.magHead .pageDesc { margin-bottom: 0; }
+.magHead .eyebrow { margin-bottom: 18px; text-shadow: none; }
 .desk .pageTitle {
   font-family: var(--head); font-weight: 800; font-size: clamp(56px, 9vw, 128px);
   line-height: 0.92; letter-spacing: -0.05em; margin: 0 0 22px;
@@ -352,9 +392,14 @@
   .in, .in2, .heroBg { animation: none; }
 }
 
+@media (max-width: 1100px) and (min-width: 761px) {
+  .grid { grid-template-columns: 1fr 1fr; gap: 48px 28px; }
+}
+
 /* ---------- mobile ---------- */
 @media (max-width: 760px) {
   .chrome { padding: 22px 20px 0; flex-direction: column; gap: 14px; }
+  .cornerR { align-items: flex-start; text-align: left; }
   .hero { min-height: 0; padding-top: 170px; }
   .subjectBar { flex-direction: column; align-items: stretch; gap: 0; }
   .subjectTabs { overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; gap: 22px; }
@@ -366,6 +411,9 @@
   .num, .len { display: none; }
   .subjectGrid { grid-template-columns: 1fr 1fr; }
   .subject:nth-child(3) { padding-left: 0; border-left: 0; }
+  .grid { grid-template-columns: 1fr; gap: 44px; }
+  .magHead { padding-top: 36px; }
+  .desk .magHead .pageTitle { font-size: clamp(40px, 12vw, 56px); }
   .meta { justify-content: flex-start; gap: 14px 24px; }
   .meta div { flex: 1 1 28%; }
   .catHero { margin-top: -60px; }

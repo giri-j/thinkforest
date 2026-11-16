@@ -8,6 +8,35 @@ export { CATEGORIES, STAGES, THREAD_ROLE, getCategoryMeta, deskDate, signDate } 
 export type { Category, CategoryMeta, Post, Stage } from './blog-meta'
 
 const BLOG_PATH = path.join(process.cwd(), 'src/content/blog')
+const PUBLIC_PATH = path.join(process.cwd(), 'public')
+
+/* cover가 없는 글의 카드 사진 — 홈 시퀀스에서 서로 다르게 보이는 장면만 고른 목록.
+   한 시퀀스 안의 이웃 프레임은 거의 같은 그림이라, 폴더 전체에서 고르면 카드들이 똑같아 보인다. */
+const SCENE_FRAMES = [
+    '/practice3/o/001.webp', '/practice3/o/032.webp', '/practice3/o/064.webp', '/practice3/o/090.webp',
+    '/practice3/f/004.webp', '/practice3/f/018.webp', '/practice3/f/030.webp', '/practice3/f/040.webp',
+    '/practice3/c/008.webp', '/practice3/c/036.webp', '/practice3/c/066.webp', '/practice3/c/095.webp',
+]
+
+function hashOf(s: string): number {
+    let h = 0
+    for (const ch of s) h = (h * 31 + ch.charCodeAt(0)) >>> 0
+    return h
+}
+
+/* 카드 이미지: cover 파일이 public에 실제로 있으면 그것, 없으면 slug로 정해지는 장면.
+   목록에서 이웃한 글과 같은 장면이 되지 않도록, 최근에 쓴 장면 셋은 피해 다음 장면으로 옮긴다. */
+function assignImages(posts: Post[]): void {
+    const recent: string[] = []
+    for (const p of posts) {
+        if (p.cover && fs.existsSync(path.join(PUBLIC_PATH, p.cover))) { p.image = p.cover; continue }
+        let i = hashOf(p.slug) % SCENE_FRAMES.length
+        for (let tries = 0; tries < SCENE_FRAMES.length && recent.includes(SCENE_FRAMES[i]); tries++) i = (i + 1) % SCENE_FRAMES.length
+        p.image = SCENE_FRAMES[i]
+        recent.push(p.image)
+        if (recent.length > 3) recent.shift()
+    }
+}
 
 export async function getAllPosts(): Promise<Post[]> {
     if (!fs.existsSync(BLOG_PATH)) {
@@ -25,11 +54,13 @@ export async function getAllPosts(): Promise<Post[]> {
             const stats = readingTime(content)
             const minutes = Math.max(1, Math.ceil(stats.minutes))
 
+            const slug = data.slug || file.replace('.mdx', '')
             return {
                 tags: [],
                 summary: '',
                 ...data,
-                slug: data.slug || file.replace('.mdx', ''),
+                slug,
+                image: '',
                 readingTime: `${minutes} min`,
                 minutes,
                 wordCount: stats.words,
@@ -39,6 +70,7 @@ export async function getAllPosts(): Promise<Post[]> {
         .filter((post) => !post.draft)
         .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
+    assignImages(posts)
     return posts
 }
 

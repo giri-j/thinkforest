@@ -2,7 +2,7 @@
 
 import s from '@/components/blog/desk/desk.module.css'
 
-export default function PageChrome({ section, right, over = false }: { section: string; right: string[]; over?: boolean }) {
+export default function PageChrome({ section, right, over = false }: { section: string; right?: string[]; over?: boolean }) {
   return (
     <header className={`${s.chrome} ${over ? s.chromeOver : ''} ${s.mono}`}>
       <div className={s.corner}>
@@ -10,10 +10,12 @@ export default function PageChrome({ section, right, over = false }: { section: 
         <span>{section}</span>
         <span>Seoul — since 2021</span>
       </div>
-      <div className={`${s.corner} ${s.cornerR}`}>
-        <strong>{`////// ${right[0]}`}</strong>
-        {right.slice(1).map((l) => <span key={l}>{l}</span>)}
-      </div>
+      {right && right.length > 0 && (
+        <div className={`${s.corner} ${s.cornerR}`}>
+          <strong>{`////// ${right[0]}`}</strong>
+          {right.slice(1).map((l) => <span key={l}>{l}</span>)}
+        </div>
+      )}
     </header>
   )
 }
