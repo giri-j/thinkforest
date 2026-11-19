@@ -59,9 +59,8 @@ export default function AboutForest() {
             </li>
           ))}
         </ul>
-        <p className={f.links} data-rv>
-          <Link href="/contact" className={d.mono}>{ctaCopy.button} →</Link>
-          <Link href="/blog" className={d.mono}>블로그 보기 →</Link>
+        <p className={f.portfolioRow} data-rv>
+          <Link href="/portfolio" className={f.pill}>포트폴리오 보러가기 →</Link>
         </p>
       </section>
 

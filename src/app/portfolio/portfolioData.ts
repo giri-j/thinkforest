@@ -9,7 +9,7 @@ export const FIELDS: { key: Field; no: string; en: string; ko: string; note: str
   { key: 'service', no: '01', en: 'Service', ko: '서비스 기획', note: '웹·앱 서비스를 0부터 만들거나 다시 짠 일' },
   { key: 'operation', no: '02', en: 'Operation', ko: '운영 기획', note: '현장의 문제를 구조와 정책으로 고친 일' },
   { key: 'business', no: '03', en: 'Business', ko: '사업 기획', note: '브랜드를 들여오고, 사업을 세우고, 투자를 설득한 일' },
-  { key: 'side', no: '04', en: 'Side', ko: '곁가지', note: '일 밖에서 기획해 본 것들' },
+  { key: 'side', no: '04', en: 'Side', ko: '기타', note: '일 밖에서 기획해 본 것들' },
 ]
 
 export type Media =
@@ -47,7 +47,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'wedding-invitation',
-    field: 'service',
+    field: 'side',
     title: '셀프 모바일 청첩장',
     org: '개인 프로젝트',
     period: '2026',
@@ -216,14 +216,16 @@ export const PROJECTS: Project[] = [
     sortYear: 2020,
     summary: '배달기사의 이야기를 듣고 상품 구성을 다시 짜서 잠실 권역에 서비스를 열었다.',
     role: 'TF 운영 기획',
+    media: { kind: 'images', srcs: ['/images/portfolio/one-hour-delivery.webp'] }, // 조선일보 기사 썸네일
+    links: [{ label: '관련 기사 · 조선일보', href: 'https://www.chosun.com/site/data/html_dir/2020/08/26/2020082601279.html', kind: 'site' }],
   },
   {
     id: 'qr-pickup',
     field: 'operation',
     title: 'QR 픽업 · 라이브커머스 파일럿',
     org: "대기업 'L그룹' 백화점 파견",
-    period: 'L그룹 재직 중', // TODO: 정확한 연도 확인
-    sortYear: 2019,
+    period: '2020.03 — 2020.06',
+    sortYear: 2020,
     summary: 'QR 픽업 존을 기획부터 전시까지 맡았고, 이 일이 라이브커머스 운영 조직 신설로 이어졌다.',
     role: '기획, 현장 운영',
   },
