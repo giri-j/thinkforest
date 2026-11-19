@@ -280,8 +280,9 @@ export const PROJECTS: Project[] = [
     org: "스타트업 'N사'",
     period: '2025',
     sortYear: 2025,
-    summary: '홍콩 유통망을 활용한 명품 화장품 직구 사업. 스마트스토어와 쿠팡 판매 채널을 세팅했다.',
+    summary: "홍콩 유통망을 활용한 명품 화장품 직구 사업. 스마트스토어를 세팅하고 상품 상세페이지를 직접 만들었다. 정식 수입은 판매자가 관세를 부담하는 만큼 가격이 오르지만, 150달러 미만 상품을 소비자가 직접 사는 '직구' 형태로 팔면 관세가 붙지 않는다는 점에 착안해 기획했다.",
     role: '브랜드 전략, 판매 채널 셋업',
+    media: { kind: 'video', src: '/images/portfolio/lux-cosmetics.mp4', poster: '/images/portfolio/lux-cosmetics-poster.jpg' }, // 스마트스토어 화면 녹화(10초, 960×540)
   },
   {
     id: 'biz-plan',
