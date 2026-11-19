@@ -21,7 +21,6 @@ export default function ProjectIndex({ projects, numbers, fields }: { projects: 
           <span className={`${s.num} ${s.mono}`}>{numbers[pr.id]}</span>
           <div className={s.titleCell}>
             <a href={`#${pr.id}`} className={`${s.titleLink} ${p.idxTitle}`}>{pr.title}</a>
-            {pr.featured && <span className={`${s.badge} ${s.mono}`}>Case Study</span>}
           </div>
           <span className={`${s.mono} ${s.grey} ${p.idxField}`}>{fieldEn[pr.field]}</span>
           <span className={`${s.mono} ${s.grey}`}>{pr.period}</span>

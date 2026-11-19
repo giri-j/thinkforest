@@ -58,7 +58,6 @@
 .meta dd { margin: 0; font-size: 14px; line-height: 1.6; color: var(--ink2); word-break: keep-all; }
 
 .links { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; margin-top: 24px; }
-.casePill.casePill { padding: 11px 20px; font-size: 11px; }
 .lnk {
   font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em; color: var(--gold);
   border-bottom: 1px solid rgba(225, 185, 112, 0.35); padding-bottom: 2px; transition: border-color 0.3s;

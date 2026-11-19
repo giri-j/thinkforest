@@ -5,7 +5,6 @@ import Link from 'next/link'
 import type { Project, ProjectLink } from '@/app/portfolio/portfolioData'
 import ProjectMedia from './ProjectMedia'
 import s from '@/components/blog/desk/desk.module.css'
-import f from '@/components/forest/forest.module.css'
 import p from './portfolio.module.css'
 
 function LinkButton({ l }: { l: ProjectLink }) {
@@ -16,7 +15,6 @@ function LinkButton({ l }: { l: ProjectLink }) {
       </span>
     )
   }
-  if (l.kind === 'case') return <Link href={l.href} className={`${f.pill} ${p.casePill}`}>케이스 스터디 →</Link>
   if (l.kind === 'blog') return <Link href={l.href} className={p.lnk}>{l.label} →</Link>
   // site
   if (l.href.startsWith('/')) return <Link href={l.href} className={p.lnk}>{l.label} ↗</Link>

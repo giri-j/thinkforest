@@ -17,7 +17,7 @@ export type Media =
   | { kind: 'images'; srcs: string[] }
   | { kind: 'note'; label: string; title: string; sub?: string } // 아직 보여줄 화면이 없을 때 — 글자만 있는 카드
 
-export type ProjectLink = { label: string; href: string; kind: 'case' | 'blog' | 'site' | 'locked' }
+export type ProjectLink = { label: string; href: string; kind: 'blog' | 'site' | 'locked' }
 
 export type Project = {
   id: string
@@ -74,7 +74,6 @@ export const PROJECTS: Project[] = [
     metric: '월 이익 수천만 원대',
     media: { kind: 'video', src: '/images/portfolio/message-platform.mp4', poster: '/images/portfolio/message-platform-poster.jpg' },
     links: [
-      { label: '케이스 스터디', href: '/about/case-study/message-platform', kind: 'case' },
       { label: '서비스 보기', href: 'https://www.nitsoft.co.kr/', kind: 'site' },
     ],
     featured: true,
@@ -91,7 +90,6 @@ export const PROJECTS: Project[] = [
     metric: '월간 활성 사용자 200% 증가',
     media: { kind: 'video', src: '/images/portfolio/s-group-platform.mp4', poster: '/images/portfolio/s-group-platform-poster.jpg' },
     links: [
-      { label: '케이스 스터디', href: '/about/case-study/s-group-platform', kind: 'case' },
       { label: '사내 전용 사이트', href: '', kind: 'locked' },
     ],
     featured: true,
@@ -108,7 +106,6 @@ export const PROJECTS: Project[] = [
     metric: '작가 50명 이상 영입',
     media: { kind: 'video', src: '/images/portfolio/artch.mp4', poster: '/images/portfolio/artch-poster.jpg' },
     links: [
-      { label: '케이스 스터디', href: '/about/case-study/arch-service', kind: 'case' },
       { label: 'artch.io', href: 'https://artch.io', kind: 'site' },
     ],
   },
@@ -124,7 +121,6 @@ export const PROJECTS: Project[] = [
     metric: '2개월 만에 유료화',
     media: { kind: 'video', src: '/images/portfolio/revind.mp4', poster: '/images/portfolio/revind-poster.jpg' },
     links: [
-      { label: '케이스 스터디', href: '/about/case-study/rebind-service', kind: 'case' },
       { label: '사업 이야기 읽기', href: '/blog/revind-multilink-service', kind: 'blog' },
       { label: 'revind.io', href: 'https://revind.io', kind: 'site' },
     ],
@@ -142,7 +138,6 @@ export const PROJECTS: Project[] = [
     metric: '참여 업체 매출 최대 2,000%',
     media: { kind: 'video', src: '/images/portfolio/cellook.mp4', poster: '/images/portfolio/cellook-poster.jpg' },
     links: [
-      { label: '케이스 스터디', href: '/about/case-study/cellook-backoffice', kind: 'case' },
       { label: 'Instagram', href: 'https://www.instagram.com/cellook.kr/', kind: 'site' },
     ],
     featured: true,
@@ -183,7 +178,6 @@ export const PROJECTS: Project[] = [
     role: '운영 정책·프로세스 설계, 매장 교육',
     metric: '적용 상품 40% → 80%',
     media: { kind: 'images', srcs: ['/images/portfolio/smartpick-1.webp', '/images/portfolio/smartpick-2.webp', '/images/portfolio/smartpick-3.webp'] },
-    links: [{ label: '케이스 스터디', href: '/about/case-study/lotte-o4o', kind: 'case' }],
     featured: true,
   },
   {
@@ -225,7 +219,6 @@ export const PROJECTS: Project[] = [
         '/images/portfolio/lotte-order-numbers.webp',
       ],
     },
-    links: [{ label: '케이스 스터디', href: '/about/case-study/lotte-order', kind: 'case' }],
     featured: true,
   },
   {
@@ -296,7 +289,6 @@ export const PROJECTS: Project[] = [
     summary: '실적이 아니라 가능성으로 설득해야 했던 IR. COO·CTO·CFO의 의견을 하나의 이야기로 묶고, 자료의 90% 이상을 직접 썼다.',
     role: 'IR 자료 메인 기획·제작 총괄',
     metric: '50억 원 투자 유치',
-    links: [{ label: '케이스 스터디', href: '/about/case-study/green-gray', kind: 'case' }],
     featured: true,
   },
 
