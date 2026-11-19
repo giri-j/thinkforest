@@ -8,7 +8,6 @@ export { CATEGORIES, STAGES, THREAD_ROLE, getCategoryMeta, deskDate, signDate } 
 export type { Category, CategoryMeta, Post, Stage } from './blog-meta'
 
 const BLOG_PATH = path.join(process.cwd(), 'src/content/blog')
-const PUBLIC_PATH = path.join(process.cwd(), 'public')
 
 /* cover가 없는 글의 카드 사진 — 홈 시퀀스에서 서로 다르게 보이는 장면만 고른 목록.
    한 시퀀스 안의 이웃 프레임은 거의 같은 그림이라, 폴더 전체에서 고르면 카드들이 똑같아 보인다. */
@@ -24,12 +23,13 @@ function hashOf(s: string): number {
     return h
 }
 
-/* 카드 이미지: cover 파일이 public에 실제로 있으면 그것, 없으면 slug로 정해지는 장면.
+/* 카드 이미지: cover가 있으면 그것, 없으면 slug로 정해지는 장면.
+   (public 폴더를 런타임에 읽지 않는다 — 읽으면 Vercel이 public 전체를 서버 함수에 묶어 250MB 한도를 넘긴다)
    목록에서 이웃한 글과 같은 장면이 되지 않도록, 최근에 쓴 장면 셋은 피해 다음 장면으로 옮긴다. */
 function assignImages(posts: Post[]): void {
     const recent: string[] = []
     for (const p of posts) {
-        if (p.cover && fs.existsSync(path.join(PUBLIC_PATH, p.cover))) { p.image = p.cover; continue }
+        if (p.cover) { p.image = p.cover; continue }
         let i = hashOf(p.slug) % SCENE_FRAMES.length
         for (let tries = 0; tries < SCENE_FRAMES.length && recent.includes(SCENE_FRAMES[i]); tries++) i = (i + 1) % SCENE_FRAMES.length
         p.image = SCENE_FRAMES[i]
