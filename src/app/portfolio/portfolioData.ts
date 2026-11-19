@@ -322,24 +322,18 @@ export const PROJECTS: Project[] = [
     media: { kind: 'video', src: '/images/portfolio/youtube-crew.mp4', poster: '/images/portfolio/youtube-crew-poster.jpg' }, // TRAVEL MAKER EP.2 서울 남산(16초, 800×450, 무음)
   },
   {
-    id: 'system-edu',
-    field: 'side',
-    title: '사내 시스템 교육',
-    org: "대기업 'L그룹'",
-    period: '2018',
-    sortYear: 2018,
-    summary: '신입과 전사 직원을 대상으로 사내 시스템 교육을 운영했다.',
-    role: '교육안 기획, 강의',
-  },
-  {
     id: 'univ-talk',
     field: 'side',
     title: '대학생 진로 강연 · 상담',
     org: '대외활동 플러스',
-    period: '2018',
+    period: '2016 — 2018',
     sortYear: 2018,
-    summary: '대외활동 경험을 나누는 강연과 진로 상담을 진행했다.',
-    role: '강연, 멘토링',
+    summary: '약 2년 동안 대학생들을 만나 직장 선배로서 취업 고민을 상담하고, 진로 강연을 했다.',
+    role: '취업 상담, 진로 강연',
+    media: {
+      kind: 'images', // 강연 무대 · 상담 현장 (무대 화면 속 실명은 흐림 처리)
+      srcs: ['/images/portfolio/univ-talk-stage.webp', '/images/portfolio/univ-talk-mentoring.webp'],
+    },
   },
   {
     id: 'theater',
