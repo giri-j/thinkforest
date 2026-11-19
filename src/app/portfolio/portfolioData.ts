@@ -311,26 +311,6 @@ export const PROJECTS: Project[] = [
     links: [{ label: '홈으로', href: '/', kind: 'site' }],
   },
   {
-    id: 'my-life',
-    field: 'side',
-    title: '내 인생 기획',
-    org: '개인',
-    period: '2025',
-    sortYear: 2025,
-    summary: '나의 일과 삶을 위한 장기 로드맵을 세웠다.',
-    role: '자기 성찰, 비전 수립',
-  },
-  {
-    id: 'workshop',
-    field: 'side',
-    title: '1박 2일 팀 워크숍',
-    org: '기획팀',
-    period: '2023',
-    sortYear: 2023,
-    summary: '기획팀 전체 워크숍의 일정과 운영을 맡았다.',
-    role: '장소 선정, 프로그램 기획, 운영',
-  },
-  {
     id: 'youtube-crew',
     field: 'side',
     title: '유튜브 크루 활동',
@@ -369,6 +349,14 @@ export const PROJECTS: Project[] = [
     sortYear: 2016,
     summary: "연극 '사랑에 관한 5가지 소묘'에서 주연을 맡았다.",
     role: '배우(주연)',
+    media: {
+      kind: 'images', // 공연 · 커튼콜 · 연습
+      srcs: [
+        '/images/portfolio/theater-stage.webp',
+        '/images/portfolio/theater-curtain-call.webp',
+        '/images/portfolio/theater-rehearsal.webp',
+      ],
+    },
   },
 ]
 
