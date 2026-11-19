@@ -214,7 +214,14 @@ export const PROJECTS: Project[] = [
     summary: '결품의 원인을 사람이 아닌 구조에서 찾았다. 전국 매장을 돌며 교육하고, 배송 할당 정책을 바꿔 결품과 배송 리드타임을 함께 줄였다.',
     role: 'QCM 파트 신설 멤버 → 파트장',
     metric: '결품률 3% → 1.5%',
-    media: { kind: 'images', srcs: ['/images/portfolio/lottecom.webp'] },
+    media: {
+      kind: 'images', // 백화점 점이동 확대 계획 — 개요 · 기대 효과 · 수치 변화
+      srcs: [
+        '/images/portfolio/lotte-order-overview.webp',
+        '/images/portfolio/lotte-order-effect.webp',
+        '/images/portfolio/lotte-order-numbers.webp',
+      ],
+    },
     links: [{ label: '케이스 스터디', href: '/about/case-study/lotte-order', kind: 'case' }],
     featured: true,
   },
