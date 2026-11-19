@@ -15,6 +15,7 @@ export const FIELDS: { key: Field; no: string; en: string; ko: string; note: str
 export type Media =
   | { kind: 'video'; src: string; poster: string }
   | { kind: 'images'; srcs: string[] }
+  | { kind: 'note'; label: string; title: string; sub?: string } // 아직 보여줄 화면이 없을 때 — 글자만 있는 카드
 
 export type ProjectLink = { label: string; href: string; kind: 'case' | 'blog' | 'site' | 'locked' }
 
@@ -44,6 +45,7 @@ export const PROJECTS: Project[] = [
     sortYear: 2026,
     summary: "외주로 맡은 통합 마케팅 플랫폼. 누구나 쉽게 이미지를 편집할 수 있게 만든 '이미지 편집' 기능이 메인이고, 화면 약 200개 규모의 요구사항정의서를 작성했다.",
     role: '서비스 기획, IA·화면 설계',
+    media: { kind: 'note', label: 'In progress', title: '지금 만들고 있습니다', sub: '오픈 후 화면을 공개할게요' },
   },
   {
     id: 'wedding-invitation',
@@ -299,17 +301,6 @@ export const PROJECTS: Project[] = [
   },
 
   // ── 04 Side ─────────────────────────────────────────────
-  {
-    id: 'thinkforest',
-    field: 'side',
-    title: '기획의 숲',
-    org: '개인 사이트',
-    period: '2026',
-    sortYear: 2026,
-    summary: '지금 보고 계신 이 사이트. 뉴턴의 사과나무에서 황금 나무 도시로 이어지는 홈, 잡지처럼 읽히는 블로그.',
-    role: '기획, 디자인, 개발',
-    links: [{ label: '홈으로', href: '/', kind: 'site' }],
-  },
   {
     id: 'youtube-crew',
     field: 'side',

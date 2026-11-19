@@ -56,12 +56,23 @@ function ImageMedia({ srcs, title }: { srcs: string[]; title: string }) {
   )
 }
 
+/* 아직 보여줄 화면이 없는 진행 중 프로젝트 — 같은 16:9 틀에 글자만 */
+function NoteMedia({ label, title, sub }: { label: string; title: string; sub?: string }) {
+  return (
+    <div className={p.note}>
+      <span className={p.noteLabel}><i aria-hidden="true" />{label}</span>
+      <strong>{title}</strong>
+      {sub && <span className={p.noteSub}>{sub}</span>}
+    </div>
+  )
+}
+
 export default function ProjectMedia({ media, title }: { media: Media; title: string }) {
   return (
     <div className={p.media}>
-      {media.kind === 'video'
-        ? <VideoMedia src={media.src} poster={media.poster} title={title} />
-        : <ImageMedia srcs={media.srcs} title={title} />}
+      {media.kind === 'video' && <VideoMedia src={media.src} poster={media.poster} title={title} />}
+      {media.kind === 'images' && <ImageMedia srcs={media.srcs} title={title} />}
+      {media.kind === 'note' && <NoteMedia label={media.label} title={media.title} sub={media.sub} />}
     </div>
   )
 }
