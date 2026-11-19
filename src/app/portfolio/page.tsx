@@ -59,7 +59,6 @@ export default function PortfolioPage() {
                     <p className={f.ctaTitle} data-rv style={{ ['--d' as string]: 1 }}>같이 기획할 일이 있다면</p>
                     <div className={p.ctaRow} data-rv style={{ ['--d' as string]: 2 }}>
                         <Link href="/contact" className={f.pill}>Contact →</Link>
-                        <Link href="/blog" className={`${s.mono} ${p.textLink}`}>블로그 보기 →</Link>
                     </div>
                 </div>
             </section>

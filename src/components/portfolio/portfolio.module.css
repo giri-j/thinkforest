@@ -84,8 +84,6 @@
 
 /* ---------- 맺음 ---------- */
 .ctaRow { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; }
-.textLink { color: var(--gold); border-bottom: 1px solid rgba(225, 185, 112, 0.35); padding-bottom: 3px; }
-.textLink:hover { border-color: var(--gold); }
 
 @media (prefers-reduced-motion: reduce) {
   .slide { transition: none; }
