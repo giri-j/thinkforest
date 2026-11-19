@@ -41,7 +41,7 @@ export default function AboutForest() {
           <p className={`${d.mono} ${f.byline}`} data-rv>{heroCopy.name} · {heroCopy.role}</p>
         </div>
         <figure className={f.portrait} data-rv style={{ ['--d' as string]: 1, margin: 0 }}>
-          <Image src="/about_img/giri_picture.jpeg" alt="기획자 기리(전은길)" fill sizes="(min-width: 768px) 420px, 320px" priority />
+          <Image src="/about_img/giri_picture.jpeg" alt="기획자 기리" fill sizes="(min-width: 768px) 420px, 320px" priority />
           <figcaption className={`${f.figCap} ${d.mono}`}><span>Fig. 01 — 기리</span><span>Seoul</span></figcaption>
         </figure>
       </section>

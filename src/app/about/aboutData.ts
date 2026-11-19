@@ -11,7 +11,7 @@ export const heroCopy = {
         '그 문제를 정책과 시스템, 그리고 사업으로 바꿔왔습니다.',
     ],
     belief: '기획은 아이디어가 아니라, 성과로 이어지는 설계라고 믿습니다.',
-    name: '기리 (전은길)',
+    name: '기리',
     role: '서비스 기획자 · PM · Operation Manager',
 }
 

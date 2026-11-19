@@ -10,7 +10,7 @@ import { usePathname } from 'next/navigation'
 const ITEMS = [
   { no: '00', label: '기획의 숲', sub: 'Home', href: '/' },
   { no: '01', label: 'Blog', sub: 'Forest Desk', href: '/blog' },
-  { no: '02', label: 'About', sub: '기리 (전은길)', href: '/about' },
+  { no: '02', label: 'About', sub: '기리', href: '/about' },
   { no: '03', label: 'Contact', sub: '제안하기', href: '/contact' },
 ]
 

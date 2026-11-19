@@ -7,7 +7,7 @@ export default function DeskFooter() {
     <footer className={`${s.sig} ${s.mono}`}>
       <span>© 기획의 숲 · Forest Desk</span>
       <a href="#top" className={s.toTop}>처음으로 ↑</a>
-      <span>Think; Plan; Build. — <Link href="/about">전은길</Link></span>
+      <span>Think; Plan; Build. — <Link href="/about">기리</Link></span>
     </footer>
   )
 }

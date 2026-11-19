@@ -7,7 +7,7 @@ import ViewCounter from '@/components/blog/ViewCounter'
 import { Divider } from '@/components/blog/desk/Ornaments'
 import s from '@/components/blog/desk/desk.module.css'
 
-const AUTHOR = '전은길'
+const AUTHOR = '기리'
 const PLACE = 'Seoul'
 
 export async function generateStaticParams() {
