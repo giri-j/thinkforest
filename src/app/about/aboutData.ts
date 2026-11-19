@@ -17,7 +17,7 @@ export const heroCopy = {
 
 export const stats: Stat[] = [
     { value: '12', unit: '년', label: '커머스 현장부터 사업까지' },
-    { value: '30', unit: '억', label: '대기업 N사 투자 유치 IR' },
+    { value: '50', unit: '억', label: '대기업 N사 투자 유치 IR' },
     { value: '2,000', unit: '%', label: '기획전 참여 업체 최대 매출 신장' },
     { value: '2', unit: '개월', label: '기획부터 유료화까지 (Revind)' },
     { value: '200', unit: '%', label: '교육 플랫폼 월간 활성 사용자 증가' },
@@ -63,7 +63,7 @@ export const growth: GrowthStage[] = [
         role: 'SCM팀 → 스마트픽팀 · 배송정책 / O4O 운영기획',
         summary: '배송과 O4O 현장 한가운데에서, 문제를 흐름으로 읽는 법을 배웠습니다.',
         highlights: [
-            '결품률 2.2% → 1.7% (배송 할당 정책 개선)',
+            '결품률 3% → 1.5% (배송 할당 정책 개선)',
             '스마트픽 적용 상품 40% → 80%',
             "그룹 '한 시간 배송' 런칭 · QR 픽업 파일럿",
         ],
@@ -78,7 +78,7 @@ export const growth: GrowthStage[] = [
         highlights: [
             '기획전 참여 업체 매출 신장 300~2,000%',
             '창립 이래 첫 매출 · 200개 업체 입점',
-            '대기업 N사 30억 투자 유치 IR',
+            '대기업 N사 50억 투자 유치 IR',
         ],
     },
     {
@@ -202,14 +202,14 @@ export const otherProjects: OtherProject[] = [
         title: '투자 유치 IR 자료',
         org: "패션 커머스 스타트업 'G사'",
         tag: 'IR',
-        note: 'COO·CFO의 의견을 하나의 논리로 묶어 대기업 N사 30억 원 투자 유치',
+        note: 'COO·CFO의 의견을 하나의 논리로 묶어 대기업 N사 50억 원 투자 유치',
         href: '/about/case-study/green-gray',
     },
     {
         title: '주문완료율 개선',
         org: "대기업 'L그룹'",
         tag: 'Operation',
-        note: '배송 할당 정책과 패널티 정책을 바꿔 결품률 2.2% → 1.7%',
+        note: '배송 할당 정책과 패널티 정책을 바꿔 결품률 3% → 1.5%',
         href: '/about/case-study/lotte-order',
     },
     {
