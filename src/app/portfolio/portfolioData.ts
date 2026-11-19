@@ -235,7 +235,7 @@ export const PROJECTS: Project[] = [
     sortYear: 2020,
     summary: '배달기사의 이야기를 듣고 상품 구성을 다시 짜서 잠실 권역에 서비스를 열었다.',
     role: 'TF 운영 기획',
-    media: { kind: 'images', srcs: ['/images/portfolio/one-hour-delivery.webp'] }, // 조선일보 기사 썸네일
+    media: { kind: 'images', srcs: ['/images/portfolio/one-hour-delivery-square.webp'] }, // 조선일보 기사 대표 이미지(원본 600×600)
     links: [{ label: '관련 기사 · 조선일보', href: 'https://www.chosun.com/site/data/html_dir/2020/08/26/2020082601279.html', kind: 'site' }],
   },
   {
