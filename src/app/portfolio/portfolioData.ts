@@ -228,6 +228,16 @@ export const PROJECTS: Project[] = [
     sortYear: 2020,
     summary: 'QR 픽업 존을 기획부터 전시까지 맡았고, 이 일이 라이브커머스 운영 조직 신설로 이어졌다.',
     role: '기획, 현장 운영',
+    media: {
+      kind: 'images',
+      srcs: [
+        '/images/portfolio/qr-zone.webp',
+        '/images/portfolio/qr-luxury.webp',
+        '/images/portfolio/live-fashion.webp',
+        '/images/portfolio/live-food.webp',
+        '/images/portfolio/live-luxury.webp',
+      ],
+    },
   },
 
   // ── 03 Business ─────────────────────────────────────────
