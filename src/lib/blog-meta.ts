@@ -69,15 +69,20 @@ export interface Post {
 }
 
 /* 2026·11·02 — DESK식 날짜 표기 */
+/* 날짜는 프런트매터에 적힌 YYYY-MM-DD 그대로 쓴다 — 작성 시각(T10:57+09:00)이 붙어도,
+   서버 시간대(UTC)가 달라도 하루가 밀리지 않게. 시각은 목록 정렬에만 쓰인다. */
+function ymd(date: string) {
+    const [y, m, d] = date.slice(0, 10).split('-')
+    return { y, m, d }
+}
+
 export function deskDate(date: string) {
-    const d = new Date(date)
-    const p = (n: number) => String(n).padStart(2, '0')
-    return `${d.getFullYear()}·${p(d.getMonth() + 1)}·${p(d.getDate())}`
+    const { y, m, d } = ymd(date)
+    return `${y}·${m}·${d}`
 }
 
 /* 13·01·2025 — 서명 줄에 쓰는 일·월·년 표기 */
 export function signDate(date: string) {
-    const d = new Date(date)
-    const p = (n: number) => String(n).padStart(2, '0')
-    return `${p(d.getDate())}·${p(d.getMonth() + 1)}·${d.getFullYear()}`
+    const { y, m, d } = ymd(date)
+    return `${d}·${m}·${y}`
 }
