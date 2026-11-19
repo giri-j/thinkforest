@@ -319,6 +319,7 @@ export const PROJECTS: Project[] = [
     sortYear: 2021,
     summary: '여러 포맷의 영상 콘텐츠를 기획하고 촬영했다.',
     role: '기획, 출연',
+    media: { kind: 'video', src: '/images/portfolio/youtube-crew.mp4', poster: '/images/portfolio/youtube-crew-poster.jpg' }, // TRAVEL MAKER EP.2 서울 남산(16초, 800×450, 무음)
   },
   {
     id: 'system-edu',
