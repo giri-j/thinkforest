@@ -287,6 +287,7 @@
 .body code { font-family: var(--mono); font-size: 0.86em; background: var(--panel); padding: 0.1em 0.4em; border-radius: 3px; }
 .body pre code { background: none; padding: 0; font-size: inherit; }
 .body img { max-width: 100%; height: auto; display: block; margin: 2em auto; border-radius: 4px; }
+.body video { max-width: 100%; height: auto; display: block; margin: 2em auto; border-radius: 4px; }
 .body table { width: 100%; border-collapse: collapse; margin: 2em 0; font-size: 15px; }
 .body th, .body td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); }
 .body th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grey); border-bottom-color: var(--rule); }
