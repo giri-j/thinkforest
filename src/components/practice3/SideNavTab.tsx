@@ -49,7 +49,8 @@ export default function SideNavTab() {
   const drawerRef = useRef<HTMLDivElement>(null) // 서랍 열림(x)
   const [skipIntro] = useState(() => drawerOpened) // 이미 열린 적 있으면 처음부터 보이게 그린다(깜빡임 없음)
 
-  const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href))
+  // /portfolio는 About의 버튼으로 들어오는 하위 페이지 — About 칸을 켠다
+  const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href) || (href === '/about' && pathname.startsWith('/portfolio')))
 
   // 1) 서랍 열림
   useEffect(() => {

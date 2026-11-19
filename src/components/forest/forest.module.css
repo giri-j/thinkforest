@@ -54,6 +54,9 @@
 .links { display: flex; flex-wrap: wrap; gap: 12px 32px; margin: 28px 0 0; }
 .links a { color: var(--gold); border-bottom: 1px solid rgba(225, 185, 112, 0.35); padding-bottom: 3px; transition: border-color 0.3s; }
 .links a:hover { border-color: var(--gold); }
+/* 걸어온 길 아래 — 포트폴리오로 넘어가는 버튼 */
+.portfolioRow { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; margin: 36px 0 0; }
+.portfolioNote { color: var(--grey); }
 
 /* 하는 일 — 세 묶음 */
 .services { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 64px; padding-top: 28px; border-top: 1px solid var(--rule); }

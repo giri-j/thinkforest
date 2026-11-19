@@ -21,7 +21,8 @@ export default function MobileNav() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const panelId = useId()
-  const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href))
+  // /portfolio는 About의 버튼으로 들어오는 하위 페이지 — About 칸을 켠다
+  const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href) || (href === '/about' && pathname.startsWith('/portfolio')))
 
   // 열려 있는 동안 뒤 페이지 스크롤 잠금 + Esc로 닫기
   useEffect(() => {
