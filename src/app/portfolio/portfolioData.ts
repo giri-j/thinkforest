@@ -270,6 +270,7 @@ export const PROJECTS: Project[] = [
     summary: '미국 서프 헤리티지 브랜드를 한국에서 0부터 다시 시작했다. 서브라이선스 계약부터 자사몰, 상품·배송·교환·적립금·회원 정책까지 직접 설계했다.',
     role: '브랜드 사업 운영 총괄',
     metric: '법인 설립 2개월 만에 1차 드롭',
+    media: { kind: 'video', src: '/images/portfolio/maui-and-sons.mp4', poster: '/images/portfolio/maui-and-sons-poster.jpg' }, // 자사몰 화면 녹화(15초, 960×540)
   },
   {
     id: 'lux-cosmetics',
