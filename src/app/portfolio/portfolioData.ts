@@ -285,16 +285,6 @@ export const PROJECTS: Project[] = [
     media: { kind: 'video', src: '/images/portfolio/lux-cosmetics.mp4', poster: '/images/portfolio/lux-cosmetics-poster.jpg' }, // 스마트스토어 화면 녹화(10초, 960×540)
   },
   {
-    id: 'biz-plan',
-    field: 'business',
-    title: '신규 사업 기획안',
-    org: '사업기획',
-    period: '2024',
-    sortYear: 2024,
-    summary: '시장 조사를 바탕으로 실현 가능한 사업기획서를 썼다.',
-    role: '시장·경쟁사 분석, 비즈니스 모델링',
-  },
-  {
     id: 'ir-deck',
     field: 'business',
     title: '투자 유치 IR 자료',
