@@ -192,6 +192,17 @@ export const PROJECTS: Project[] = [
     sortYear: 2018,
     summary: '전국 매장 매니저를 위한 서비스 가이드 영상을 기획하고 배포했다.',
     role: '기획, 대본 구성, 제작 관리',
+    media: {
+      kind: 'images', // 매장 교육용 스마트픽 서비스 매뉴얼(2020.05) 중 6쪽
+      srcs: [
+        '/images/portfolio/smartpick-edu-cover.webp',
+        '/images/portfolio/smartpick-edu-intro.webp',
+        '/images/portfolio/smartpick-edu-pickup-types.webp',
+        '/images/portfolio/smartpick-edu-process.webp',
+        '/images/portfolio/smartpick-edu-alimtalk.webp',
+        '/images/portfolio/smartpick-edu-alimtalk-flow.webp',
+      ],
+    },
   },
   {
     id: 'lotte-order',
