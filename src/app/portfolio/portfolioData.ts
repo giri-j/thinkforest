@@ -271,6 +271,7 @@ export const PROJECTS: Project[] = [
     role: '브랜드 사업 운영 총괄',
     metric: '법인 설립 2개월 만에 1차 드롭',
     media: { kind: 'video', src: '/images/portfolio/maui-and-sons.mp4', poster: '/images/portfolio/maui-and-sons-poster.jpg' }, // 자사몰 화면 녹화(15초, 960×540)
+    links: [{ label: '자사몰 보기', href: 'https://mauiandsons.kr/', kind: 'site' }],
   },
   {
     id: 'lux-cosmetics',
