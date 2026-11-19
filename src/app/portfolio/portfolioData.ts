@@ -168,6 +168,7 @@ export const PROJECTS: Project[] = [
     sortYear: 2022,
     summary: '입점 쇼핑몰 300곳의 순위·매출을 손으로 옮기던 반복 작업을 매크로로 자동화하고 사내 교육까지 맡았다.',
     role: '자동화 설계, 사내 교육',
+    media: { kind: 'video', src: '/images/portfolio/autohotkey.mp4', poster: '/images/portfolio/autohotkey-poster.jpg' }, // AutoHotkey 키 입력 애니메이션(GIF → mp4)
   },
   {
     id: 'lotte-o4o',
