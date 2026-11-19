@@ -190,7 +190,7 @@ export const otherProjects: OtherProject[] = [
         title: "'P'사 통합 마케팅 플랫폼",
         org: '약 1억 원 규모',
         tag: 'Platform · AI',
-        note: 'AI 도구로 요구사항정의서와 89개 화면 와이어프레임 작성, 진행 중',
+        note: "누구나 쉽게 쓰는 '이미지 편집' 기능이 메인, 화면 약 200개 규모의 요구사항정의서 작성, 진행 중",
     },
     {
         title: "자산운용사 'S'사 홈페이지",
