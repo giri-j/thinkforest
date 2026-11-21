@@ -28,7 +28,7 @@ export default async function BlogPage(props: { searchParams: Promise<{ page?: s
         <>
             <header className={`${s.magHead} ${s.in}`}>
                 <p className={s.eyebrow}>[ 00 ] — Forest Desk</p>
-                <h1 className={s.pageTitle}>Blog<span>떠오른 생각, 해본 일, 좋았던 곳</span></h1>
+                <h1 className={s.pageTitle}>Blog<span>생각나는 것들의 기록</span></h1>
             </header>
             <SubjectBar counts={counts} total={posts.length} />
 
