@@ -110,7 +110,7 @@
 }
 .toTop:hover { background: #e1b970; color: #0b0f0c; }
 /* 홈 → 블로그 다리: 스토리를 끝낸 사람이 다음 장(숲의 기록)으로 */
-.sigLink { margin-left: 14px; color: #e1b970; white-space: nowrap; border-bottom: 1px solid rgba(225, 185, 112, 0.4); transition: border-color 0.3s; }
+.sigLink { color: #e1b970; white-space: nowrap; border-bottom: 1px solid rgba(225, 185, 112, 0.4); transition: border-color 0.3s; }
 .sigLink:hover { border-color: #e1b970; }
 
 /* ---------- 브랜드 — 「기획의 숲」 ---------- */

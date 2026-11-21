@@ -22,8 +22,6 @@ const heroP3 = {
   subtitle: '생각이 아이디어로 열리고, 기획으로 익어, 하나의 숲이 됩니다.',
 }
 
-/* 엔딩 서명 — 공용 coda.signature는 두고 홈에서만 덮어쓴다 */
-const SIGNATURE = '당신의 생각도, 이 숲의 다음 열매가 될 수 있습니다.'
 const COPYRIGHT = '© 기획의 숲' /* 공용 coda.copyright(수식어 포함)는 두고 홈에서만 짧게 */
 
 /* 회전 프레임별 황금 사과 중심 (1280×720 원본 좌표). index = orb 프레임 */
@@ -738,7 +736,7 @@ export default function AppleSequence() {
           </div>
         </div>
         <div ref={sigRef} className={s.sig} style={{ opacity: 0 }}>
-          <span>{SIGNATURE} <Link href="/blog" className={s.sigLink}>이 숲의 열매들 →</Link></span>
+          <span><Link href="/blog" className={s.sigLink}>기획자의 생각 읽어보기 →</Link></span>
           <button type="button" className={s.toTop} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>처음으로 ↑</button>
           <span>{COPYRIGHT}</span>
         </div>
