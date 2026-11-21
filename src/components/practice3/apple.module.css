@@ -126,7 +126,7 @@
   .toTopFill, .toTopIcon svg { transition: none; }
 }
 /* 홈 → 블로그 다리: 스토리를 끝낸 사람이 다음 장(숲의 기록)으로 */
-.sigLink { color: #e1b970; white-space: nowrap; border-bottom: 1px solid rgba(225, 185, 112, 0.4); transition: border-color 0.3s; }
+.sigLink { font-size: 15px; letter-spacing: 0.04em; padding-bottom: 3px; color: #e1b970; white-space: nowrap; border-bottom: 1px solid rgba(225, 185, 112, 0.4); transition: border-color 0.3s; } /* 서명 줄(11px)보다 한 단계 크게 — 다음 장으로 가는 유일한 링크 */
 .sigLink:hover { border-color: #e1b970; }
 
 /* ---------- 브랜드 — 「기획의 숲」 ---------- */
@@ -323,6 +323,7 @@
   .bl, .br { bottom: calc(22px + var(--lift, 0px)); }
   .prog { width: 84px; }
   .sig { justify-content: center; text-align: center; }
+  .sigLink { font-size: 14px; }
   /* 좁은 화면은 서명 줄이 두 줄로 높아져서, 태그라인은 빼고 금색 선만 남긴다 */
   .brandTag { display: none; }
   .brandRule { margin: 16px 0 0; }
