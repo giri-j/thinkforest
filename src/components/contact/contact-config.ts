@@ -16,8 +16,7 @@ export const TOPICS = [
   {
     id: 'project',
     label: '프로젝트 의뢰',
-    placeholder:
-      '어떤 서비스를 준비 중이신가요?\n지금 단계(아이디어·기획·개발 중)와 가장 고민되는 점을 적어주시면 첫 답장이 훨씬 구체적이에요.',
+    placeholder: '편하게 제안주세요.\n긍정적으로 검토할게요.\n프로젝트에 대한 설명 부탁드려요.',
   },
   {
     id: 'collab',
