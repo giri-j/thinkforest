@@ -17,7 +17,7 @@
 .page .statement {
   margin: 0; max-width: 22em; font-family: var(--sans); font-weight: 600;
   font-size: clamp(28px, 3.7vw, 52px); line-height: 1.32; letter-spacing: -0.035em;
-  color: var(--ink); word-break: keep-all; text-wrap: pretty;
+  color: var(--ink); word-break: keep-all; text-wrap: pretty; white-space: pre-line; /* 원고의 \n을 줄바꿈으로 */
 }
 .statement span { color: var(--grey); }
 .page .statementSm { font-size: clamp(24px, 2.7vw, 38px); max-width: 12em; }

@@ -244,7 +244,7 @@ export const ctaCopy = {
 /* 맨 위 큰 소개 문장 — 두 문장 */
 export const intro = {
     first: '현장의 소리를 찾아다니는 Problem Solver',
-    second: '현장의 목소리에서 문제를 찾아 정책과 시스템, 그리고 사업으로 바꿉니다.',
+    second: '현장의 목소리에서 문제를 찾아 정책과 시스템,\n그리고 사업으로 바꿉니다.', // \n = 줄바꿈 (.statement가 white-space: pre-line)
 }
 
 /* 경력 서술 — 지금 하는 일부터 거꾸로 */
@@ -268,7 +268,7 @@ export const experience: ExperienceRow[] = [
 ]
 
 /* 가운데 한 줄 선언 */
-export const pull = "기획은 단순 아이디어에서 멈추는 것이 아니라, 성과로 이어지게 만드는 설계입니다. 기획은 사업이 '되게' 만들기 위해 끊임없는 테스트를 통해 숫자로 증명하는 것입니다."
+export const pull = "기획은 단순 아이디어에서 멈추는 것이 아니라, 성과로 이어지게 만드는 설계입니다.\n기획은 사업이 '되게' 만들기 위해 끊임없는 테스트를 통해 숫자로 증명하는 것입니다."
 
 /* 하는 일 — 세 묶음 */
 export const services = [
