@@ -5,10 +5,8 @@
 // ─────────────────────────────────────────────────────────────
 import { NextResponse } from 'next/server';
 import {
-  BUDGETS,
   EMAIL_RE,
   LIMITS,
-  TIMELINES,
   TOPICS,
   topicLabel,
 } from '@/components/contact/contact-config';
@@ -22,8 +20,6 @@ type Payload = {
   name?: unknown;
   email?: unknown;
   org?: unknown;
-  timeline?: unknown;
-  budget?: unknown;
   message?: unknown;
   consent?: unknown;
   website?: unknown; // 허니팟(사람 눈에는 안 보이는 칸)
@@ -58,8 +54,6 @@ export async function POST(req: Request) {
   const name = str(body.name);
   const email = str(body.email);
   const org = str(body.org);
-  const timeline = str(body.timeline);
-  const budget = str(body.budget);
   const message = str(body.message);
 
   const valid =
@@ -69,8 +63,6 @@ export async function POST(req: Request) {
     EMAIL_RE.test(email) &&
     email.length <= LIMITS.email &&
     org.length <= LIMITS.org &&
-    (timeline === '' || (TIMELINES as readonly string[]).includes(timeline)) &&
-    (budget === '' || (BUDGETS as readonly string[]).includes(budget)) &&
     message.length >= LIMITS.messageMin &&
     message.length <= LIMITS.messageMax &&
     body.consent === true;
@@ -96,8 +88,6 @@ export async function POST(req: Request) {
     ['이름', name],
     ['이메일', email],
     ...(org ? ([['소속', org]] as [string, string][]) : []),
-    ...(timeline ? ([['희망 일정', timeline]] as [string, string][]) : []),
-    ...(budget ? ([['예산', budget]] as [string, string][]) : []),
   ];
 
   const html = `

@@ -33,9 +33,6 @@ export const TOPICS = [
 
 export type TopicId = (typeof TOPICS)[number]['id'];
 
-// '프로젝트 의뢰'를 골랐을 때만 보이는 선택 항목 (둘 다 선택 사항)
-export const TIMELINES = ['한 달 안', '1~3개월', '3개월 이후', '아직 미정'] as const;
-export const BUDGETS = ['500만 원 미만', '500만~2,000만 원', '2,000만 원 이상', '아직 미정'] as const;
 
 export const LIMITS = {
   name: 40,

@@ -10,13 +10,11 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 import type { CSSProperties, FormEvent, KeyboardEvent } from 'react';
 import s from './ContactSection.module.css';
 import {
-  BUDGETS,
   CONTACT_EMAIL,
   EMAIL_RE,
   LIMITS,
   REPLY_TIME,
   SOCIALS,
-  TIMELINES,
   TOPICS,
   topicLabel,
   type TopicId,
@@ -27,8 +25,6 @@ type Fields = {
   name: string;
   email: string;
   org: string;
-  timeline: string;
-  budget: string;
   message: string;
   consent: boolean;
 };
@@ -41,8 +37,6 @@ const EMPTY: Fields = {
   name: '',
   email: '',
   org: '',
-  timeline: '',
-  budget: '',
   message: '',
   consent: false,
 };
@@ -222,7 +216,6 @@ export default function ContactSection() {
   const blur = (k: FieldKey) => () => setTouched((p) => ({ ...p, [k]: true }));
 
   const topic = TOPICS.find((t) => t.id === f.topic);
-  const isProject = f.topic === 'project';
 
   const submit = useCallback(
     async (e?: FormEvent) => {
@@ -243,8 +236,6 @@ export default function ContactSection() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             ...f,
-            timeline: isProject ? f.timeline : '',
-            budget: isProject ? f.budget : '',
             website,
             elapsed: Date.now() - startedAt.current,
           }),
@@ -260,7 +251,7 @@ export default function ContactSection() {
         setStatus('error');
       }
     },
-    [errors, f, isProject, status, website],
+    [errors, f, status, website],
   );
 
   const onMessageKey = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -276,7 +267,7 @@ export default function ContactSection() {
     startedAt.current = Date.now();
   };
 
-  // 번호는 '프로젝트 의뢰'일 때 일정·예산 칸이 끼어들어도 자연스럽게 이어지도록 계산
+  // 질문 번호 01, 02 …
   let n = 0;
   const no = () => String(++n).padStart(2, '0');
 
@@ -458,35 +449,6 @@ export default function ContactSection() {
               />
             </div>
 
-            {/* 프로젝트 의뢰일 때만: 일정·예산 */}
-            <div className={s.reveal} data-open={isProject || undefined} aria-hidden={!isProject}>
-              <div className={s.revealInner}>
-                <fieldset className={s.row} disabled={!isProject}>
-                  <legend className={s.q}>
-                    <span className={s.no}>{isProject ? no() : '··'}</span>언제쯤 시작하고 싶으세요?{' '}
-                    <span className={s.opt}>선택</span>
-                  </legend>
-                  <Chips
-                    name="timeline"
-                    options={TIMELINES.map((t) => ({ id: t, label: t }))}
-                    value={f.timeline}
-                    onChange={(v) => set('timeline', v)}
-                  />
-                </fieldset>
-                <fieldset className={s.row} disabled={!isProject}>
-                  <legend className={s.q}>
-                    <span className={s.no}>{isProject ? no() : '··'}</span>생각하는 예산 범위{' '}
-                    <span className={s.opt}>선택</span>
-                  </legend>
-                  <Chips
-                    name="budget"
-                    options={BUDGETS.map((b) => ({ id: b, label: b }))}
-                    value={f.budget}
-                    onChange={(v) => set('budget', v)}
-                  />
-                </fieldset>
-              </div>
-            </div>
 
             {/* 05 내용 */}
             <div className={s.row} data-err={show('message') ? '' : undefined}>

@@ -471,24 +471,6 @@ legend.q + * {
   outline-offset: 2px;
 }
 
-/* '프로젝트 의뢰'일 때 펼쳐지는 영역 */
-.reveal {
-  display: grid;
-  grid-template-rows: 0fr;
-  opacity: 0;
-  transition:
-    grid-template-rows 0.55s var(--e),
-    opacity 0.4s;
-}
-.reveal[data-open] {
-  grid-template-rows: 1fr;
-  opacity: 1;
-}
-.revealInner {
-  min-height: 0;
-  overflow: hidden;
-}
-
 /* 허니팟 */
 .hp {
   position: absolute;
@@ -819,8 +801,5 @@ legend.q + * {
   .seal,
   .dot::after {
     animation: none !important;
-  }
-  .reveal {
-    transition: none;
   }
 }
