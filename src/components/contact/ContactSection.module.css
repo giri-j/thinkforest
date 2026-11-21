@@ -563,17 +563,6 @@ legend.q + * {
   opacity: 0.75;
   transform: none;
 }
-.kbd {
-  font-family: var(--f-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.06em;
-  color: var(--c-grey);
-}
-@media (hover: none) {
-  .kbd {
-    display: none;
-  }
-}
 
 .alt {
   display: flex;
@@ -783,9 +772,6 @@ legend.q + * {
   .send {
     width: 100%;
     justify-content: center;
-  }
-  .kbd {
-    display: none;
   }
   .done {
     min-height: 440px;

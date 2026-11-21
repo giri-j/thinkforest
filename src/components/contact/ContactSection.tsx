@@ -7,7 +7,7 @@
 // ─────────────────────────────────────────────────────────────
 
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
-import type { CSSProperties, FormEvent, KeyboardEvent } from 'react';
+import type { CSSProperties, FormEvent } from 'react';
 import s from './ContactSection.module.css';
 import {
   CONTACT_EMAIL,
@@ -254,10 +254,6 @@ export default function ContactSection() {
     [errors, f, status, website],
   );
 
-  const onMessageKey = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) void submit();
-  };
-
   const reset = () => {
     setF(EMPTY);
     setTouched({});
@@ -464,7 +460,6 @@ export default function ContactSection() {
                 value={f.message}
                 onChange={(e) => set('message', e.target.value)}
                 onBlur={blur('message')}
-                onKeyDown={onMessageKey}
                 aria-invalid={!!show('message') || undefined}
                 aria-describedby={`${id('count')}${show('message') ? ` ${id('e-message')}` : ''}`}
               />
@@ -520,7 +515,6 @@ export default function ContactSection() {
                 <button type="submit" className={`${s.pill} ${s.send}`} disabled={status === 'sending'}>
                   {status === 'sending' ? '보내는 중…' : '제안 보내기 →'}
                 </button>
-                <span className={s.kbd}>⌘ / Ctrl + Enter</span>
               </div>
 
               <p className={s.alt}>
