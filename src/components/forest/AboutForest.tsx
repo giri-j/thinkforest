@@ -17,7 +17,7 @@ import f from './forest.module.css'
 /* 프로젝트 목록 한 줄 — 대표 프로젝트와 그 외를 같은 표에 싣는다 */
 const WORK = [
   ...featuredCases.map((c) => ({ title: c.title, org: c.org, tag: c.tag, note: c.metric, href: c.href })),
-  ...otherProjects.map((p) => ({ title: p.title, org: p.org, tag: p.tag, note: '', href: p.href })),
+  ...otherProjects.map((p) => ({ title: p.title, org: p.org, tag: p.tag, note: p.metric ?? '', href: p.href })),
 ]
 
 export default function AboutForest() {
