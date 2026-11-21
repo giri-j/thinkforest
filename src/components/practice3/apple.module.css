@@ -204,7 +204,8 @@
 .moment {
   position: absolute; left: 6%; right: 6%; top: 50%; margin: 0; transform: translateY(-50%); z-index: 2;
   text-align: center; pointer-events: none; will-change: opacity;
-  font-family: var(--font-tf-mono), monospace; font-size: 13.5px; letter-spacing: 0.32em; color: #5a4214;
+  font-family: var(--font-tf-mono), monospace; font-size: clamp(16px, 4.4vw, 27px); letter-spacing: 0.32em; color: #5a4214; /* 27px = 예전 13.5px의 2배. 좁은 화면에선 한 줄에 들어가게 줄어든다 */
+  word-break: keep-all;
 }
 
 /* ---------- 황금 사과 호버 카드 ---------- */
