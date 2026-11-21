@@ -350,7 +350,7 @@ export default function ContactSection() {
         ) : (
           <form ref={formRef} className={s.form} onSubmit={submit} noValidate aria-describedby={id('formhint')}>
             <div className={s.formHead}>
-              <p className={s.eyebrow}>[ Letter ] — 숲으로 보내는 편지</p>
+              <p className={s.eyebrow}>[ Letter ] — 무엇이든 제안해주세요.</p>
               <p id={id('formhint')} className={s.formHint}>
                 3분이면 충분해요. <span aria-hidden="true">*</span> 표시만 필수예요.
               </p>
