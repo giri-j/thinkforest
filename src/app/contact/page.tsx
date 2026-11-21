@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import ForestFrame from '@/components/forest/ForestFrame'
 import PageChrome from '@/components/forest/PageChrome'
-import ContactForest from '@/components/forest/ContactForest'
+import ContactSection from '@/components/contact/ContactSection'
 
 export const metadata: Metadata = {
     title: 'Contact — 기획의 숲',
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function ContactPage() {
     return (
         <ForestFrame header={<PageChrome section="Contact — 기획자 기리" right={['Say hello', '답장은 보통', '2~3일 안에 드립니다.']} />}>
-            <ContactForest />
+            <ContactSection />
         </ForestFrame>
     )
 }
