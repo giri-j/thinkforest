@@ -103,12 +103,28 @@
   font-family: var(--font-tf-mono), monospace; font-size: 11px; letter-spacing: 0.06em;
   color: rgba(242, 237, 227, 0.72); will-change: opacity, transform;
 }
+/* 맨 위로 — 얇은 금색 원 + 선 화살표. 올리면 원이 안에서부터 차오르고 화살표가 한 칸 위로 갈아탄다 */
 .toTop {
-  padding: 8px 16px; border: 1px solid rgba(225, 185, 112, 0.6); border-radius: 999px;
-  background: transparent; color: #e1b970; font: inherit; letter-spacing: 0.12em; cursor: pointer;
-  transition: background 0.3s, color 0.3s;
+  position: relative; display: grid; place-items: center; flex: none;
+  width: 48px; height: 48px; padding: 0; border-radius: 50%;
+  border: 1px solid rgba(225, 185, 112, 0.55); background: rgba(11, 15, 12, 0.25);
+  color: #e1b970; cursor: pointer; overflow: hidden; -webkit-tap-highlight-color: transparent;
 }
-.toTop:hover { background: #e1b970; color: #0b0f0c; }
+.toTopFill {
+  position: absolute; inset: 0; border-radius: 50%; background: #e1b970;
+  transform: scale(0); transition: transform 0.55s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.toTopIcon { position: relative; width: 20px; height: 20px; overflow: hidden; }
+.toTopIcon svg { position: absolute; inset: 0; width: 100%; height: 100%; transition: transform 0.55s cubic-bezier(0.19, 1, 0.22, 1); }
+.toTopB { color: #0b0f0c; transform: translateY(120%); }
+.toTop:hover .toTopFill, .toTop:focus-visible .toTopFill { transform: scale(1); }
+.toTop:hover .toTopA, .toTop:focus-visible .toTopA { transform: translateY(-120%); }
+.toTop:hover .toTopB, .toTop:focus-visible .toTopB { transform: translateY(0); }
+.toTop:active .toTopIcon { transform: translateY(-1px); }
+.toTop:focus-visible { outline: 1px solid #e1b970; outline-offset: 4px; }
+@media (prefers-reduced-motion: reduce) {
+  .toTopFill, .toTopIcon svg { transition: none; }
+}
 /* 홈 → 블로그 다리: 스토리를 끝낸 사람이 다음 장(숲의 기록)으로 */
 .sigLink { color: #e1b970; white-space: nowrap; border-bottom: 1px solid rgba(225, 185, 112, 0.4); transition: border-color 0.3s; }
 .sigLink:hover { border-color: #e1b970; }

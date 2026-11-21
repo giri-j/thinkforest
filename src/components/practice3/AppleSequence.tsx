@@ -737,7 +737,18 @@ export default function AppleSequence() {
         </div>
         <div ref={sigRef} className={s.sig} style={{ opacity: 0 }}>
           <span><Link href="/blog" className={s.sigLink}>기획자의 생각 읽어보기 →</Link></span>
-          <button type="button" className={s.toTop} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>처음으로 ↑</button>
+          <button type="button" className={s.toTop} aria-label="맨 위로" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <span className={s.toTopFill} aria-hidden="true" />
+            {/* 마우스를 올리면 금색 화살표가 위로 빠지고, 어두운 화살표가 아래에서 올라온다 (transform만) */}
+            <span className={s.toTopIcon} aria-hidden="true">
+              {[s.toTopA, s.toTopB].map((c) => (
+                <svg key={c} className={c} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M10 16.5V3.75" />
+                  <path d="M4.75 9 10 3.75 15.25 9" />
+                </svg>
+              ))}
+            </span>
+          </button>
           <span>{COPYRIGHT}</span>
         </div>
       </div>
