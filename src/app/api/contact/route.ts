@@ -93,7 +93,7 @@ export async function POST(req: Request) {
   const html = `
   <div style="font-family:-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;max-width:560px;margin:0 auto;padding:28px;background:#0b0f0c;color:#f2ede3;border-radius:14px">
     <p style="margin:0 0 6px;font-size:11px;letter-spacing:.24em;color:#e1b970;font-family:monospace">[ 기획의 숲 ] — NEW LETTER</p>
-    <h1 style="margin:0 0 22px;font-size:22px;line-height:1.4">${esc(name)}님이 ${esc(label)} 편지를 보냈어요</h1>
+    <h1 style="margin:0 0 22px;font-size:22px;line-height:1.4">${esc(name)}님이 ${esc(label)} 문의를 보냈어요</h1>
     <table style="width:100%;border-collapse:collapse;font-size:14px;margin-bottom:22px">
       ${rows
         .map(
@@ -107,7 +107,7 @@ export async function POST(req: Request) {
   </div>`;
 
   const text = [
-    `[기획의 숲] ${label} 편지`,
+    `[기획의 숲] ${label} 문의`,
     '',
     ...rows.map(([k, v]) => `${k}: ${v}`),
     '',

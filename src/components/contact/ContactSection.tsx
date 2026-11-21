@@ -1,7 +1,7 @@
 'use client';
 
 // ─────────────────────────────────────────────────────────────
-// Contact 섹션 전체 (왼쪽: 소개·연락처 / 오른쪽: 편지 폼)
+// Contact 섹션 전체 (왼쪽: 소개·연락처 / 오른쪽: 문의 폼)
 // 기존 contact 페이지의 <section className={styles.reach}> … </section> 자리를
 // <ContactSection /> 한 줄로 바꾸면 됩니다.
 // ─────────────────────────────────────────────────────────────
@@ -289,7 +289,7 @@ export default function ContactSection() {
           </p>
 
           <a href="#letter" className={`${s.pill} ${s.mobileOnly}`} style={d(3)}>
-            편지 쓰기 ↓
+            제안 보내기 ↓
           </a>
 
           <dl className={s.meta} style={d(3)}>
@@ -327,7 +327,7 @@ export default function ContactSection() {
         </div>
       </div>
 
-      {/* ── 오른쪽: 편지 폼 ── */}
+      {/* ── 오른쪽: 문의 폼 ── */}
       <div id="letter" className={s.main} style={d(3)}>
         {status === 'sent' && sentAs ? (
           <div className={s.done} role="status">
@@ -336,15 +336,15 @@ export default function ContactSection() {
             </div>
             <p className={s.eyebrow}>[ ✓ ] — Delivered</p>
             <h2 ref={doneRef} tabIndex={-1} className={s.doneTitle}>
-              편지가 숲에 <em>닿았어요.</em>
+              <em>잘 전달됐어요.</em>
             </h2>
             <p className={s.doneBody}>
-              {sentAs.name}님, 보내주신 {topicLabel(sentAs.topic)} 이야기 잘 받았어요.
+              {sentAs.name}님, 보내주신 내용({topicLabel(sentAs.topic)})을 잘 받았어요.
               <br />
               보통 {REPLY_TIME} 안에 <strong>{sentAs.email}</strong>로 답장드릴게요.
             </p>
             <button type="button" className={s.ghost} onClick={reset}>
-              다른 이야기 보내기
+              새로 작성하기
             </button>
           </div>
         ) : (
@@ -506,7 +506,7 @@ export default function ContactSection() {
 
               {status === 'error' && (
                 <div className={s.errorBox} role="alert">
-                  <strong>편지가 길을 잃었어요.</strong> 적어주신 내용은 그대로 남아 있어요. 잠시 후 다시 보내주시거나{' '}
+                  <strong>전송에 실패했어요.</strong> 적어주신 내용은 그대로 남아 있어요. 잠시 후 다시 시도하시거나{' '}
                   <a href={fallbackMail}>메일 앱으로 이어서 보내기</a>를 눌러주세요.
                 </div>
               )}
