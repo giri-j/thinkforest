@@ -25,13 +25,8 @@ export const TOPICS = [
     placeholder: '함께 해보고 싶은 일을 편하게 적어주세요.\n참고할 링크가 있다면 같이 붙여주세요.',
   },
   {
-    id: 'edu',
-    label: '강의·교육',
-    placeholder: '대상, 주제, 희망 일정과 시간을 알려주세요.',
-  },
-  {
     id: 'hello',
-    label: '그냥 인사',
+    label: '아무거나',
     placeholder: '안부, 질문, 응원… 무엇이든 좋아요.',
   },
 ] as const;
