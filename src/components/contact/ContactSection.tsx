@@ -518,7 +518,7 @@ export default function ContactSection() {
 
               <div className={s.actions}>
                 <button type="submit" className={`${s.pill} ${s.send}`} disabled={status === 'sending'}>
-                  {status === 'sending' ? '편지 접는 중…' : '숲으로 편지 띄우기 →'}
+                  {status === 'sending' ? '보내는 중…' : '제안 보내기 →'}
                 </button>
                 <span className={s.kbd}>⌘ / Ctrl + Enter</span>
               </div>
