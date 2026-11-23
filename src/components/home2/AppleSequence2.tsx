@@ -701,7 +701,7 @@ export default function AppleSequence2() {
 
         <div ref={copy1Ref} className={s.copy} style={{ opacity: 0 }}>
           <p className={s.eyebrow} data-scramble="[ 01 ] — Thought">[ 01 ] — Thought</p>
-          <p className={s.line}>수많은 생각 중 하나에,<br />어느 날 <span className={s.gold}>불이 켜집니다.</span></p>
+          <p className={s.line}>문득 떠오른 영감,<br /><span className={s.gold}>위대한 시작</span>이 될지도 모릅니다.</p>
         </div>
 
         <div ref={endShadeRef} className={s.endShade} style={{ opacity: 0 }} />
