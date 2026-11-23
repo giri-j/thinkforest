@@ -4,7 +4,7 @@
    매거진 칼럼 안에서 sticky로 고정되고, 스크롤한 만큼 장면이 진행된다.
    가만히 있어도 살아 있도록: 나무는 천천히 좌우로 돌고(드래그하면 손이 우선), 엔딩은 불 켜진 밤 영상이 반복되며,
    두 장면 모두 숨 쉬듯 미세하게 확대되고 마우스를 따라 살짝 기울어지며 빛 입자가 떠다닌다.
-   프레임: public/practice3/{o,f,t,n}/NNN.webp (o=나무 회전, f=사과 낙하, t=Turn on the light(스크롤로 불이 켜짐), n=Light on(다 켜진 뒤 반복)) */
+   프레임: public/practice3/{o,f,t,n}/NNN.webp (o=나무 회전, f=사과 낙하, t=Turn on the light(스크롤로 불이 켜짐), n=hero-loop(다 켜진 뒤 반복, 영상 재생이 막힐 때의 대체 프레임)) */
 
 import { useCallback, useEffect, useRef } from 'react'
 import Link from 'next/link'
@@ -53,10 +53,10 @@ const BASE = '/practice3'
 const N_O = 95
 const N_F = 43
 const N_TL = 95 /* Turn on the light · 12fps — 스크롤한 만큼 불이 켜진다 */
-const N_ON = 63 /* Light on · 8fps — 스크롤을 다 내린 뒤 배경으로 반복 */
+const N_ON = 56 /* hero-loop · 8fps — 스크롤을 다 내린 뒤 배경(영상이 막힐 때 대체용) */
 const ON_FPS = 8
 const ON_DUR = N_ON / ON_FPS
-const XFADE = 0.8 /* Light on 반복 이음새·Turn on → Light on 전환을 겹쳐 섞는 시간(초) */
+const XFADE = 0.8 /* 대체 프레임으로 반복할 때 이음새를 겹쳐 섞는 시간(초) */
 /* 낙하 영상 마지막 프레임에서 빛나는 사과가 놓인 위치 (1280×720 기준 비율) */
 const APPLE = { x: 805 / 1280, y: 627 / 720 }
 /* 타임라인 — 단위: 화면 높이(vh).
@@ -393,8 +393,8 @@ export default function AppleSequence() {
 
     /* 나무 자동 회전 — 정면(0)에서 IDLE_AMP 프레임까지 천천히 오가는 카메라 흔들림.
        드래그하면 멈추고, 손을 뗀 뒤 잠시 후 그 자리에서 이어서 다시 흔들린다. */
-    /* 엔딩 배경(Light on) — 카메라가 계속 움직이는 영상이라 8fps 프레임으론 끊겨 보인다.
-       그래서 24fps 반복용 mp4(끝이 처음으로 섞여 들어가게 미리 만든 영상)를 캔버스에 그리고,
+    /* 엔딩 배경(hero-loop) — Turn on the light와 같은 구도에서 불이 다 켜진 채 은은하게 움직이는 영상.
+       8fps 프레임으론 끊겨 보여서 24fps 반복용 mp4(끝이 처음으로 섞여 들어가게 미리 만든 영상)를 캔버스에 그리고,
        자동재생이 막힌 환경(저전력 모드 등)이나 움직임 줄이기 설정에선 아래 프레임(drawOn)으로 대신한다 */
     const onVid = document.createElement('video')
     let onVidSrc = false /* 금빛 장면에 들어설 때 받기 시작한다 — 끝까지 내리지 않는 방문자는 받지 않는다 */
@@ -473,11 +473,11 @@ export default function AppleSequence() {
       ctx.fillRect(0, 0, cv.width, cv.height)
       ctx.setTransform(breathe, 0, 0, breathe, (W / 2 * (1 - breathe) + pxOff) * kk, (H / 2 * (1 - breathe) + pyOff) * kk)
       let motesAmt = 0
-      if (!onVidSrc && !reduce && sv > T.zoom0) { onVidSrc = true; onVid.src = `${BASE}/light-on-loop.mp4` }
+      if (!onVidSrc && !reduce && sv > T.zoom0) { onVidSrc = true; onVid.src = `${BASE}/hero-loop.mp4` }
       if (revP > 0) {
         /* 밤 장면: 금빛 속에서 1.12 → 1.0으로 내려앉고, 엔딩 홀드에서는 다시 아주 천천히 다가간다.
            스크롤하는 동안은 Turn on the light가 스크롤만큼 진행되며 불이 켜지고(앞뒤로 흐르면 꺼졌다 켜지므로 스크롤에만 묶는다),
-           다 내리면 Light on으로 넘어가 배경으로 반복된다 */
+           다 내리면 같은 구도의 hero-loop로 넘어가 배경으로 반복된다 */
         const settle = 1.12 - 0.12 * ease(revP)
         const push = 1 + 0.045 * easeOut(seg(sv, T.city1 - 1.2, END))
         const onMix = ease(seg(sv, T.city1 - 0.35, T.city1 + 0.25))
