@@ -133,7 +133,7 @@ export const PROJECTS: Project[] = [
     org: "패션 커머스 스타트업 'G사' · 셀룩",
     period: '2022',
     sortYear: 2022,
-    summary: '입점몰도 수익 모델도 없던 플랫폼에, 공유하기 쉬운 웹 기획전과 카카오톡 채널 메시지로 트래픽을 만들었다. 기획전은 서비스의 메인 콘텐츠가 됐다.',
+    summary: '수익 모델도 없던 플랫폼에, 공유하기 쉬운 웹 기획전과 카카오톡 채널 메시지로 트래픽을 만들었다. 기획전은 서비스의 메인 콘텐츠가 됐다.',
     role: '백오피스·기획전 기획 총괄, UI/UX 설계',
     metric: '참여 업체 매출 최대 2,000%',
     media: { kind: 'video', src: '/images/portfolio/cellook.mp4', poster: '/images/portfolio/cellook-poster.jpg' },
