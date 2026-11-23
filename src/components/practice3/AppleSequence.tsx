@@ -19,7 +19,7 @@ const heroP3 = {
   ...heroP2,
   lines: ['THINK;', 'PLAN;', 'BUILD.'],
   meta: 'PLANNING PRAXIS EST. 2021',
-  subtitle: '생각이 아이디어로 열리고, 기획으로 익어, 하나의 숲이 됩니다.',
+  subtitle: '생각이 기획을 만나, 사업으로 자라납니다.',
 }
 
 const COPYRIGHT = '© 기획의 숲' /* 공용 coda.copyright(수식어 포함)는 두고 홈에서만 짧게 */

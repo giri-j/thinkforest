@@ -24,7 +24,7 @@ export async function GET() {
     <title>Forest Desk — 기획의 숲</title>
     <link>${base}/blog</link>
     <atom:link href="${base}/feed.xml" rel="self" type="application/rss+xml" />
-    <description>생각이 아이디어로 열리고, 기획으로 익어, 하나의 숲이 됩니다. Idea · Trials · Personal · Life.</description>
+    <description>생각이 기획을 만나, 사업으로 자라납니다. Idea · Trials · Personal · Life.</description>
     <language>ko</language>
     <lastBuildDate>${(posts[0] ? new Date(posts[0].date) : new Date()).toUTCString()}</lastBuildDate>
 ${items}
