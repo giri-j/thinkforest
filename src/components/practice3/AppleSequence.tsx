@@ -219,7 +219,7 @@ export default function AppleSequence() {
       const w = 1280 * k, h = 720 * k
       return { w, h, x: (W - w) / 2, y: (H - h) / 2 }
     }
-    const draw = (img: HTMLImageElement | null, scale: number, ox: number, oy: number, alpha = 1) => {
+    const draw = (img: CanvasImageSource | null, scale: number, ox: number, oy: number, alpha = 1) => {
       if (!img) return
       const c = cover(), k = cv.width / W
       ctx.globalAlpha = alpha
@@ -393,7 +393,18 @@ export default function AppleSequence() {
 
     /* 나무 자동 회전 — 정면(0)에서 IDLE_AMP 프레임까지 천천히 오가는 카메라 흔들림.
        드래그하면 멈추고, 손을 뗀 뒤 잠시 후 그 자리에서 이어서 다시 흔들린다. */
-    /* 엔딩 배경(Light on) — 스크롤을 다 내리면 시간으로 흐르며 반복한다. 처음과 끝이 이어지지 않아 XFADE초 겹쳐 섞는다 */
+    /* 엔딩 배경(Light on) — 카메라가 계속 움직이는 영상이라 8fps 프레임으론 끊겨 보인다.
+       그래서 24fps 반복용 mp4(끝이 처음으로 섞여 들어가게 미리 만든 영상)를 캔버스에 그리고,
+       자동재생이 막힌 환경(저전력 모드 등)이나 움직임 줄이기 설정에선 아래 프레임(drawOn)으로 대신한다 */
+    const onVid = document.createElement('video')
+    let onVidSrc = false /* 금빛 장면에 들어설 때 받기 시작한다 — 끝까지 내리지 않는 방문자는 받지 않는다 */
+    onVid.muted = true
+    onVid.loop = true
+    onVid.playsInline = true
+    onVid.preload = 'auto'
+    onVid.setAttribute('playsinline', '')
+    let onVidWanted = false
+    /* 프레임 대체용: 시간으로 흐르며 반복, 처음과 끝은 XFADE초 겹쳐 섞는다 */
     let onT = 0
     const drawOn = (t: number, scale: number, ox: number, oy: number, alpha: number) => {
       if (reduce) { blendDraw(ON, 0, scale, ox, oy, alpha); return }
@@ -462,6 +473,7 @@ export default function AppleSequence() {
       ctx.fillRect(0, 0, cv.width, cv.height)
       ctx.setTransform(breathe, 0, 0, breathe, (W / 2 * (1 - breathe) + pxOff) * kk, (H / 2 * (1 - breathe) + pyOff) * kk)
       let motesAmt = 0
+      if (!onVidSrc && !reduce && sv > T.zoom0) { onVidSrc = true; onVid.src = `${BASE}/light-on-loop.mp4` }
       if (revP > 0) {
         /* 밤 장면: 금빛 속에서 1.12 → 1.0으로 내려앉고, 엔딩 홀드에서는 다시 아주 천천히 다가간다.
            스크롤하는 동안은 Turn on the light가 스크롤만큼 진행되며 불이 켜지고(앞뒤로 흐르면 꺼졌다 켜지므로 스크롤에만 묶는다),
@@ -472,9 +484,20 @@ export default function AppleSequence() {
         if (sv > T.city1 - 0.4) onT += dt
         else if (sv < T.city1 - 0.6) onT = 0 /* 다시 올라갔다 내려오면 처음부터 */
         if (onMix < 1) blendDraw(TL, cityP * (N_TL - 1), settle * push, W / 2, H * 0.46)
-        if (onMix > 0) drawOn(onT, settle * push, W / 2, H * 0.46, onMix)
+        /* 엔딩 직전부터 영상을 미리 재생해 두고, 멀어지면 멈춘다 */
+        const want = !reduce && sv > T.city1 - 0.6
+        if (want !== onVidWanted) {
+          onVidWanted = want
+          if (want) onVid.play().catch(() => {})
+          else onVid.pause()
+        }
+        if (onMix > 0) {
+          if (want && !onVid.paused && onVid.readyState >= 2) draw(onVid, settle * push, W / 2, H * 0.46, onMix)
+          else drawOn(onT, settle * push, W / 2, H * 0.46, onMix)
+        }
         motesAmt = ease(revP)
       } else if (orb > 0.6 || sv <= T.fall0) {
+        if (onVidWanted) { onVidWanted = false; onVid.pause() }
         blendDraw(O, orb, 1, 0, 0)
         if (orb <= 1 && F[0].ok) draw(F[0].img, 1, 0, 0, 1 - orb) /* 낙하 영상 첫 프레임으로 자연스럽게 정착 */
         motesAmt = 0.45
@@ -620,6 +643,8 @@ export default function AppleSequence() {
 
     return () => {
       alive = false
+      onVid.pause()
+      if (onVidSrc) { onVid.removeAttribute('src'); onVid.load() }
       cancelAnimationFrame(raf)
       ro.disconnect()
       window.removeEventListener('scroll', onScroll)
