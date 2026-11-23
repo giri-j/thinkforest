@@ -1,10 +1,10 @@
 'use client'
 
-/* 히어로(THINK; PLAN; BUILD.) → 사과나무 → 황금 사과 낙하 → 금빛 확대 → 황금 숲의 도시(엔딩).
+/* 히어로(THINK; PLAN; BUILD.) → 사과나무 → 황금 사과 낙하 → 금빛 확대 → 밤의 사과나무에 불이 켜짐(엔딩).
    매거진 칼럼 안에서 sticky로 고정되고, 스크롤한 만큼 장면이 진행된다.
-   가만히 있어도 살아 있도록: 나무는 천천히 좌우로 돌고(드래그하면 손이 우선), 도시는 프레임이 계속 흐르며,
+   가만히 있어도 살아 있도록: 나무는 천천히 좌우로 돌고(드래그하면 손이 우선), 엔딩은 불 켜진 밤 영상이 반복되며,
    두 장면 모두 숨 쉬듯 미세하게 확대되고 마우스를 따라 살짝 기울어지며 빛 입자가 떠다닌다.
-   프레임: public/practice3/{o,f,c}/NNN.webp (o=나무 회전, f=사과 낙하, c=도시) */
+   프레임: public/practice3/{o,f,t,n}/NNN.webp (o=나무 회전, f=사과 낙하, t=Turn on the light(스크롤로 불이 켜짐), n=Light on(다 켜진 뒤 반복)) */
 
 import { useCallback, useEffect, useRef } from 'react'
 import Link from 'next/link'
@@ -52,7 +52,11 @@ const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/—·+'
 const BASE = '/practice3'
 const N_O = 95
 const N_F = 43
-const N_C = 95
+const N_TL = 95 /* Turn on the light · 12fps — 스크롤한 만큼 불이 켜진다 */
+const N_ON = 63 /* Light on · 8fps — 스크롤을 다 내린 뒤 배경으로 반복 */
+const ON_FPS = 8
+const ON_DUR = N_ON / ON_FPS
+const XFADE = 0.8 /* Light on 반복 이음새·Turn on → Light on 전환을 겹쳐 섞는 시간(초) */
 /* 낙하 영상 마지막 프레임에서 빛나는 사과가 놓인 위치 (1280×720 기준 비율) */
 const APPLE = { x: 805 / 1280, y: 627 / 720 }
 /* 타임라인 — 단위: 화면 높이(vh).
@@ -147,10 +151,10 @@ export default function AppleSequence() {
     const pad = (n: number) => String(n).padStart(3, '0')
     const mk = (dir: string, n: number): Frame[] =>
       Array.from({ length: n }, (_, i) => ({ src: `${BASE}/${dir}/${pad(i + 1)}.webp`, img: null, ok: false }))
-    const O = mk('o', N_O), F = mk('f', N_F), C = mk('c', N_C)
+    const O = mk('o', N_O), F = mk('f', N_F), TL = mk('t', N_TL), ON = mk('n', N_ON)
 
     let alive = true
-    const TOTAL = N_O + N_F + N_C
+    const TOTAL = N_O + N_F + N_TL + N_ON
     let settled = 0
     /* 디코딩까지 끝난 프레임만 ok로 표시한다 — 그리는 순간에 메인 스레드에서 디코딩하며 버벅이지 않도록 */
     const load = (fr: Frame) =>
@@ -167,7 +171,7 @@ export default function AppleSequence() {
       })
     /* 로딩 순서: 세 시퀀스 모두 성기게(8장 간격) 먼저 받고 → 4 → 2 → 1장 간격으로 촘촘하게 채운다.
        같은 간격 안에서는 지금 보고 있는 장면의 시퀀스가 먼저다 — 빠르게 스크롤해도 근처 프레임이 이미 있다 */
-    const order = () => (sv < T.fall0 ? [O, F, C] : sv < T.rev0 ? [F, C, O] : [C, F, O])
+    const order = () => (sv < T.fall0 ? [O, F, TL, ON] : sv < T.rev0 ? [F, TL, ON, O] : [TL, ON, F, O])
     const pick = (): Frame | null => {
       for (const step of [8, 4, 2, 1]) {
         for (const list of order()) {
@@ -184,12 +188,12 @@ export default function AppleSequence() {
       }
     }
     /* 두 프레임 사이를 섞어 그린다 — 프레임 수가 적어도 움직임이 끊기지 않게 */
-    const blendDraw = (list: Frame[], idx: number, scale: number, ox: number, oy: number) => {
+    const blendDraw = (list: Frame[], idx: number, scale: number, ox: number, oy: number, alpha = 1) => {
       const i = clamp(idx, 0, list.length - 1)
       const a = Math.floor(i), b = Math.min(list.length - 1, a + 1), f = i - a
       const ia = list[a]?.ok ? list[a].img : nearest(list, i)
-      draw(ia, scale, ox, oy, 1)
-      if (f > 0.02 && list[b]?.ok) draw(list[b].img, scale, ox, oy, f)
+      draw(ia, scale, ox, oy, alpha)
+      if (f > 0.02 && list[b]?.ok) draw(list[b].img, scale, ox, oy, f * alpha)
     }
     const nearest = (list: Frame[], idx: number) => {
       const k = clamp(Math.round(idx), 0, list.length - 1)
@@ -389,9 +393,17 @@ export default function AppleSequence() {
 
     /* 나무 자동 회전 — 정면(0)에서 IDLE_AMP 프레임까지 천천히 오가는 카메라 흔들림.
        드래그하면 멈추고, 손을 뗀 뒤 잠시 후 그 자리에서 이어서 다시 흔들린다. */
-    /* 도시 프레임 흐름 — 영상 전체를 천천히 앞뒤로 오간다 */
-    const CITY_PERIOD = 22
-    let cityPhase = 0
+    /* 엔딩 배경(Light on) — 스크롤을 다 내리면 시간으로 흐르며 반복한다. 처음과 끝이 이어지지 않아 XFADE초 겹쳐 섞는다 */
+    let onT = 0
+    const drawOn = (t: number, scale: number, ox: number, oy: number, alpha: number) => {
+      if (reduce) { blendDraw(ON, 0, scale, ox, oy, alpha); return }
+      const P = ON_DUR - XFADE
+      const k = Math.floor(t / P), a = t - k * P
+      if (k > 0 && a < XFADE) {
+        blendDraw(ON, (a + P) * ON_FPS, scale, ox, oy, alpha)
+        blendDraw(ON, a * ON_FPS, scale, ox, oy, alpha * ease(a / XFADE))
+      } else blendDraw(ON, a * ON_FPS, scale, ox, oy, alpha)
+    }
 
     let raf = 0
     let last = performance.now()
@@ -451,14 +463,16 @@ export default function AppleSequence() {
       ctx.setTransform(breathe, 0, 0, breathe, (W / 2 * (1 - breathe) + pxOff) * kk, (H / 2 * (1 - breathe) + pyOff) * kk)
       let motesAmt = 0
       if (revP > 0) {
-        /* 도시: 금빛 속에서 1.12 → 1.0으로 내려앉고, 엔딩 홀드에서는 다시 아주 천천히 다가간다.
-           프레임은 스크롤과 상관없이 계속 흐르고, 스크롤은 그 흐름을 앞으로 살짝 밀어준다. */
+        /* 밤 장면: 금빛 속에서 1.12 → 1.0으로 내려앉고, 엔딩 홀드에서는 다시 아주 천천히 다가간다.
+           스크롤하는 동안은 Turn on the light가 스크롤만큼 진행되며 불이 켜지고(앞뒤로 흐르면 꺼졌다 켜지므로 스크롤에만 묶는다),
+           다 내리면 Light on으로 넘어가 배경으로 반복된다 */
         const settle = 1.12 - 0.12 * ease(revP)
         const push = 1 + 0.045 * easeOut(seg(sv, T.city1 - 1.2, END))
-        if (!reduce) cityPhase += (dt / CITY_PERIOD) * Math.PI * 2
-        const flow = reduce ? cityP : (1 - Math.cos(cityPhase)) / 2
-        const idx = clamp(flow * 0.8 + cityP * 0.2, 0, 1) * (N_C - 1)
-        blendDraw(C, idx, settle * push, W / 2, H * 0.46)
+        const onMix = ease(seg(sv, T.city1 - 0.35, T.city1 + 0.25))
+        if (sv > T.city1 - 0.4) onT += dt
+        else if (sv < T.city1 - 0.6) onT = 0 /* 다시 올라갔다 내려오면 처음부터 */
+        if (onMix < 1) blendDraw(TL, cityP * (N_TL - 1), settle * push, W / 2, H * 0.46)
+        if (onMix > 0) drawOn(onT, settle * push, W / 2, H * 0.46, onMix)
         motesAmt = ease(revP)
       } else if (orb > 0.6 || sv <= T.fall0) {
         blendDraw(O, orb, 1, 0, 0)
