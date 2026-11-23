@@ -16,7 +16,6 @@ import { heroP2 } from '@/components/practice2/extra'
 import p2 from '@/components/practice2/practice2.module.css'
 import { useHairlineIntro } from '@/components/practice3/useHairlineIntro'
 import s from '@/components/practice3/apple.module.css'
-import h2 from './home2.module.css'
 
 /* practice3 전용 히어로 문구 — 공용 heroP2는 건드리지 않고 lines·subtitle만 덮어쓴다 */
 const heroP3 = {
@@ -519,13 +518,8 @@ export default function AppleSequence2() {
         }
       }
 
-      /* 도면 주석: 빛나는 사과(2021)에서 시작해 해마다 늘어난 열매를 얇은 선으로 잇는다.
-         붉은 사과들이 왼쪽 제목 뒤에 있어서, 제목이 걷힌 뒤(SCENE 01 카피와 함께) 나타나 낙하 직전에 사라진다.
-         세로 화면에선 그 사과들이 화면 밖이라 그리지 않는다 */
-      const hudO = W >= H && L[0].ok && glowOn ? ease(seg(sv, 0.4, 0.62)) * (1 - ease(seg(sv, T.fall0 - 0.15, T.fall0))) : 0
-      hud.style.opacity = hudO.toFixed(3)
-      hud.classList.toggle(h2.hudShow, hudO > 0.01)
-      if (hudO > 0.01) {
+      /* 도면 주석: 빛나는 사과(2021)에서 시작해 해마다 늘어난 열매를 얇은 선으로 잇는다 (홈과 같은 방식) */
+      if (active) {
         const kc = c.w / 1280
         const pts = [GLOW, ...HUD2].map((n) => [tx(c.x + n.x * kc), ty(c.y + n.y * kc)])
         hudPath.setAttribute('d', pts.map(([x, y], i) => `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`).join(' '))
@@ -653,7 +647,7 @@ export default function AppleSequence2() {
 
         {/* 황금 사과 — 힌트 링 · 빛 · 히트 영역 · 헤어라인 · 카드 */}
         <div ref={popRef} className={s.pop}>
-          <svg ref={hudRef} className={`${s.hud} ${h2.hudHome2}`} aria-hidden="true">
+          <svg ref={hudRef} className={s.hud} aria-hidden="true">
             <path ref={hudPathRef} pathLength={1} />
             {[2021, ...HUD2.map((n) => n.year)].map((y, i) => (
               <g key={y} data-node className={i === 0 ? s.hudGold : undefined} style={{ '--i': i } as React.CSSProperties}>
