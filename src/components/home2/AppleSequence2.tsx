@@ -7,7 +7,7 @@
    프레임: public/practice3/{o,f,c}/NNN.webp (o=나무 회전, f=사과 낙하, c=도시) */
 /* /home2 — 위 홈 시퀀스의 복제본. 나무·낙하 장면만 새 영상 세 개로 바꿨다.
    l = 01 사과에 불이 켜짐(한 번), s = 02 빛나는 채로 대기(반복), f = 03 낙하(스크롤), c = Turn on the light(스크롤).
-   새 영상은 서로 구름이 이어지지 않아서, 영상 사이를 XFADE초 겹쳐 섞는다. 나무 드래그 회전은 없다.
+   새 영상은 서로 구름이 이어지지 않아서, 영상 사이를 XFADE초 겹쳐 섞는다. 나무 드래그 회전은 없다(연도 주석은 고정 좌표).
    원본은 사과가 왼쪽이라 왼쪽 제목에 가려져서, 프레임을 좌우로 뒤집어 사과를 오른쪽(기존 홈과 같은 자리)에 둔다. */
 
 import { useCallback, useEffect, useRef } from 'react'
@@ -16,6 +16,7 @@ import { heroP2 } from '@/components/practice2/extra'
 import p2 from '@/components/practice2/practice2.module.css'
 import { useHairlineIntro } from '@/components/practice3/useHairlineIntro'
 import s from '@/components/practice3/apple.module.css'
+import h2 from './home2.module.css'
 
 /* practice3 전용 히어로 문구 — 공용 heroP2는 건드리지 않고 lines·subtitle만 덮어쓴다 */
 const heroP3 = {
@@ -29,6 +30,15 @@ const COPYRIGHT = '© 기획의 숲' /* 공용 coda.copyright(수식어 포함)�
 
 /* 빛나는 사과의 중심과 반지름 (1280×720 기준, 뒤집은 프레임) — 01 후반·02 내내 거의 같은 자리 */
 const GLOW = { x: 802, y: 432, r: 32 }
+/* 도면 주석(2021 → 2026): 2021은 빛나는 사과, 2022~2026은 같은 가지의 붉은 사과 (1280×720, 뒤집은 프레임).
+   가지가 흔들려도 10px 안쪽이라 고정 좌표로 둔다 */
+const HUD2 = [
+  { year: 2022, x: 511, y: 326 },
+  { year: 2023, x: 400, y: 311 },
+  { year: 2024, x: 457, y: 280 },
+  { year: 2025, x: 407, y: 207 },
+  { year: 2026, x: 301, y: 241 },
+]
 
 /* 황금 사과 카드 — 뉴턴의 사과. 생각 → 번뜩임(아이디어) → 다듬기(기획) → 세상의 구조(사업)라는
    기획의 숲의 흐름을 실제 이야기 하나로 보여 준다. */
@@ -109,6 +119,8 @@ export default function AppleSequence2() {
   const anchorRef = useRef<HTMLDivElement>(null)
   const btnRef = useRef<HTMLButtonElement>(null)
   const linkRef = useRef<SVGPathElement>(null)
+  const hudRef = useRef<SVGSVGElement>(null)
+  const hudPathRef = useRef<SVGPathElement>(null)
   const cardPosRef = useRef<HTMLDivElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
   /* 모서리 마이크로타이포 · 도면 주석 */
@@ -149,9 +161,11 @@ export default function AppleSequence2() {
     if (!pop || !anchor || !btn || !link || !cardPos || !card) return
     const chrome = chromeRef.current, tl = tlRef.current, bl = blRef.current, br = brRef.current
     const sceneNo = sceneNoRef.current, sceneName = sceneNameRef.current, prog = progRef.current
+    const hud = hudRef.current, hudPath = hudPathRef.current
     const brand = brandRef.current
     const loadBar = loadBarRef.current, loadTxt = loadTxtRef.current
-    if (!chrome || !tl || !bl || !br || !sceneNo || !sceneName || !prog || !loadBar || !loadTxt || !brand) return
+    if (!chrome || !tl || !bl || !br || !sceneNo || !sceneName || !prog || !hud || !hudPath || !loadBar || !loadTxt || !brand) return
+    const hudNodes = Array.from(hud.querySelectorAll<SVGGElement>('[data-node]'))
     const ctx = cv.getContext('2d')
     if (!ctx) return
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -505,6 +519,19 @@ export default function AppleSequence2() {
         }
       }
 
+      /* 도면 주석: 빛나는 사과(2021)에서 시작해 해마다 늘어난 열매를 얇은 선으로 잇는다.
+         붉은 사과들이 왼쪽 제목 뒤에 있어서, 제목이 걷힌 뒤(SCENE 01 카피와 함께) 나타나 낙하 직전에 사라진다.
+         세로 화면에선 그 사과들이 화면 밖이라 그리지 않는다 */
+      const hudO = W >= H && L[0].ok && glowOn ? ease(seg(sv, 0.4, 0.62)) * (1 - ease(seg(sv, T.fall0 - 0.15, T.fall0))) : 0
+      hud.style.opacity = hudO.toFixed(3)
+      hud.classList.toggle(h2.hudShow, hudO > 0.01)
+      if (hudO > 0.01) {
+        const kc = c.w / 1280
+        const pts = [GLOW, ...HUD2].map((n) => [tx(c.x + n.x * kc), ty(c.y + n.y * kc)])
+        hudPath.setAttribute('d', pts.map(([x, y], i) => `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`).join(' '))
+        hudNodes.forEach((n, i) => n.setAttribute('transform', `translate(${pts[i][0].toFixed(1)} ${pts[i][1].toFixed(1)})`))
+      }
+
       /* 모서리: 매니페스토·스크롤 안내는 히어로와 함께 사라지고, 로고와 장면 번호는 끝까지 남는다.
          금빛이 화면을 채울 땐 글자색이 금빛 위에서 읽히는 짙은 갈색으로 바뀐다 */
       const floodO = revP > 0 ? 1 - ease(revP) : ease(seg(zoomP, 0.55, 1))
@@ -626,6 +653,15 @@ export default function AppleSequence2() {
 
         {/* 황금 사과 — 힌트 링 · 빛 · 히트 영역 · 헤어라인 · 카드 */}
         <div ref={popRef} className={s.pop}>
+          <svg ref={hudRef} className={`${s.hud} ${h2.hudHome2}`} aria-hidden="true">
+            <path ref={hudPathRef} pathLength={1} />
+            {[2021, ...HUD2.map((n) => n.year)].map((y, i) => (
+              <g key={y} data-node className={i === 0 ? s.hudGold : undefined} style={{ '--i': i } as React.CSSProperties}>
+                <path d="M-4 0H4M0 -4V4" />
+                <text x="9" y="-7">{y}</text>
+              </g>
+            ))}
+          </svg>
           <svg className={s.popLine} aria-hidden="true"><path ref={linkRef} pathLength={1} /></svg>
           <div ref={anchorRef} className={s.anchor}>
             <span className={s.glow} aria-hidden="true" />
