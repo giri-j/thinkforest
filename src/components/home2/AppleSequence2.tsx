@@ -6,7 +6,7 @@
    두 장면 모두 숨 쉬듯 미세하게 확대되고 마우스를 따라 살짝 기울어지며 빛 입자가 떠다닌다.
    프레임: public/practice3/{o,f,c}/NNN.webp (o=나무 회전, f=사과 낙하, c=도시) */
 /* /home2 — 위 홈 시퀀스의 복제본. 나무·낙하 장면만 새 영상 세 개로 바꿨다.
-   l = 01 사과에 불이 켜짐(한 번), s = 02 빛나는 채로 대기(반복), f = 03 낙하(스크롤), c = 기존 황금 도시.
+   l = 01 사과에 불이 켜짐(한 번), s = 02 빛나는 채로 대기(반복), f = 03 낙하(스크롤), c = Turn on the light(스크롤).
    새 영상은 서로 구름이 이어지지 않아서, 영상 사이를 XFADE초 겹쳐 섞는다. 나무 드래그 회전은 없다.
    원본은 사과가 왼쪽이라 왼쪽 제목에 가려져서, 프레임을 좌우로 뒤집어 사과를 오른쪽(기존 홈과 같은 자리)에 둔다. */
 
@@ -55,11 +55,10 @@ const SCENES = [
 const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/—·+'
 
 const BASE = '/home2'
-const CITY_BASE = '/practice3' /* 황금 도시는 기존 홈 프레임을 그대로 쓴다 */
 const N_L = 79 /* 01 불 켜짐 · 10fps */
 const N_S = 63 /* 02 대기 · 8fps */
 const N_F = 61 /* 03 낙하 · 12fps */
-const N_C = 95
+const N_C = 95 /* Turn on the light · 12fps — 밤의 사과나무 너머로 불이 차례로 켜진다 */
 const L_FPS = 10, S_FPS = 8
 const L_DUR = N_L / L_FPS, S_DUR = N_S / S_FPS
 const XFADE = 0.8 /* 영상 사이를 겹쳐 섞는 시간(초) */
@@ -160,7 +159,7 @@ export default function AppleSequence2() {
     const pad = (n: number) => String(n).padStart(3, '0')
     const mk = (dir: string, n: number, base = BASE): Frame[] =>
       Array.from({ length: n }, (_, i) => ({ src: `${base}/${dir}/${pad(i + 1)}.webp`, img: null, ok: false }))
-    const L = mk('l', N_L), SB = mk('s', N_S), F = mk('f', N_F), C = mk('c', N_C, CITY_BASE)
+    const L = mk('l', N_L), SB = mk('s', N_S), F = mk('f', N_F), C = mk('c', N_C)
 
     let alive = true
     const TOTAL = N_L + N_S + N_F + N_C
@@ -400,9 +399,6 @@ export default function AppleSequence2() {
     const copyEyebrows = [copy1, copy2].map((el) => el.querySelector<HTMLElement>('[data-scramble]'))
     const copyShown = [false, false]
 
-    /* 도시 프레임 흐름 — 영상 전체를 천천히 앞뒤로 오간다 */
-    const CITY_PERIOD = 22
-    let cityPhase = 0
 
     let raf = 0
     let last = performance.now()
@@ -445,13 +441,11 @@ export default function AppleSequence2() {
       ctx.setTransform(breathe, 0, 0, breathe, (W / 2 * (1 - breathe) + pxOff) * kk, (H / 2 * (1 - breathe) + pyOff) * kk)
       let motesAmt = 0
       if (revP > 0) {
-        /* 도시: 금빛 속에서 1.12 → 1.0으로 내려앉고, 엔딩 홀드에서는 다시 아주 천천히 다가간다.
-           프레임은 스크롤과 상관없이 계속 흐르고, 스크롤은 그 흐름을 앞으로 살짝 밀어준다. */
+        /* 밤 장면: 금빛 속에서 1.12 → 1.0으로 내려앉고, 엔딩 홀드에서는 다시 아주 천천히 다가간다.
+           불이 켜지는 영상이라 앞뒤로 흐르면 꺼졌다 켜졌다 하므로, 스크롤만큼 켜지고 끝에선 다 켜진 채로 머문다. */
         const settle = 1.12 - 0.12 * ease(revP)
         const push = 1 + 0.045 * easeOut(seg(sv, T.city1 - 1.2, END))
-        if (!reduce) cityPhase += (dt / CITY_PERIOD) * Math.PI * 2
-        const flow = reduce ? cityP : (1 - Math.cos(cityPhase)) / 2
-        const idx = clamp(flow * 0.8 + cityP * 0.2, 0, 1) * (N_C - 1)
+        const idx = cityP * (N_C - 1)
         blendDraw(C, idx, settle * push, W / 2, H * 0.46)
         motesAmt = ease(revP)
       } else if (sv <= T.fall0) {
