@@ -18,7 +18,7 @@ export default function ProjectIndex({ projects, numbers, fields }: { projects: 
       </div>
       {projects.map((pr) => (
         <div key={pr.id} className={`${s.row} ${p.idx}`}>
-          <span className={`${s.num} ${s.mono}`}>{numbers[pr.id]}</span>
+          <span className={`${s.num} ${s.mono} ${p.idxNo}`}>{numbers[pr.id]}</span>
           <div className={s.titleCell}>
             <a href={`#${pr.id}`} className={`${s.titleLink} ${p.idxTitle}`}>{pr.title}</a>
           </div>

@@ -109,6 +109,8 @@
   .indexWrap { padding-top: 32px; }
   .indexWrap .idx { grid-template-columns: 30px 1fr 92px; gap: 10px; }
   .idxField { display: none; }
+  /* 블로그 표(desk)는 좁은 화면에서 번호 칸을 숨기는데, 포트폴리오 목차는 번호를 남긴다 — 숨기면 제목이 번호 칸(30px)으로 밀려 들어간다 */
+  .indexWrap .idxNo { display: block; }
   .field { padding-top: 88px; scroll-margin-top: 96px; }
   .entry { scroll-margin-top: 112px; }
   .withMedia { padding-top: 52px; }
