@@ -76,14 +76,14 @@ export default async function PostPage(context: { params: Promise<{ slug: string
                 </div>
 
                 <section className={s.keep}>
-                    <span className={`${s.mono} ${s.caps} ${s.grey}`}>다음 나무로 — Keep reading</span>
+                    <span className={`${s.mono} ${s.caps} ${s.grey}`}>다른 글 읽기 — Keep reading</span>
                     <div className={s.keepGrid}>
                         {newer ? (
                             <Link href={`/blog/${newer.slug}`}>
                                 <span className={s.mono}>← Newer · {deskDate(newer.date)}</span>
                                 <strong>{newer.title}</strong>
                             </Link>
-                        ) : <div className={s.none}><span className={s.mono}>← Newer</span><strong>가장 최근에 심은 나무입니다.</strong></div>}
+                        ) : <div className={s.none}><span className={s.mono}>← Newer</span><strong>가장 최근 글입니다.</strong></div>}
                         {older ? (
                             <Link href={`/blog/${older.slug}`}>
                                 <span className={s.mono}>Older · {deskDate(older.date)} →</span>
