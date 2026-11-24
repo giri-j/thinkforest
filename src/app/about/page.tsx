@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
     return (
-        <ForestFrame header={<PageChrome section="About — 기리" />}>
+        <ForestFrame header={<PageChrome title="Problem Solver" />}>
             <AboutForest />
         </ForestFrame>
     )
