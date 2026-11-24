@@ -1,7 +1,7 @@
 'use client'
 
 /* 모바일 내비 — 왼쪽 서랍 탭이 숨는 768px 미만에서만 보인다.
-   우상단 작은 모노 버튼 → 전체 화면 메뉴(홈 / 01 Blog / 02 About / 03 Contact). */
+   우상단 작은 모노 버튼 → 전체 화면 메뉴(홈 / 01 Blog / 02 About / 03 Portfolio / 04 Contact). */
 
 import { useEffect, useId, useState } from 'react'
 import Link from 'next/link'
@@ -11,7 +11,8 @@ const ITEMS = [
   { no: '00', label: '기획의 숲', sub: 'Home', href: '/' },
   { no: '01', label: 'Blog', sub: 'Forest Desk', href: '/blog' },
   { no: '02', label: 'About', sub: '기리', href: '/about' },
-  { no: '03', label: 'Contact', sub: '제안하기', href: '/contact' },
+  { no: '03', label: 'Portfolio', sub: '해본 일', href: '/portfolio' },
+  { no: '04', label: 'Contact', sub: '제안하기', href: '/contact' },
 ]
 
 const MONO = { fontFamily: 'var(--font-tf-mono), ui-monospace, monospace' } as const
@@ -21,8 +22,7 @@ export default function MobileNav() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const panelId = useId()
-  // /portfolio는 About의 버튼으로 들어오는 하위 페이지 — About 칸을 켠다
-  const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href) || (href === '/about' && pathname.startsWith('/portfolio')))
+  const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href))
 
   // 열려 있는 동안 뒤 페이지 스크롤 잠금 + Esc로 닫기
   useEffect(() => {

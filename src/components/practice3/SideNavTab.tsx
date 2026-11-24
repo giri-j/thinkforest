@@ -5,7 +5,7 @@
  * (공용 파일인 SideDrawerTab은 그대로 두고, 동작은 같게 복제했다)
  *  1) 첫 진입 시 잡지 페이지 뒤에서 서랍처럼 열리고
  *  2) 스크롤하면 화면에 붙어 따라오며, 스크롤 속도만큼 살짝 늦게 따라붙는다(관성)
- *  위 칸(초록) = 홈, 아래 칸 = Blog / About / Contact. 지금 있는 칸에 금색 표시.
+ *  위 칸(초록) = 홈, 아래 칸 = Blog / About / Portfolio / Contact. 지금 있는 칸에 금색 표시.
  */
 
 import { useEffect, useRef, useState } from 'react'
@@ -17,7 +17,8 @@ import MobileNav from './MobileNav'
 const TABS = [
   { no: '01', label: 'Blog', ko: '블로그', href: '/blog', bg: 'bg-[#25382a] hover:bg-[#2c4231]' },
   { no: '02', label: 'About', ko: '소개', href: '/about', bg: 'bg-[#1e2b21] hover:bg-[#253428]' },
-  { no: '03', label: 'Contact', ko: '연락', href: '/contact', bg: 'bg-[#3a3d3a] hover:bg-[#444844]' },
+  { no: '03', label: 'Portfolio', ko: '포트폴리오', href: '/portfolio', bg: 'bg-[#26302a] hover:bg-[#2d3832]' },
+  { no: '04', label: 'Contact', ko: '연락', href: '/contact', bg: 'bg-[#3a3d3a] hover:bg-[#444844]' },
 ]
 
 /* 탭 음영 — 비활성 탭은 페이지와 윗칸 밑으로 들어가 있고(안쪽 그림자 + 어둠),
@@ -49,8 +50,7 @@ export default function SideNavTab() {
   const drawerRef = useRef<HTMLDivElement>(null) // 서랍 열림(x)
   const [skipIntro] = useState(() => drawerOpened) // 이미 열린 적 있으면 처음부터 보이게 그린다(깜빡임 없음)
 
-  // /portfolio는 About의 버튼으로 들어오는 하위 페이지 — About 칸을 켠다
-  const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href) || (href === '/about' && pathname.startsWith('/portfolio')))
+  const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href))
 
   // 1) 서랍 열림
   useEffect(() => {
@@ -128,7 +128,7 @@ export default function SideNavTab() {
             <Link
               href="/"
               aria-current={homeActive ? 'page' : undefined}
-              className={`${TAB} shrink-0 gap-5 overflow-hidden rounded-tl-[18px] bg-[#2f4a33] pb-7 pt-8 text-[#f1ece0] hover:bg-[#365539] ${homeActive ? `${FRONT} rounded-bl-[12px]` : BACK}`}
+              className={`${TAB} shrink-0 gap-5 overflow-hidden rounded-tl-[18px] bg-[#2f4a33] pb-7 pt-8 [@media(max-height:760px)]:gap-3 [@media(max-height:760px)]:pb-5 [@media(max-height:760px)]:pt-6 text-[#f1ece0] hover:bg-[#365539] ${homeActive ? `${FRONT} rounded-bl-[12px]` : BACK}`}
             >
               <Shade active={homeActive} />
               <span data-tab-item className={`relative block transition-colors ${homeActive ? 'text-[#e1b970]' : ''}`}>
@@ -154,7 +154,7 @@ export default function SideNavTab() {
                   key={t.href}
                   href={t.href}
                   aria-current={active ? 'page' : undefined}
-                  className={`${TAB} h-[116px] shrink-0 justify-center gap-2 ${t.bg} ${corners} ${active ? `${FRONT} text-[#e1b970]` : `${BACK} text-[#d9d2c2]`}`}
+                  className={`${TAB} h-[116px] shrink-0 [@media(max-height:760px)]:h-[108px] justify-center gap-2 ${t.bg} ${corners} ${active ? `${FRONT} text-[#e1b970]` : `${BACK} text-[#d9d2c2]`}`}
                 >
                   <Shade active={active} />
                   {/* 지금 있는 칸 표시 — 바깥 가장자리의 금색 선 */}
