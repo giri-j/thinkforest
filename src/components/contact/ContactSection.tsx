@@ -277,7 +277,7 @@ export default function ContactSection() {
       <div className={s.aside}>
         <div className={s.asideInner}>
           <p className={s.eyebrow} style={d(0)}>
-            [ 03 ] — Contact
+            [ 04 ] — Contact
           </p>
           <h1 id={id('title')} className={s.h1} style={d(1)}>
             Let&apos;s build <em>together.</em>

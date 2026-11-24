@@ -28,7 +28,7 @@ export default function AboutForest() {
     <div ref={rootRef} className={f.page}>
       {/* 큰 소개 문장 */}
       <section className={f.intro}>
-        <p className={d.eyebrow} data-rv>[ 01 ] — About</p>
+        <p className={d.eyebrow} data-rv>[ 02 ] — About</p>
         <h1 className={f.statement} data-rv style={{ ['--d' as string]: 1 }}>
           {intro.first}<br /><span>{intro.second}</span>
         </h1>

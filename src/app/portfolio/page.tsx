@@ -29,7 +29,7 @@ export default function PortfolioPage() {
     return (
         <Reveal className={f.page}>
             <header className={`${s.magHead} ${s.in}`}>
-                <p className={s.eyebrow}>[ 02 ] — Portfolio</p>
+                <p className={s.eyebrow}>[ 03 ] — Portfolio</p>
                 <h1 className={s.pageTitle}>Portfolio<span>해본 일 전부, 한곳에</span></h1>
                 <p className={`${s.pageDesc} ${p.lead}`}>IT 서비스부터 현장 운영, 사업과 그 밖의 일까지. 기획자로 걸어온 일을 빠짐없이 모았습니다.</p>
             </header>
