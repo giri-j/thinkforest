@@ -73,28 +73,42 @@ export default function SideNavTab() {
     return () => { tl.kill() }
   }, [skipIntro])
 
-  // 2) 스크롤 관성 (SideDrawerTab과 같은 값)
+  // 2) 스크롤 관성 — 스크롤할 때마다 위치를 바로 옮기지 않고 '속도'를 살짝 밀어 주고,
+  //    거의 임계 감쇠인 스프링이 제자리로 부드럽게 되돌린다. 마우스 휠처럼 한 번에 크게 튀는 스크롤도 덜컹이지 않는다.
+  //    - 시간(dt) 기반이라 60Hz·120Hz 화면에서 같은 느낌
+  //    - 멀리 밀려날수록 미는 힘이 약해지고, 표시값은 tanh로 MAX에 부드럽게 다가갈 뿐 넘지 않는다(벽에 부딪히는 느낌 없음)
+  //    - 스크롤이 멈추고 제자리에 오면 루프를 쉰다
   useEffect(() => {
     const el = followRef.current
     if (!el) return
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const setY = gsap.quickSetter(el, 'y', 'px') as (v: number) => void
-    const MAX = 70, PUSH = 0.35, RETURN = 0.12
-    let lastScroll = window.scrollY
-    let offset = 0
-    let raf = 0
-    const tick = () => {
-      const current = window.scrollY
-      const delta = current - lastScroll
-      lastScroll = current
-      offset = gsap.utils.clamp(-MAX, MAX, offset - delta * PUSH)
-      offset += (0 - offset) * RETURN
-      if (Math.abs(offset) < 0.05) offset = 0
-      setY(offset)
+    const KICK = 1.3 /* 스크롤 1px당 미는 속도 */
+    const MAX = 22 /* 최대로 밀려나는 거리(px) — 부드럽게 다가가기만 한다 */
+    const K = 22 /* 스프링 강도 — 낮을수록 천천히 돌아온다 */
+    const C = 7.3 /* 감쇠 — 임계 감쇠의 약 0.78, 튕김이 거의 없다 */
+    let fx = 0, fv = 0, lastY = window.scrollY, lastT = 0, raf = 0
+    const tick = (t: number) => {
+      const dt = lastT ? Math.min((t - lastT) / 1000, 1 / 30) : 1 / 60
+      lastT = t
+      const y = window.scrollY, dy = y - lastY
+      lastY = y
+      if (dy) {
+        let kick = -dy * KICK
+        if (kick * fx > 0) kick *= Math.max(0, 1 - Math.abs(fx) / MAX)
+        fv += kick
+      }
+      fv += (-K * fx - C * fv) * dt
+      fx += fv * dt
+      if (Math.abs(fx) < 0.05 && Math.abs(fv) < 0.05 && dy === 0) {
+        fx = fv = 0; el.style.transform = ''; raf = 0; lastT = 0
+        return
+      }
+      el.style.transform = `translate3d(0, ${(MAX * Math.tanh(fx / MAX)).toFixed(2)}px, 0)`
       raf = requestAnimationFrame(tick)
     }
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(tick) }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => { window.removeEventListener('scroll', onScroll); cancelAnimationFrame(raf) }
   }, [])
 
   const homeActive = isActive('/')
