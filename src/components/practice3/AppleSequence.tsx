@@ -97,6 +97,8 @@ const T = {
   end0: 6.3, brand0: 7.2,
 }
 const END = 8.7
+/* 금빛이 화면을 채우는 순간의 한 줄 */
+const MOMENT = '아이디어가 기획이 되는 순간.'
 /* 섹션 높이 = (END + 1) × 100vh — 고정 100vh + 스크롤 END×100vh. CSS의 .seq 높이와 맞춘다 */
 
 type Frame = { src: string; img: HTMLImageElement | null; ok: boolean }
@@ -745,7 +747,11 @@ export default function AppleSequence() {
       bloom.style.opacity = String(revP > 0 ? 0 : seg(zoomP, 0, 0.18))
       flood.style.opacity = String(revP > 0 ? 1 - ease(revP) : ease(seg(zoomP, 0.55, 1)))
       /* 금빛이 화면을 채우는 순간의 한 줄 — 금빛이 걷힐 때 함께 사라진다 */
-      moment.style.opacity = String(revP > 0 ? 1 - ease(seg(revP, 0, 0.5)) : ease(seg(zoomP, 0.6, 0.95)))
+      const mo = revP > 0 ? 1 - ease(seg(revP, 0, 0.5)) : ease(seg(zoomP, 0.6, 0.95))
+      moment.style.opacity = String(mo)
+      /* 나타나기 시작하면 글자들이 왼쪽부터 차례로 들어오고, 완전히 사라지면 다음 번을 위해 되돌린다 */
+      if (mo > 0.02) moment.classList.add(s.momentOn)
+      else if (mo < 0.005) moment.classList.remove(s.momentOn)
 
       /* SCENE 01 카피 — 히어로가 걷힌 뒤 잠깐 */
       const o1 = ease(seg(sv, 0.45, 0.8)) * (1 - ease(seg(sv, 1.25, 1.65)))
@@ -836,7 +842,18 @@ export default function AppleSequence() {
         <div ref={blackoutRef} className={s.blackout} aria-hidden="true" />
         <div ref={bloomRef} className={s.bloom} />
         <div ref={floodRef} className={s.flood} />
-        <p ref={momentRef} className={s.moment} style={{ opacity: 0 }} aria-hidden="true">아이디어가 기획이 되는 순간.</p>
+        <p ref={momentRef} className={s.moment} style={{ opacity: 0 }} aria-hidden="true">
+          {/* 한 글자씩 왼쪽부터 스르륵 — 단어 단위로 묶어 줄바꿈(keep-all)은 그대로 */}
+          {(() => {
+            let i = 0
+            return MOMENT.split(' ').map((w, wi, arr) => (
+              <span key={wi} className={s.mWord}>
+                {[...w].map((ch) => <span key={i} className={s.mChar} style={{ '--i': i++ } as React.CSSProperties}>{ch}</span>)}
+                {wi < arr.length - 1 && ' '}
+              </span>
+            ))
+          })()}
+        </p>
 
         {/* 히어로 — 사과나무를 배경으로 */}
         <div ref={heroRef} className={s.hero}>
