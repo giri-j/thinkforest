@@ -111,6 +111,9 @@
   .idxField { display: none; }
   /* 블로그 표(desk)는 좁은 화면에서 번호 칸을 숨기는데, 포트폴리오 목차는 번호를 남긴다 — 숨기면 제목이 번호 칸(30px)으로 밀려 들어간다 */
   .indexWrap .idxNo { display: block; }
+  /* 탭 줄 끝에 MENU 버튼만큼 빈자리 — 끝까지 밀면 마지막 탭이 버튼 밖으로 나온다 (스크롤 컨테이너의 padding-right는 브라우저마다 무시되기도 해서 빈 칸으로) */
+  .fieldBar > div { position: relative; }
+  .fieldBar > div::after { content: ''; flex: 0 0 82px; }
   .field { padding-top: 88px; scroll-margin-top: 96px; }
   .entry { scroll-margin-top: 112px; }
   .withMedia { padding-top: 52px; }
