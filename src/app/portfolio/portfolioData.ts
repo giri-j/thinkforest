@@ -204,7 +204,7 @@ export const PROJECTS: Project[] = [
   {
     id: 'lotte-order',
     field: 'operation',
-    title: '주문완료율 개선',
+    title: '주문수행율 개선',
     org: "대기업 'L그룹' e커머스 사업부",
     period: '2014 — 2018',
     sortYear: 2018,
