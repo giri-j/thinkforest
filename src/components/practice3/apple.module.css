@@ -231,7 +231,7 @@
 }
 .momentOn .mChar {
   opacity: 1; transform: none;
-  transition: opacity 0.8s ease-out calc(var(--i, 0) * 0.06s), transform 1s cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--i, 0) * 0.06s);
+  transition: opacity 0.53s ease-out calc(var(--i, 0) * 0.04s), transform 0.67s cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--i, 0) * 0.04s); /* 1.5배 빠르게 */
 }
 
 /* ---------- 황금 사과 호버 카드 ---------- */
