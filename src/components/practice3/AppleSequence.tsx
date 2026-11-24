@@ -59,6 +59,23 @@ const ON_DUR = N_ON / ON_FPS
 const XFADE = 0.8 /* 대체 프레임으로 반복할 때 이음새를 겹쳐 섞는 시간(초) */
 /* 낙하 영상 마지막 프레임에서 빛나는 사과가 놓인 위치 (1280×720 기준 비율) */
 const APPLE = { x: 805 / 1280, y: 627 / 720 }
+/* 엔딩 배경의 가운데 큰 슈퍼트리 — hero-loop 원본 프레임(16:9) 기준 비율(0~1).
+   숫자만 바꾸면 위치가 맞춰진다. 주소에 ?debug=1을 붙이면 호버 영역이 테두리로 보인다 */
+const SUPERTREE = {
+  cx: 0.57, cy: 0.53, /* 갓 중심 — 링과 빛이 여기서 퍼진다 */
+  x0: 0.47, x1: 0.67, /* 호버 영역 가로 (갓 + 기둥) */
+  y0: 0.47, y1: 0.85, /* 호버 영역 세로 */
+  r: 0.043, /* 링 반지름 (프레임 너비 대비) */
+}
+const SUPERTREE_CARD = {
+  eyebrow: 'SUPERTREE · SINGAPORE',
+  title: 'Gardens by the Bay',
+  paras: [
+    '싱가포르 마리나 베이의 랜드마크, 슈퍼트리입니다.',
+    "싱가포르의 국가 비전인 '정원 속 도시'를 하나의 풍경으로 보여준 사례이자, 그 풍경만으로 싱가포르에 오고 싶게 만드는 관광 랜드마크입니다. 매일 밤 열리는 라이트쇼는 시즌마다 새로운 테마로 바뀌어, 한 번 보고 끝나지 않고 다시 찾을 이유를 만듭니다.",
+  ],
+  last: '비전을 보여주고, 사람을 부르고, 다시 오게 만드는 잘 설계된 기획 구조물입니다.',
+}
 /* 타임라인 — 단위: 화면 높이(vh).
    0 ~ 0.6   히어로 (사과나무 위의 SEED; TREE; FOREST.) → 스크롤하면 어두운 막이 걷힘
    0.9 ~ 3.4 사과 낙하 → 금빛 확대
@@ -105,6 +122,13 @@ export default function AppleSequence() {
   const linkRef = useRef<SVGPathElement>(null)
   const cardPosRef = useRef<HTMLDivElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
+  /* 엔딩 슈퍼트리 호버 — 사과와 같은 구조(링 · 빛 · 히트 영역 · 헤어라인 · 카드) */
+  const treePopRef = useRef<HTMLDivElement>(null)
+  const treeAnchorRef = useRef<HTMLDivElement>(null)
+  const treeBtnRef = useRef<HTMLButtonElement>(null)
+  const treeLinkRef = useRef<SVGPathElement>(null)
+  const treeCardPosRef = useRef<HTMLDivElement>(null)
+  const treeCardRef = useRef<HTMLDivElement>(null)
   /* 모서리 마이크로타이포 · 도면 주석 */
   const chromeRef = useRef<HTMLDivElement>(null)
   const tlRef = useRef<HTMLDivElement>(null)
@@ -138,6 +162,10 @@ export default function AppleSequence() {
     const link = linkRef.current, cardPos = cardPosRef.current, card = cardRef.current
     if (!seq || !stage || !cv || !hero || !heroShade || !bloom || !flood || !copy1 || !copy2 || !endShade || !sig || !moment) return
     if (!pop || !anchor || !btn || !link || !cardPos || !card) return
+    const tPop = treePopRef.current, tAnchor = treeAnchorRef.current, tBtn = treeBtnRef.current
+    const tLink = treeLinkRef.current, tCardPos = treeCardPosRef.current, tCard = treeCardRef.current
+    if (!tPop || !tAnchor || !tBtn || !tLink || !tCardPos || !tCard) return
+    tPop.classList.toggle(s.treeDebug, new URLSearchParams(window.location.search).get('debug') === '1')
     const chrome = chromeRef.current, tl = tlRef.current, bl = blRef.current, br = brRef.current
     const sceneNo = sceneNoRef.current, sceneName = sceneNameRef.current, prog = progRef.current
     const hud = hudRef.current, hudPath = hudPathRef.current
@@ -370,6 +398,53 @@ export default function AppleSequence() {
     window.addEventListener('pointerup', onUp)
     document.addEventListener('pointerdown', onDocDown, true)
 
+    /* ---------- 엔딩 슈퍼트리 호버 카드 ----------
+       사과와 같은 규칙: 마우스는 호버로 열고(250ms 여유를 두고 닫힘), 터치는 탭으로 열고 닫고,
+       키보드는 포커스로 열고 Enter/Space로 토글. 불이 다 켜진 뒤(hero-loop로 넘어간 뒤)에만 활성화된다 */
+    let treeOpen = false, treeActive = false, treeCloseTimer = 0, treeDim = 0
+    let tBtnType = 'mouse', tCardType = 'mouse'
+    let tBox = { x: 0, y: 0, w: 0, h: 0 }
+    const setTreeOpen = (v: boolean) => {
+      window.clearTimeout(treeCloseTimer)
+      if (v === treeOpen) return
+      treeOpen = v
+      tPop.classList.toggle(s.popOpen, v)
+      tBtn.setAttribute('aria-expanded', String(v))
+    }
+    const scheduleTreeClose = () => { window.clearTimeout(treeCloseTimer); treeCloseTimer = window.setTimeout(() => setTreeOpen(false), 250) }
+    const onTBtnEnter = (e: PointerEvent) => { if (e.pointerType === 'mouse' && treeActive) setTreeOpen(true) }
+    const onTLeave = (e: PointerEvent) => { if (e.pointerType === 'mouse') scheduleTreeClose() }
+    const onTCardEnter = () => window.clearTimeout(treeCloseTimer)
+    const onTBtnDown = (e: PointerEvent) => { tBtnType = e.pointerType }
+    const onTCardDown = (e: PointerEvent) => { tCardType = e.pointerType }
+    /* 마우스 클릭은 호버가 맡으니 무시하고, 터치 탭과 키보드(Enter/Space, detail 0)만 토글한다 */
+    const onTClick = (e: MouseEvent) => { if (treeActive && (e.detail === 0 || tBtnType !== 'mouse')) setTreeOpen(!treeOpen) }
+    const onTCardClick = () => { if (tCardType !== 'mouse') setTreeOpen(false) }
+    const onTFocus = () => { if (treeActive && tBtn.matches(':focus-visible')) setTreeOpen(true) }
+    const onTBlur = () => scheduleTreeClose()
+    const onTDocDown = (e: PointerEvent) => {
+      const tgt = e.target as Node
+      if (treeOpen && !tCard.contains(tgt) && !tBtn.contains(tgt)) setTreeOpen(false)
+    }
+    /* Esc — 사과 카드와 슈퍼트리 카드 모두 닫는다 */
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return
+      if (popOpen) setOpen(false)
+      if (treeOpen) setTreeOpen(false)
+    }
+    tBtn.addEventListener('pointerenter', onTBtnEnter)
+    tBtn.addEventListener('pointerleave', onTLeave)
+    tBtn.addEventListener('pointerdown', onTBtnDown)
+    tBtn.addEventListener('focus', onTFocus)
+    tBtn.addEventListener('blur', onTBlur)
+    tBtn.addEventListener('click', onTClick)
+    tCard.addEventListener('pointerenter', onTCardEnter)
+    tCard.addEventListener('pointerleave', onTLeave)
+    tCard.addEventListener('pointerdown', onTCardDown)
+    tCard.addEventListener('click', onTCardClick)
+    document.addEventListener('pointerdown', onTDocDown, true)
+    document.addEventListener('keydown', onKey)
+
     /* ---------- 장면 번호: 글자가 해독되듯 바뀐다 ---------- */
     const scrambles = new Map<HTMLElement, number>()
     const scrambleTo = (el: HTMLElement, text: string) => {
@@ -417,6 +492,7 @@ export default function AppleSequence() {
     }
 
     let raf = 0
+    let endS = 1 /* 엔딩 배경을 그린 배율 (settle × push) */
     let last = performance.now()
     const frame = () => {
       raf = requestAnimationFrame(frame)
@@ -480,6 +556,7 @@ export default function AppleSequence() {
            다 내리면 같은 구도의 hero-loop로 넘어가 배경으로 반복된다 */
         const settle = 1.12 - 0.12 * ease(revP)
         const push = 1 + 0.045 * easeOut(seg(sv, T.city1 - 1.2, END))
+        endS = settle * push /* 슈퍼트리 호버 영역이 같은 배율을 따른다 */
         const onMix = ease(seg(sv, T.city1 - 0.35, T.city1 + 0.25))
         if (sv > T.city1 - 0.4) onT += dt
         else if (sv < T.city1 - 0.6) onT = 0 /* 다시 올라갔다 내려오면 처음부터 */
@@ -571,6 +648,57 @@ export default function AppleSequence() {
         hudNodes.forEach((n, i) => n.setAttribute('transform', `translate(${pts[i][0].toFixed(1)} ${pts[i][1].toFixed(1)})`))
       }
 
+      /* 엔딩 슈퍼트리: 불이 다 켜지고 hero-loop로 넘어간 뒤부터 링이 돌고 호버가 열린다.
+         위치는 사과와 같은 방식 — 원본 비율 → cover() → 엔딩 배율(endS, 중심 W/2·H*0.46) → 장면 변형 tx/ty — 을 매 프레임 계산한다 */
+      const tActive = revP >= 1 && sv > T.city1 + 0.25
+      if (tActive !== treeActive) {
+        treeActive = tActive
+        tPop.classList.toggle(s.popActive, tActive)
+        tBtn.tabIndex = tActive ? 0 : -1
+        if (!tActive) { setTreeOpen(false); if (document.activeElement === tBtn) tBtn.blur() }
+      }
+      if (tActive) {
+        const oy0 = H * 0.46
+        const fx = (u: number) => tx(W / 2 + (c.x + u * c.w - W / 2) * endS)
+        const fy = (v: number) => ty(oy0 + (c.y + v * c.h - oy0) * endS)
+        const px = fx(SUPERTREE.cx), py = fy(SUPERTREE.cy)
+        const pr = SUPERTREE.r * c.w * endS * breathe
+        tAnchor.style.transform = `translate(${px.toFixed(1)}px,${py.toFixed(1)}px)`
+        tAnchor.style.setProperty('--r', `${pr.toFixed(1)}px`)
+        /* 히트 영역: 화면 안으로 자르고, 서명 줄(링크·맨 위로)은 가리지 않게 그 위에서 멈춘다 */
+        const sigTop = sig.offsetTop - 8
+        const bx0 = clamp(fx(SUPERTREE.x0), 0, W), bx1 = clamp(fx(SUPERTREE.x1), 0, W)
+        const by0 = clamp(fy(SUPERTREE.y0), 0, H), by1 = clamp(fy(SUPERTREE.y1), 0, Math.min(H, sigTop))
+        const nb = { x: bx0, y: by0, w: Math.max(0, bx1 - bx0), h: Math.max(0, by1 - by0) }
+        tBtn.style.transform = `translate(${nb.x.toFixed(1)}px,${nb.y.toFixed(1)}px)`
+        if (Math.abs(nb.w - tBox.w) > 0.5 || Math.abs(nb.h - tBox.h) > 0.5) {
+          tBtn.style.width = `${nb.w.toFixed(1)}px`
+          tBtn.style.height = `${nb.h.toFixed(1)}px`
+          tBox = nb
+        }
+
+        /* 카드: 호버 영역 오른쪽, 갓 높이 근처. 오른쪽이 넘치면 왼쪽으로 뒤집고, 위아래는 화면 안으로 맞춘다 */
+        if (window.innerWidth > 760) {
+          const cw = tCard.offsetWidth, ch = tCard.offsetHeight
+          const gap = 28
+          const dir = bx1 + gap + cw > W - 16 ? -1 : 1
+          const left = dir === 1 ? bx1 + gap : bx0 - gap - cw
+          const top = clamp(py - ch * 0.35, 16, H - ch - 16)
+          tCardPos.style.transform = `translate(${left.toFixed(1)}px,${top.toFixed(1)}px)`
+          /* 헤어라인: 갓 가장자리 → 살짝 꺾여 → 카드 옆면 */
+          const sx = px + dir * pr * 0.9, sy = py
+          const ex = dir === 1 ? left : left + cw
+          const ey = clamp(py, top + 18, top + ch - 18)
+          const elbowX = ex - dir * Math.min(18, Math.abs(ex - sx) * 0.5)
+          tLink.setAttribute('d', `M${sx.toFixed(1)} ${sy.toFixed(1)} L${elbowX.toFixed(1)} ${ey.toFixed(1)} L${ex.toFixed(1)} ${ey.toFixed(1)}`)
+        } else {
+          tCardPos.style.transform = ''
+        }
+      }
+      /* 카드가 열려 있는 동안 가운데 카피·로고를 흐리게 — 시간 기반으로 부드럽게 */
+      treeDim += ((treeOpen ? 1 : 0) - treeDim) * damp(9, dt)
+      if (treeDim < 0.001) treeDim = 0
+
       /* 모서리: 매니페스토·스크롤 안내는 히어로와 함께 사라지고, 로고와 장면 번호는 끝까지 남는다.
          금빛이 화면을 채울 땐 글자색이 금빛 위에서 읽히는 짙은 갈색으로 바뀐다 */
       const floodO = revP > 0 ? 1 - ease(revP) : ease(seg(zoomP, 0.55, 1))
@@ -618,7 +746,7 @@ export default function AppleSequence() {
       /* SCENE 02 카피 — 도시가 다 펼쳐질 즈음 떠오르고, 엔딩에서 살짝 위로 자리를 내준다 */
       const t2 = ease(seg(sv, T.city1 - 1.1, T.city1 - 0.3))
       const out2 = ease(seg(brandP, 0, 0.2))
-      copy2.style.opacity = String(t2 * (1 - out2))
+      copy2.style.opacity = String(t2 * (1 - out2) * (1 - 0.85 * treeDim))
       if (t2 > 0.05 && !copyShown[1] && copyEyebrows[1]) { copyShown[1] = true; scrambleTo(copyEyebrows[1], copyEyebrows[1].dataset.scramble || '') }
       if (t2 < 0.01) copyShown[1] = false
       copy2.style.transform = `translateY(${24 * (1 - t2) - 36 * ease(seg(endP, 0.15, 0.7)) - 48 * out2}px)`
@@ -632,6 +760,7 @@ export default function AppleSequence() {
 
       /* 브랜드: 앞 문구가 빠지자마자 흐림 → 선명 페이드인 (딤 없이 도시 위에 바로) */
       brand.classList.toggle(s.brandIn, brandP > 0.16)
+      brand.style.opacity = treeDim > 0 ? (1 - 0.85 * treeDim).toFixed(3) : ''
     }
 
     /* 첫 프레임 먼저(그동안은 <img> 포스터가 같은 장면을 보여 준다), 나머지는 우선순위대로 백그라운드 로드 */
@@ -668,6 +797,19 @@ export default function AppleSequence() {
       window.removeEventListener('pointermove', onDragMove)
       window.removeEventListener('pointerup', onUp)
       document.removeEventListener('pointerdown', onDocDown, true)
+      window.clearTimeout(treeCloseTimer)
+      tBtn.removeEventListener('pointerenter', onTBtnEnter)
+      tBtn.removeEventListener('pointerleave', onTLeave)
+      tBtn.removeEventListener('pointerdown', onTBtnDown)
+      tBtn.removeEventListener('focus', onTFocus)
+      tBtn.removeEventListener('blur', onTBlur)
+      tBtn.removeEventListener('click', onTClick)
+      tCard.removeEventListener('pointerenter', onTCardEnter)
+      tCard.removeEventListener('pointerleave', onTLeave)
+      tCard.removeEventListener('pointerdown', onTCardDown)
+      tCard.removeEventListener('click', onTCardClick)
+      document.removeEventListener('pointerdown', onTDocDown, true)
+      document.removeEventListener('keydown', onKey)
     }
   }, [])
 
@@ -770,6 +912,27 @@ export default function AppleSequence() {
           <div className={s.brandFoot}>
             <span className={s.brandRule} aria-hidden="true" />
             <p className={s.brandTag}>Think; Plan; Build.</p>
+          </div>
+        </div>
+
+        {/* 엔딩 슈퍼트리 — 사과와 같은 링 · 빛 · 헤어라인 · 카드. 히트 영역만 갓 + 기둥을 덮는 사각형 */}
+        <div ref={treePopRef} className={`${s.pop} ${s.popReady} ${s.treePop}`}>
+          <svg className={s.popLine} aria-hidden="true"><path ref={treeLinkRef} pathLength={1} /></svg>
+          <div ref={treeAnchorRef} className={s.anchor}>
+            <span className={s.glow} aria-hidden="true" />
+            <span className={s.ring} aria-hidden="true" />
+          </div>
+          <button ref={treeBtnRef} type="button" className={s.treeBtn} tabIndex={-1}
+            aria-label="Gardens by the Bay 설명 보기" aria-expanded="false" aria-controls="supertree-card" />
+          <div ref={treeCardPosRef} className={s.cardPos}>
+            <div ref={treeCardRef} id="supertree-card" role="note" aria-label={SUPERTREE_CARD.title} className={s.card}>
+              <p className={`${s.eyebrow} ${s.cardEyebrow}`} style={{ '--i': 0 } as React.CSSProperties}>{SUPERTREE_CARD.eyebrow}</p>
+              <p className={s.cardTitle} style={{ '--i': 1 } as React.CSSProperties}>{SUPERTREE_CARD.title}</p>
+              {SUPERTREE_CARD.paras.map((t, i) => (
+                <p key={i} className={s.cardBody} style={{ '--i': i + 2 } as React.CSSProperties}>{t}</p>
+              ))}
+              <p className={s.cardLast} style={{ '--i': SUPERTREE_CARD.paras.length + 2 } as React.CSSProperties}>{SUPERTREE_CARD.last}</p>
+            </div>
           </div>
         </div>
         <div ref={sigRef} className={s.sig} style={{ opacity: 0 }}>
