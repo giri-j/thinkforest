@@ -60,7 +60,7 @@ export default function AboutForest() {
           ))}
         </ul>
         <p className={f.portfolioRow} data-rv>
-          <Link href="/portfolio" className={f.pill}>포트폴리오 보러가기 →</Link>
+          <Link href="/portfolio" className={`${f.pill} ${f.pillHint}`}>포트폴리오 보러가기 →</Link>
         </p>
       </section>
 
@@ -126,7 +126,7 @@ export default function AboutForest() {
           })}
         </ul>
         <p className={f.portfolioRow} data-rv>
-          <Link href="/portfolio" className={f.pill}>포트폴리오 보러가기 →</Link>
+          <Link href="/portfolio" className={`${f.pill} ${f.pillHint}`}>포트폴리오 보러가기 →</Link>
           <span className={`${d.mono} ${f.portfolioNote}`}>해본 일 전부를 영상·화면과 함께 모았습니다</span>
         </p>
       </section>

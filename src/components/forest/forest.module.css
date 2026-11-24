@@ -88,6 +88,19 @@
 .ctaBody { position: relative; margin: 0 0 32px; color: var(--ink2); font-size: 16px; }
 .pill { position: relative; display: inline-flex; align-items: center; gap: 10px; padding: 14px 26px; border: 1px solid rgba(225, 185, 112, 0.7); border-radius: 999px; color: var(--gold); font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; transition: background 0.3s, color 0.3s; }
 .pill:hover { background: var(--gold); color: #0b0f0c; }
+/* 누를 수 있다는 암시 — 홈의 황금 사과와 같은 언어: 4초마다 얇은 금색 테두리가 한 번 퍼지며 사라진다.
+   알약 모양이라 가로·세로 배율을 달리해 사방으로 비슷한 폭만큼 번지게. 마우스를 올리면 멈춘다 (transform · opacity만) */
+.pillHint::after {
+  content: ''; position: absolute; inset: -1px; border: 1px solid rgba(255, 214, 140, 0.5); border-radius: inherit;
+  opacity: 0; pointer-events: none; animation: pillPulse 4s ease-out infinite;
+}
+.pillHint:hover::after, .pillHint:focus-visible::after { animation: none; opacity: 0; }
+@keyframes pillPulse {
+  0% { transform: scale(1); opacity: 0.5; }
+  40% { transform: scale(1.08, 1.4); opacity: 0; }
+  100% { transform: scale(1.08, 1.4); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .pillHint::after { animation: none; } }
 
 /* ---------- mobile ---------- */
 @media (max-width: 760px) {
