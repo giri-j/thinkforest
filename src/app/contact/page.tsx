@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
     return (
-        <ForestFrame header={<PageChrome section="Contact — 기획자 기리" right={['Say hello', '답장은 보통', '2~3일 안에 드립니다.']} />}>
+        <ForestFrame header={<PageChrome title="Contact" right={['Say hello', '답장은 보통', '2~3일 안에 드립니다.']} />}>
             <ContactSection />
         </ForestFrame>
     )
