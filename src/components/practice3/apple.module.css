@@ -364,3 +364,8 @@
   .cardLast { margin-top: 10px; padding-top: 9px; font-size: 12px; line-height: 1.55; }
   .popLine { display: none; }
 }
+
+/* 홈 프레임: 잡지 페이지 아래쪽 여백(공용 .wrap의 padding-bottom 72px)을 없애, 끝까지 내려도 엔딩 장면이 화면 바닥까지 닿게.
+   공용 파일(practice2)은 그대로 두고 여기서 덮어쓴다. 바닥에 닿는 쪽 모서리도 각지게 */
+.wrapEnd.wrapEnd { padding-bottom: 0; }
+.columnEnd.columnEnd { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
