@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { deskDate, getCategoryMeta, STAGES, type Post, type Stage } from '@/lib/blog-meta'
+import { deskDate, getCategoryMeta, type Post } from '@/lib/blog-meta'
 import s from './desk.module.css'
 
 interface Props {
@@ -8,13 +8,11 @@ interface Props {
   latestSlug?: string
   /* slug → 글 번호(오래된 글이 001) */
   numbers?: Record<string, number>
-  /* slug → 성장 단계(씨앗·싹·열매·숲). 있으면 제목 아래 작은 표시를 단다. */
-  stages?: Record<string, Stage>
   showCategory?: boolean
   empty?: string
 }
 
-export default function PostTable({ posts, latestSlug, numbers, stages, showCategory = true, empty = '아직 발행된 글이 없습니다.' }: Props) {
+export default function PostTable({ posts, latestSlug, numbers, showCategory = true, empty = '아직 발행된 글이 없습니다.' }: Props) {
   return (
     <div className={s.table}>
       <div className={`${s.thead} ${s.mono} ${s.caps}`}>
@@ -27,8 +25,7 @@ export default function PostTable({ posts, latestSlug, numbers, stages, showCate
       {posts.map((p) => {
         const cat = getCategoryMeta(p.category)
         const no = numbers?.[p.slug]
-        const stage = stages?.[p.slug]
-        const showSub = (showCategory && cat) || stage || p.place
+        const showSub = (showCategory && cat) || p.place
         return (
           <article key={p.slug} className={s.row}>
             <span className={`${s.num} ${s.mono}`}>{no ? String(no).padStart(3, '0') : '—'}</span>
@@ -38,7 +35,6 @@ export default function PostTable({ posts, latestSlug, numbers, stages, showCate
               {showSub && (
                 <span className={`${s.sub} ${s.mono}`}>
                   {showCategory && cat && <Link href={`/blog/category/${cat.slug}`}>[ {cat.no} ] {cat.key}</Link>}
-                  {stage && <em className={`${s.stageTag} ${s[`st_${stage}`]}`}><i aria-hidden="true" />{STAGES[stage].ko}</em>}
                   {p.place ? <span> · {p.place}</span> : null}
                 </span>
               )}

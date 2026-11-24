@@ -190,8 +190,6 @@
 .cardMeta a { color: var(--grey); transition: color 0.3s; }
 .cardMeta a:hover { color: var(--gold); }
 .cardDot { color: var(--line); }
-.cardMeta .stageTag { color: var(--grey); }
-.cardMeta .st_forest { color: var(--gold); }
 .gridWrap { padding-top: 44px; }
 
 /* ---------- subjects ---------- */
@@ -312,19 +310,6 @@
 .keepGrid .none strong { color: var(--grey); font-weight: 400; }
 
 
-/* ---------- 성장 단계 표시 (씨앗 · 싹 · 열매 · 숲) ---------- */
-.stageTag { display: inline-flex; align-items: center; gap: 6px; font-style: normal; color: var(--ink2); white-space: nowrap; }
-.sub a + .stageTag::before { content: '·'; margin: 0 4px 0 2px; color: var(--grey); }
-.stageTag i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; border: 1px solid var(--gold); background: transparent; }
-.st_seed i { background: transparent; }
-.st_sprout i { background: linear-gradient(to top, var(--gold) 50%, transparent 50%); }
-.st_fruit i { background: var(--gold); }
-.st_forest i { background: var(--gold); box-shadow: 0 0 0 2px rgba(225, 185, 112, 0.25), 0 0 10px rgba(225, 185, 112, 0.6); }
-.st_forest { color: var(--gold); }
-.meta dd .stageTag { color: var(--gold); }
-.stageBig { font-family: var(--head); font-weight: 700; font-size: 22px; letter-spacing: -0.02em; color: var(--ink); }
-.stageBig i { width: 10px; height: 10px; }
-
 /* ---------- 주제 페이지 히어로 (홈 시퀀스의 한 프레임 위) ---------- */
 .catHero { position: relative; overflow: hidden; }
 .catHero .heroBg { transform: scale(1.04); }
@@ -339,36 +324,6 @@
 .catHero .pageTitle, .catHero .pageDesc { text-shadow: 0 2px 30px rgba(0, 0, 0, 0.5); }
 .sceneTag { display: block; margin: -4px 0 10px; color: var(--gold); letter-spacing: 0.08em; }
 .heroStats b { font-weight: 400; color: var(--gold); }
-
-/* ---------- 실(thread) — 이 생각이 간 길 ---------- */
-.thread { padding: 72px 0 0; }
-.threadHead { display: flex; flex-direction: column; gap: 14px; }
-.threadStage { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 16px; margin: 0; color: var(--ink2); font-size: 15px; line-height: 1.6; }
-.threadList { list-style: none; margin: 18px 0 0; padding: 0; border-top: 1px solid var(--rule); counter-reset: none; }
-.threadItem { position: relative; border-bottom: 1px solid var(--line); }
-.threadItem > a, .threadItem > div {
-  display: grid; grid-template-columns: 96px 1fr 110px; gap: 20px; align-items: baseline;
-  padding: 18px 0 18px 22px;
-}
-/* 왼쪽 세로 실 — 홈의 HUD 선과 같은 금색 헤어라인 */
-.threadItem::before { content: ''; position: absolute; left: 3px; top: 0; bottom: 0; width: 1px; background: var(--line); }
-.threadItem::after {
-  content: ''; position: absolute; left: 0; top: 50%; width: 7px; height: 7px; margin-top: -4px;
-  border-radius: 50%; border: 1px solid var(--gold); background: #0b0f0c;
-}
-.threadItem:first-child::before { top: 50%; }
-.threadItem:last-child::before { bottom: 50%; }
-.threadHere::after, .threadForest::after { background: var(--gold); }
-.threadForest::after { box-shadow: 0 0 10px rgba(225, 185, 112, 0.7); }
-.threadNext::after { border-style: dashed; opacity: 0.6; }
-.threadRole { color: var(--gold); }
-.threadItem strong { font-size: 17px; font-weight: 600; line-height: 1.45; letter-spacing: -0.015em; transition: color 0.3s; }
-.threadItem a:hover strong { color: var(--gold); }
-.threadHere strong { color: var(--gold); }
-.threadNext strong { color: var(--grey); font-weight: 400; }
-.threadNext .threadRole { color: var(--grey); }
-.threadDate { color: var(--grey); text-align: right; }
-.threadHere .threadDate { color: var(--gold); }
 
 /* ---------- footer (practice3 엔딩 서명과 같은 줄) ---------- */
 .sig {
@@ -418,8 +373,6 @@
   .meta { justify-content: flex-start; gap: 14px 24px; }
   .meta div { flex: 1 1 28%; }
   .catHero { margin-top: -60px; }
-  .threadItem > a, .threadItem > div { grid-template-columns: 1fr; gap: 6px; }
-  .threadDate { text-align: left; }
   .keepGrid { grid-template-columns: 1fr; }
   .keepGrid > *:last-child { padding-left: 0; border-left: 0; text-align: left; }
   .sig { margin-top: 80px; }

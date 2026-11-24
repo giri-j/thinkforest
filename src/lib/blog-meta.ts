@@ -27,25 +27,6 @@ export function getCategoryMeta(value: string): CategoryMeta | undefined {
     return CATEGORIES.find((c) => c.slug === v || c.key.toLowerCase() === v)
 }
 
-/* ---------- 실(thread)과 성장 단계 ----------
-   같은 thread 값을 가진 글들은 하나의 실로 묶인다: Idea(처음 떠오른 생각) → Trials(해 본 것) → caseStudy(사업이 된 것).
-   홈에서 말로 한 "생각이 사업이 된다"를 블로그에서 실제로 따라갈 수 있게 하는 장치다. */
-
-export type Stage = 'seed' | 'sprout' | 'fruit' | 'forest'
-
-export const STAGES: Record<Stage, { ko: string; en: string; note: string }> = {
-    seed: { ko: '씨앗', en: 'Seed', note: '아직 생각으로만 있습니다. 이어지는 글이 생기면 여기에 실이 자랍니다.' },
-    sprout: { ko: '싹', en: 'Sprout', note: '생각이 다음 글로 이어졌습니다.' },
-    fruit: { ko: '열매', en: 'Fruit', note: '실제로 해 봤습니다. 결과보다 배운 것을 남깁니다.' },
-    forest: { ko: '숲', en: 'Forest', note: '사업이 되었습니다. 케이스 스터디로 이어집니다.' },
-}
-
-/* 실 안에서의 순서: 생각 → 시도 → 그 외. 같은 단계면 오래된 글이 먼저 */
-export const THREAD_RANK: Record<Category, number> = { Idea: 0, Trials: 1, Personal: 2, Life: 3 }
-
-/* 실 안에서 각 글이 맡는 역할 이름 */
-export const THREAD_ROLE: Record<Category, string> = { Idea: '생각', Trials: '시도', Personal: '곁가지', Life: '산책' }
-
 export interface Post {
     title: string
     slug: string
@@ -57,10 +38,6 @@ export interface Post {
     /* 목록 카드에 실제로 쓰는 이미지 — cover 파일이 있으면 그것, 없으면 주제 장면의 한 프레임 (blog.ts가 채운다) */
     image: string
     place?: string
-    /* 같은 실로 묶을 때 쓰는 이름 (frontmatter: thread) */
-    thread?: string
-    /* 이 실이 사업까지 간 경우, 케이스 스터디 경로 (frontmatter: caseStudy) */
-    caseStudy?: string
     draft: boolean
     readingTime: string
     minutes: number

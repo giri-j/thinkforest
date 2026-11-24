@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { CATEGORIES, getAllPosts, getCategoryCounts, getCategoryMeta, getPostsByCategory, stagesOf } from '@/lib/blog'
+import { CATEGORIES, getAllPosts, getCategoryCounts, getCategoryMeta, getPostsByCategory } from '@/lib/blog'
 import PostGrid from '@/components/blog/desk/PostGrid'
 import { numberPosts } from '@/components/blog/desk/PostTable'
 import SubjectBar from '@/components/blog/desk/SubjectBar'
@@ -35,7 +35,7 @@ export default async function CategoryPage(context: { params: Promise<{ category
             </header>
             <SubjectBar counts={counts} total={all.length} active={meta.key} />
             <div className={`${s.gridWrap} ${s.pad} ${s.in2}`}>
-                <PostGrid posts={posts} numbers={numberPosts(all)} stages={stagesOf(all)} latestSlug={all[0]?.slug} empty={`아직 ${meta.key}에 쓴 글이 없습니다. 곧 채워집니다.`} />
+                <PostGrid posts={posts} numbers={numberPosts(all)} latestSlug={all[0]?.slug} empty={`아직 ${meta.key}에 쓴 글이 없습니다. 곧 채워집니다.`} />
             </div>
         </>
     )

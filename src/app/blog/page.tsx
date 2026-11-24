@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { getAllPosts, getCategoryCounts, stagesOf } from '@/lib/blog'
+import { getAllPosts, getCategoryCounts } from '@/lib/blog'
 import PostGrid from '@/components/blog/desk/PostGrid'
 import { numberPosts } from '@/components/blog/desk/PostTable'
 import SubjectBar from '@/components/blog/desk/SubjectBar'
@@ -18,7 +18,6 @@ export default async function BlogPage(props: { searchParams: Promise<{ page?: s
     const posts = await getAllPosts()
     const counts = await getCategoryCounts()
     const numbers = numberPosts(posts)
-    const stages = stagesOf(posts)
 
     const pages = Math.max(1, Math.ceil(posts.length / PER_PAGE))
     const page = Math.min(pages, Math.max(1, Number(pageParam) || 1))
@@ -33,7 +32,7 @@ export default async function BlogPage(props: { searchParams: Promise<{ page?: s
             <SubjectBar counts={counts} total={posts.length} />
 
             <section id="entries" className={`${s.gridWrap} ${s.pad} ${s.in2}`} style={{ scrollMarginTop: 24 }}>
-                <PostGrid posts={slice} latestSlug={posts[0]?.slug} numbers={numbers} stages={stages} />
+                <PostGrid posts={slice} latestSlug={posts[0]?.slug} numbers={numbers} />
                 {pages > 1 && (
                     <div className={`${s.pager} ${s.mono}`}>
                         <span>{page > 1 ? <Link href={`/blog?page=${page - 1}`}>← Later entries</Link> : null}</span>

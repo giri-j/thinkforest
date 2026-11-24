@@ -1,25 +1,23 @@
 import Link from 'next/link'
-import { deskDate, getCategoryMeta, STAGES, type Post, type Stage } from '@/lib/blog-meta'
+import { deskDate, getCategoryMeta, type Post } from '@/lib/blog-meta'
 import s from './desk.module.css'
 
-/* 매거진식 카드 목록 — 큰 세로 이미지, 제목, 그 아래 한 줄(주제 · 날짜 · 단계).
+/* 매거진식 카드 목록 — 큰 세로 이미지, 제목, 그 아래 한 줄(주제 · 날짜).
    발췌문은 두지 않는다. 사진과 제목이 전부다. */
 interface Props {
   posts: Post[]
   latestSlug?: string
   numbers?: Record<string, number>
-  stages?: Record<string, Stage>
   empty?: string
 }
 
-export default function PostGrid({ posts, latestSlug, numbers, stages, empty = '아직 발행된 글이 없습니다.' }: Props) {
+export default function PostGrid({ posts, latestSlug, numbers, empty = '아직 발행된 글이 없습니다.' }: Props) {
   if (posts.length === 0) return <div className={s.empty}>{empty}</div>
   return (
     <div className={s.grid}>
       {posts.map((p, i) => {
         const cat = getCategoryMeta(p.category)
         const no = numbers?.[p.slug]
-        const stage = stages?.[p.slug]
         return (
           <article key={p.slug} className={s.card}>
             <Link href={`/blog/${p.slug}`} className={s.cardImg} aria-hidden="true" tabIndex={-1}>
@@ -33,12 +31,6 @@ export default function PostGrid({ posts, latestSlug, numbers, stages, empty = '
               {cat ? <Link href={`/blog/category/${cat.slug}`}>{cat.key} · {cat.ko}</Link> : <span>{p.category}</span>}
               <span className={s.cardDot} aria-hidden="true">·</span>
               <time dateTime={p.date}>{deskDate(p.date)}</time>
-              {stage && (
-                <>
-                  <span className={s.cardDot} aria-hidden="true">·</span>
-                  <em className={`${s.stageTag} ${s[`st_${stage}`]}`}><i aria-hidden="true" />{STAGES[stage].ko}</em>
-                </>
-              )}
             </p>
           </article>
         )
