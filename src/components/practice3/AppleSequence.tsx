@@ -97,9 +97,32 @@ const T = {
   end0: 6.3, brand0: 7.2,
 }
 const END = 8.7
+/* 머무는 구간 — 스크롤은 계속되지만 장면은 그 자리에 멈춰, 빨리 내려도 핵심 장면을 놓치지 않게 한다.
+   at: 멈출 지점(장면 시간, vh), len: 그 지점에 머무는 스크롤 길이(vh). 스크롤을 멈춘 곳이 구간 바로 앞뒤면 구간 안으로 살짝 끌어당긴다 */
+const HOLDS = [
+  { at: T.zoom1, len: 0.9 }, /* 금빛이 다 차서 '아이디어가 기획이 되는 순간.'이 온전히 보이는 때 */
+]
+const HOLD_TOTAL = HOLDS.reduce((a, h) => a + h.len, 0)
+/* 실제 스크롤 길이(vh) = 장면 길이 + 머무는 구간 */
+const SCROLL_END = END + HOLD_TOTAL
+/* 실제 스크롤 위치 → 장면 시간. 머무는 구간 안에서는 장면 시간이 멈춘다 */
+const toStory = (raw: number) => {
+  let off = 0
+  for (const h of HOLDS) {
+    const start = h.at + off
+    if (raw < start) return raw - off
+    if (raw < start + h.len) return h.at
+    off += h.len
+  }
+  return raw - off
+}
+/* 각 머무는 구간의 실제 스크롤 시작 위치 */
+const HOLD_RAW = HOLDS.map((h, i) => ({ start: h.at + HOLDS.slice(0, i).reduce((a, x) => a + x.len, 0), len: h.len }))
+const SNAP_BEFORE = 0.45 /* 구간 앞 이만큼 안에서 멈추면 구간 안으로 (글자가 떠오르는 중) */
+const SNAP_AFTER = 0.35 /* 구간 뒤 이만큼 안에서 멈추면 구간 끝으로 (글자가 사라지는 중) */
 /* 금빛이 화면을 채우는 순간의 한 줄 */
 const MOMENT = '아이디어가 기획이 되는 순간.'
-/* 섹션 높이 = (END + 1) × 100vh — 고정 100vh + 스크롤 END×100vh. CSS의 .seq 높이와 맞춘다 */
+/* 섹션 높이 = (SCROLL_END + 1) × 100vh — 고정 100vh + 스크롤 SCROLL_END×100vh. (.seq를 /home2와 같이 쓰므로 높이는 인라인으로) */
 
 type Frame = { src: string; img: HTMLImageElement | null; ok: boolean }
 
@@ -266,10 +289,34 @@ export default function AppleSequence() {
     }
 
     /* 스크롤 진행도 (vh 단위) */
-    let svT = 0, sv = 0
+    let svT = 0, sv = 0, rawT = 0
+    /* 스크롤을 멈춘 곳이 머무는 구간 바로 앞뒤면 구간 안으로 부드럽게 끌어당긴다.
+       스크롤하는 동안·손가락을 대고 있는 동안·끌어당기는 중에는 개입하지 않는다 */
+    let idleTimer = 0, touching = false, magnetUntil = 0
+    const magnet = () => {
+      if (reduce || touching || performance.now() < magnetUntil) return
+      for (const h of HOLD_RAW) {
+        let target: number | null = null
+        if (rawT >= h.start - SNAP_BEFORE && rawT < h.start) target = h.start + 0.12
+        else if (rawT > h.start + h.len && rawT <= h.start + h.len + SNAP_AFTER) target = h.start + h.len - 0.12
+        if (target !== null) {
+          magnetUntil = performance.now() + 900
+          window.scrollTo({ top: window.scrollY + (target - rawT) * window.innerHeight, behavior: 'smooth' })
+          return
+        }
+      }
+    }
+    const onTouchStart = () => { touching = true; window.clearTimeout(idleTimer) }
+    const onTouchEnd = () => { touching = false; window.clearTimeout(idleTimer); idleTimer = window.setTimeout(magnet, 220) }
+    window.addEventListener('touchstart', onTouchStart, { passive: true })
+    window.addEventListener('touchend', onTouchEnd, { passive: true })
+    window.addEventListener('touchcancel', onTouchEnd, { passive: true })
     const onScroll = () => {
       const top = seq.getBoundingClientRect().top
-      svT = -top / window.innerHeight
+      rawT = -top / window.innerHeight
+      svT = toStory(rawT)
+      window.clearTimeout(idleTimer)
+      idleTimer = window.setTimeout(magnet, 220)
       /* 무대가 화면 위에 붙기 전(잡지 페이지 상단 여백 구간)엔 하단 모서리를 그만큼 올려 첫 화면에서도 보이게 */
       chrome.style.setProperty('--lift', `${Math.max(0, top).toFixed(0)}px`)
     }
@@ -794,6 +841,10 @@ export default function AppleSequence() {
       cancelAnimationFrame(raf)
       ro.disconnect()
       window.removeEventListener('scroll', onScroll)
+      window.clearTimeout(idleTimer)
+      window.removeEventListener('touchstart', onTouchStart)
+      window.removeEventListener('touchend', onTouchEnd)
+      window.removeEventListener('touchcancel', onTouchEnd)
       window.removeEventListener('resize', onScroll)
       window.removeEventListener('pointermove', onMove)
       cv.removeEventListener('pointerdown', down)
@@ -831,7 +882,7 @@ export default function AppleSequence() {
   }, [])
 
   return (
-    <section ref={seqRef} aria-label="사과나무에서 황금 숲의 도시로" className={s.seq}>
+    <section ref={seqRef} aria-label="사과나무에서 황금 숲의 도시로" className={s.seq} style={{ height: `${(SCROLL_END + 1) * 100}vh` }}>
       <div ref={stageRef} className={s.stage}>
         {/* 첫 프레임 포스터 — JS가 프레임을 받아 캔버스에 그리기 전까지 빈 화면 대신 같은 장면을 보여 준다 */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
