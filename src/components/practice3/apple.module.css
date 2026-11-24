@@ -344,6 +344,8 @@
   /* 좁은 화면: 카드는 화면 아래쪽 가운데, 헤어라인 생략 */
   .cardPos { left: 50%; top: auto; bottom: 24px; width: 260px; transform: translateX(-50%); }
   .card { width: 260px; padding: 16px 18px; }
+  /* 슈퍼트리는 화면 아래쪽에 있어서, 카드는 위쪽 가운데에 띄워 나무를 가리지 않는다 */
+  .treePop .cardPos { top: 84px; bottom: auto; }
   /* 좁은 화면에선 카드를 낮게 — 위쪽의 빛나는 사과가 가려지지 않게 */
   .cardEyebrow { margin-bottom: 6px; font-size: 10px; }
   .cardTitle { margin-bottom: 8px; font-size: 18px; }

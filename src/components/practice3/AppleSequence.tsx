@@ -68,6 +68,13 @@ const SUPERTREE = {
   y0: 0.56, y1: 0.84, /* 호버 영역 세로 */
   r: 0.032, /* 링 반지름 (프레임 너비 대비) */
 }
+/* 세로 화면(휴대폰 등)에선 위 나무가 잘려 보이지 않는다 — 그때는 화면에 보이는 왼쪽 큰 슈퍼트리(가운데 큰 나무 바로 왼쪽)로 */
+const SUPERTREE_PORTRAIT = {
+  cx: 0.422, cy: 0.65,
+  x0: 0.365, x1: 0.475,
+  y0: 0.615, y1: 0.8,
+  r: 0.024,
+}
 const SUPERTREE_CARD = {
   eyebrow: 'SUPERTREE · SINGAPORE',
   title: 'Gardens by the Bay',
@@ -654,9 +661,10 @@ export default function AppleSequence() {
       const oy0 = H * 0.46
       const fx = (u: number) => tx(W / 2 + (c.x + u * c.w - W / 2) * endS)
       const fy = (v: number) => ty(oy0 + (c.y + v * c.h - oy0) * endS)
-      /* 세로로 좁은 화면에선 영상 가장자리가 잘린다 — 갓 중심이 화면 밖이면 호버도 쉰다 */
-      const tVisible = fx(SUPERTREE.cx) > 24 && fx(SUPERTREE.cx) < W - 24
-      const tActive = revP >= 1 && sv > T.city1 + 0.25 && tVisible
+      /* 세로로 좁은 화면에선 영상 가장자리가 잘린다 — 기본 나무가 화면 밖이면 세로용 나무로, 그마저 밖이면 쉰다 */
+      const onScreen = (u: number) => fx(u) > 24 && fx(u) < W - 24
+      const ST = onScreen(SUPERTREE.cx) ? SUPERTREE : SUPERTREE_PORTRAIT
+      const tActive = revP >= 1 && sv > T.city1 + 0.25 && onScreen(ST.cx)
       if (tActive !== treeActive) {
         treeActive = tActive
         tPop.classList.toggle(s.popActive, tActive)
@@ -664,14 +672,14 @@ export default function AppleSequence() {
         if (!tActive) { setTreeOpen(false); if (document.activeElement === tBtn) tBtn.blur() }
       }
       if (tActive) {
-        const px = fx(SUPERTREE.cx), py = fy(SUPERTREE.cy)
-        const pr = SUPERTREE.r * c.w * endS * breathe
+        const px = fx(ST.cx), py = fy(ST.cy)
+        const pr = ST.r * c.w * endS * breathe
         tAnchor.style.transform = `translate(${px.toFixed(1)}px,${py.toFixed(1)}px)`
         tAnchor.style.setProperty('--r', `${pr.toFixed(1)}px`)
         /* 히트 영역: 화면 안으로 자르고, 서명 줄(링크·맨 위로)은 가리지 않게 그 위에서 멈춘다 */
         const sigTop = sig.offsetTop - 8
-        const bx0 = clamp(fx(SUPERTREE.x0), 0, W), bx1 = clamp(fx(SUPERTREE.x1), 0, W)
-        const by0 = clamp(fy(SUPERTREE.y0), 0, H), by1 = clamp(fy(SUPERTREE.y1), 0, Math.min(H, sigTop))
+        const bx0 = clamp(fx(ST.x0), 0, W), bx1 = clamp(fx(ST.x1), 0, W)
+        const by0 = clamp(fy(ST.y0), 0, H), by1 = clamp(fy(ST.y1), 0, Math.min(H, sigTop))
         const nb = { x: bx0, y: by0, w: Math.max(0, bx1 - bx0), h: Math.max(0, by1 - by0) }
         tBtn.style.transform = `translate(${nb.x.toFixed(1)}px,${nb.y.toFixed(1)}px)`
         if (Math.abs(nb.w - tBox.w) > 0.5 || Math.abs(nb.h - tBox.h) > 0.5) {
