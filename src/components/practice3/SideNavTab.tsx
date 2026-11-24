@@ -142,10 +142,6 @@ export default function SideNavTab() {
               <span data-tab-item className="relative whitespace-nowrap text-[26px] font-semibold leading-none tracking-[0.08em] [writing-mode:vertical-rl]">
                 기획의 숲
               </span>
-              <span data-tab-item className="relative flex flex-col gap-1 whitespace-nowrap text-[10px] leading-tight opacity-80 [writing-mode:vertical-rl] [@media(max-height:700px)]:hidden">
-                <span className="font-medium">Forest of Thought</span>
-                <span className="opacity-70">Seoul / Korea</span>
-              </span>
             </Link>
 
             {/* Blog / About / Contact */}
