@@ -13,7 +13,7 @@ const BLOG_PATH = path.join(process.cwd(), 'src/content/blog')
    한 시퀀스 안의 이웃 프레임은 거의 같은 그림이라, 폴더 전체에서 고르면 카드들이 똑같아 보인다. */
 const SCENE_FRAMES = [
     '/practice3/o/001.webp', '/practice3/o/032.webp', '/practice3/o/064.webp', '/practice3/o/090.webp',
-    '/practice3/f/004.webp', '/practice3/f/018.webp', '/practice3/f/030.webp', '/practice3/f/040.webp',
+    '/practice3/f/007.webp', '/practice3/f/035.webp', '/practice3/f/059.webp', '/practice3/f/079.webp',
     '/practice3/c/008.webp', '/practice3/c/036.webp', '/practice3/c/066.webp', '/practice3/c/095.webp',
 ]
 

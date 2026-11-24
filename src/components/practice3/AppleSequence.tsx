@@ -51,7 +51,7 @@ const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/—·+'
 
 const BASE = '/practice3'
 const N_O = 95
-const N_F = 43
+const N_F = 85 /* 원본 24fps 43장 + 사이사이 모션 보간 42장 — 낙하가 뚝뚝 끊기지 않게 */
 const N_TL = 95 /* Turn on the light · 12fps — 스크롤한 만큼 불이 켜진다 */
 const N_ON = 56 /* hero-loop · 8fps — 스크롤을 다 내린 뒤 배경(영상이 막힐 때 대체용) */
 const ON_FPS = 8

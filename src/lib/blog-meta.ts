@@ -17,8 +17,8 @@ export interface CategoryMeta {
    홈의 흐름(생각 → 열매 → 나무 → 숲)에 맞춰, 각 주제에 홈 시퀀스의 프레임 하나씩을 짝지어 둔다. */
 export const CATEGORIES: CategoryMeta[] = [
     { key: 'Idea', slug: 'idea', no: '02', ko: '생각나는', scene: '불이 켜진 열매', frame: '/practice3/o/001.webp', description: '좋은 생각이 떠올랐을 때 적어 두는 곳. 기획, 제품, 그리고 아직 답이 없는 질문들.' },
-    { key: 'Trials', slug: 'trials', no: '03', ko: '해본', scene: '땅에 심어 본 것', frame: '/practice3/f/043.webp', description: '그동안 해본 사업과 실험의 기록. 잘된 것보다 배운 것 위주로 씁니다.' },
-    { key: 'Personal', slug: 'personal', no: '04', ko: '개인적인', scene: '숲지기의 일기', frame: '/practice3/f/022.webp', description: '개인적으로 하고 싶은 말. 일기에 가깝고, 결론이 없어도 괜찮은 글.' },
+    { key: 'Trials', slug: 'trials', no: '03', ko: '해본', scene: '땅에 심어 본 것', frame: '/practice3/f/085.webp', description: '그동안 해본 사업과 실험의 기록. 잘된 것보다 배운 것 위주로 씁니다.' },
+    { key: 'Personal', slug: 'personal', no: '04', ko: '개인적인', scene: '숲지기의 일기', frame: '/practice3/f/043.webp', description: '개인적으로 하고 싶은 말. 일기에 가깝고, 결론이 없어도 괜찮은 글.' },
     { key: 'Life', slug: 'life', no: '05', ko: '다녀온', scene: '숲 밖으로 나간 산책', frame: '/practice3/c/095.webp', description: '맛집, 카페, 좋은 공간. 다시 가고 싶은 곳들의 메모.' },
 ]
 
