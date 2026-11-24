@@ -59,13 +59,14 @@ const ON_DUR = N_ON / ON_FPS
 const XFADE = 0.8 /* 대체 프레임으로 반복할 때 이음새를 겹쳐 섞는 시간(초) */
 /* 낙하 영상 마지막 프레임에서 빛나는 사과가 놓인 위치 (1280×720 기준 비율) */
 const APPLE = { x: 805 / 1280, y: 627 / 720 }
-/* 엔딩 배경의 가운데 큰 슈퍼트리 — hero-loop 원본 프레임(16:9) 기준 비율(0~1).
-   숫자만 바꾸면 위치가 맞춰진다. 주소에 ?debug=1을 붙이면 호버 영역이 테두리로 보인다 */
+/* 엔딩 배경에서 왼쪽 두 번째 큰 슈퍼트리 — hero-loop 원본 프레임(16:9) 기준 비율(0~1).
+   숫자만 바꾸면 위치가 맞춰진다. 주소에 ?debug=1을 붙이면 호버 영역이 테두리로 보인다.
+   (이전 값 — 가운데 가장 큰 슈퍼트리: cx 0.57, cy 0.53, x 0.47~0.67, y 0.47~0.85, r 0.043) */
 const SUPERTREE = {
-  cx: 0.57, cy: 0.53, /* 갓 중심 — 링과 빛이 여기서 퍼진다 */
-  x0: 0.47, x1: 0.67, /* 호버 영역 가로 (갓 + 기둥) */
-  y0: 0.47, y1: 0.85, /* 호버 영역 세로 */
-  r: 0.043, /* 링 반지름 (프레임 너비 대비) */
+  cx: 0.2875, cy: 0.6, /* 갓 중심 — 링과 빛이 여기서 퍼진다 */
+  x0: 0.2125, x1: 0.3625, /* 호버 영역 가로 (갓 + 기둥) */
+  y0: 0.56, y1: 0.84, /* 호버 영역 세로 */
+  r: 0.032, /* 링 반지름 (프레임 너비 대비) */
 }
 const SUPERTREE_CARD = {
   eyebrow: 'SUPERTREE · SINGAPORE',
@@ -650,7 +651,12 @@ export default function AppleSequence() {
 
       /* 엔딩 슈퍼트리: 불이 다 켜지고 hero-loop로 넘어간 뒤부터 링이 돌고 호버가 열린다.
          위치는 사과와 같은 방식 — 원본 비율 → cover() → 엔딩 배율(endS, 중심 W/2·H*0.46) → 장면 변형 tx/ty — 을 매 프레임 계산한다 */
-      const tActive = revP >= 1 && sv > T.city1 + 0.25
+      const oy0 = H * 0.46
+      const fx = (u: number) => tx(W / 2 + (c.x + u * c.w - W / 2) * endS)
+      const fy = (v: number) => ty(oy0 + (c.y + v * c.h - oy0) * endS)
+      /* 세로로 좁은 화면에선 영상 가장자리가 잘린다 — 갓 중심이 화면 밖이면 호버도 쉰다 */
+      const tVisible = fx(SUPERTREE.cx) > 24 && fx(SUPERTREE.cx) < W - 24
+      const tActive = revP >= 1 && sv > T.city1 + 0.25 && tVisible
       if (tActive !== treeActive) {
         treeActive = tActive
         tPop.classList.toggle(s.popActive, tActive)
@@ -658,9 +664,6 @@ export default function AppleSequence() {
         if (!tActive) { setTreeOpen(false); if (document.activeElement === tBtn) tBtn.blur() }
       }
       if (tActive) {
-        const oy0 = H * 0.46
-        const fx = (u: number) => tx(W / 2 + (c.x + u * c.w - W / 2) * endS)
-        const fy = (v: number) => ty(oy0 + (c.y + v * c.h - oy0) * endS)
         const px = fx(SUPERTREE.cx), py = fy(SUPERTREE.cy)
         const pr = SUPERTREE.r * c.w * endS * breathe
         tAnchor.style.transform = `translate(${px.toFixed(1)}px,${py.toFixed(1)}px)`
