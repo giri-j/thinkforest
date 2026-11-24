@@ -89,7 +89,7 @@ export default async function PostPage(context: { params: Promise<{ slug: string
                                 <span className={s.mono}>Older · {deskDate(older.date)} →</span>
                                 <strong>{older.title}</strong>
                             </Link>
-                        ) : <div className={s.none}><span className={s.mono}>Older →</span><strong>여기가 숲의 첫 나무입니다.</strong></div>}
+                        ) : <div className={s.none}><span className={s.mono}>Older →</span><strong>첫 번째 글입니다.</strong></div>}
                     </div>
                 </section>
             </div>
