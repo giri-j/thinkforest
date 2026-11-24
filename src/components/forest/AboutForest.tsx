@@ -7,7 +7,7 @@ import { useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import {
-  heroCopy, intro, narrative, experienceTitle, experience, stats, pull, services,
+  heroCopy, intro, narrative, experienceTitle, experience, stats, pull, pullKeep, services,
   beliefStatement, principles, featuredCases, otherProjects, ctaCopy,
 } from '@/app/about/aboutData'
 import d from '@/components/blog/desk/desk.module.css'
@@ -78,7 +78,11 @@ export default function AboutForest() {
 
       {/* 한 줄 선언 + 하는 일 */}
       <section className={f.sec}>
-        <p className={f.statement} data-rv>{pull}</p>
+        <p className={f.statement} data-rv>
+          {pull.split(new RegExp(`(${pullKeep.join('|')})`)).map((part, i) =>
+            pullKeep.includes(part) ? part : part && <span key={i}>{part}</span>,
+          )}
+        </p>
         <div className={f.services}>
           {services.map((g, i) => (
             <div key={g.title} data-rv style={{ ['--d' as string]: i }}>

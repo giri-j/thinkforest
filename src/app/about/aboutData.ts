@@ -271,6 +271,8 @@ export const experience: ExperienceRow[] = [
 
 /* 가운데 한 줄 선언 */
 export const pull = "기획은 단순 아이디어에서 멈추는 것이 아니라, 성과로 이어지게 만드는 설계입니다.\n기획은 사업이 '되게' 만들기 위해 끊임없는 테스트를 통해 숫자로 증명하는 것입니다."
+/** pull에서 흰색으로 남길 구절 — 나머지는 회색 */
+export const pullKeep = ['성과로 이어지게 만드는 설계', '숫자로 증명하는 것']
 
 /* 하는 일 — 세 묶음 */
 export const services = [
