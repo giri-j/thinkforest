@@ -8,7 +8,6 @@ export default function DeskHeader() {
     <header className={`${s.chrome} ${s.mono}`}>
       <div className={s.corner}>
         <strong>{'// Forest Desk'}</strong>
-        <span>Journal of 기획의 숲</span>
         <span>Seoul — since 2021</span>
       </div>
     </header>
