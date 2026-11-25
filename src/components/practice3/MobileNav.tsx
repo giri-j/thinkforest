@@ -61,7 +61,7 @@ export default function MobileNav() {
         aria-hidden={!open}
         className={`fixed inset-0 z-[80] flex flex-col bg-[#0b0f0c]/96 px-6 pb-8 pt-20 text-[#f2ede3] backdrop-blur-xl transition-[opacity,visibility] duration-400 ${open ? 'visible opacity-100' : 'invisible opacity-0'}`}
       >
-        <p style={MONO} className="mb-6 text-[11px] tracking-[0.14em] text-[#f2ede3]/55">{'// Forest of Thought'} — Seoul, since 2021</p>
+        <p style={MONO} className="mb-6 text-[11px] tracking-[0.14em] text-[#f2ede3]/55">{'// ThinkForest'} — Seoul, since 2021</p>
         <nav aria-label="사이트" className="border-t border-[#f2ede3]/15">
           {ITEMS.map((it, i) => {
             const active = isActive(it.href)

@@ -2,8 +2,8 @@
 
 import s from '@/components/blog/desk/desk.module.css'
 
-/* title: 첫 줄(기본 '// Forest of Thought'), section: 둘째 줄(없으면 생략) */
-export default function PageChrome({ section, title = 'Forest of Thought', right, over = false }: { section?: string; title?: string; right?: string[]; over?: boolean }) {
+/* title: 첫 줄(기본 '// ThinkForest'), section: 둘째 줄(없으면 생략) */
+export default function PageChrome({ section, title = 'ThinkForest', right, over = false }: { section?: string; title?: string; right?: string[]; over?: boolean }) {
   return (
     <header className={`${s.chrome} ${over ? s.chromeOver : ''} ${s.mono}`}>
       <div className={s.corner}>
