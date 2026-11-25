@@ -41,9 +41,9 @@ const NEWTON = {
 /* 우하단 장면 번호 — sv(화면 높이 단위)가 이 값을 넘으면 다음 장면 */
 const SCENES = [
   /* 기획의 숲의 흐름: 생각 → 아이디어 → 기획 → 사업 */
-  { name: 'Thought', until: 1.65 }, /* 사과나무 — 수많은 생각, SCENE 01 카피가 떠 있는 동안 */
+  { name: 'Think', until: 1.65 }, /* 사과나무 — 수많은 생각, SCENE 01 카피가 떠 있는 동안 */
   { name: 'Idea', until: 2.75 }, /* 빛나는 사과가 떨어짐 — 번뜩인 아이디어 */
-  { name: 'Plan', until: 3.75 }, /* 금빛이 차오름 — 아이디어를 다듬어 기획으로 */
+  { name: 'Design', until: 3.75 }, /* 금빛이 차오름 — 아이디어를 다듬어 기획으로 */
   { name: 'Business', until: Infinity }, /* 황금 숲의 도시 — 사업이 됨 */
 ]
 const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/—·+'
@@ -972,7 +972,7 @@ export default function AppleSequence() {
         </div>
 
         <div ref={copy1Ref} className={s.copy} style={{ opacity: 0 }}>
-          <p className={s.eyebrow} data-scramble="[ 01 ] — Thought">[ 01 ] — Thought</p>
+          <p className={s.eyebrow} data-scramble="[ 01 ] — Think">[ 01 ] — Think</p>
           <p className={s.line}>문득 떠오른 영감,<br /><span className={s.gold}>위대한 시작</span>이 될지도 모릅니다.</p>
         </div>
 
