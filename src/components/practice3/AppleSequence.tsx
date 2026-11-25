@@ -17,7 +17,7 @@ import s from './apple.module.css'
 /* practice3 전용 히어로 문구 — 공용 heroP2는 건드리지 않고 lines·subtitle만 덮어쓴다 */
 const heroP3 = {
   ...heroP2,
-  lines: ['THINK;', 'PLAN;', 'BUILD.'],
+  lines: ['THINK', 'PLAN', 'BUILD'],
   subtitle: '생각이 기획을 만나, 사업으로 자라납니다.',
 }
 
