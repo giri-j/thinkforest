@@ -958,7 +958,6 @@ export default function AppleSequence() {
             <div className={s.cue}>
               <span className={s.cueTrack} aria-hidden="true"><i /></span>
               <span>Scroll down.</span>
-              <span className={s.cueDim}>Gravity does the rest.</span>
             </div>
           </div>
           <div ref={brRef} className={`${s.corner} ${s.br}`} aria-live="off">
