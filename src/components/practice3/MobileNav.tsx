@@ -84,7 +84,7 @@ export default function MobileNav() {
           })}
         </nav>
         <div style={MONO} className="mt-auto flex justify-between text-[11px] tracking-[0.06em] text-[#f2ede3]/55">
-          <span>Think Plan Build</span>
+          <span>Think Design Build</span>
           <a href="mailto:jek5797@naver.com" className="text-[#e1b970]">Email ↗</a>
         </div>
       </div>

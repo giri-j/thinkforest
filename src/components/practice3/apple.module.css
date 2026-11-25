@@ -27,7 +27,7 @@
     linear-gradient(90deg, rgba(7, 10, 8, 0.82) 0%, rgba(7, 10, 8, 0.6) 32%, rgba(7, 10, 8, 0.18) 62%, rgba(7, 10, 8, 0) 80%),
     linear-gradient(to top, rgba(7, 10, 8, 0.55) 0%, transparent 30%);
 }
-/* 암전 — 처음엔 검은 화면 위에서 THINK; PLAN; BUILD. 가 그려지고, 글자가 채워질 때 장면이 드러난다 */
+/* 암전 — 처음엔 검은 화면 위에서 THINK DESIGN BUILD 가 그려지고, 글자가 채워질 때 장면이 드러난다 */
 .blackout {
   position: absolute; inset: 0; pointer-events: none; will-change: opacity;
   background: #070907; opacity: 1;

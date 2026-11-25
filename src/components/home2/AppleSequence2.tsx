@@ -715,7 +715,7 @@ export default function AppleSequence2() {
           <h2 className={s.brandWord}>기획의 숲</h2>
           <div className={s.brandFoot}>
             <span className={s.brandRule} aria-hidden="true" />
-            <p className={s.brandTag}>Think Plan Build</p>
+            <p className={s.brandTag}>Think Design Build</p>
           </div>
         </div>
         <div ref={sigRef} className={s.sig} style={{ opacity: 0 }}>

@@ -1,6 +1,6 @@
 'use client'
 
-/* 히어로(THINK; PLAN; BUILD.) → 사과나무 → 황금 사과 낙하 → 금빛 확대 → 밤의 사과나무에 불이 켜짐(엔딩).
+/* 히어로(THINK DESIGN BUILD) → 사과나무 → 황금 사과 낙하 → 금빛 확대 → 밤의 사과나무에 불이 켜짐(엔딩).
    매거진 칼럼 안에서 sticky로 고정되고, 스크롤한 만큼 장면이 진행된다.
    가만히 있어도 살아 있도록: 나무는 천천히 좌우로 돌고(드래그하면 손이 우선), 엔딩은 불 켜진 밤 영상이 반복되며,
    두 장면 모두 숨 쉬듯 미세하게 확대되고 마우스를 따라 살짝 기울어지며 빛 입자가 떠다닌다.
@@ -987,7 +987,7 @@ export default function AppleSequence() {
           <h2 className={s.brandWord}>기획의 숲</h2>
           <div className={s.brandFoot}>
             <span className={s.brandRule} aria-hidden="true" />
-            <p className={s.brandTag}>Think Plan Build</p>
+            <p className={s.brandTag}>Think Design Build</p>
           </div>
         </div>
 
