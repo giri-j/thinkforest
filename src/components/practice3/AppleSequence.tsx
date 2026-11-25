@@ -18,7 +18,6 @@ import s from './apple.module.css'
 const heroP3 = {
   ...heroP2,
   lines: ['THINK;', 'PLAN;', 'BUILD.'],
-  meta: 'PLANNING PRAXIS EST. 2021',
   subtitle: '생각이 기획을 만나, 사업으로 자라납니다.',
 }
 
@@ -953,8 +952,7 @@ export default function AppleSequence() {
         {/* 네 모서리 마이크로타이포 */}
         <div ref={chromeRef} className={s.chrome}>
           <div ref={tlRef} className={`${s.corner} ${s.tl}`}>
-            <span className={s.cStrong}>{'// '}{heroP3.eyebrow.split(' · ')[0]}</span>
-            <span>{heroP3.meta}</span>
+            <span className={s.cStrong}>{'// ThinkForest'}</span>
           </div>
           <div ref={blRef} className={`${s.corner} ${s.bl}`}>
             <div className={s.cue}>
@@ -986,7 +984,7 @@ export default function AppleSequence() {
         </div>
         <div ref={brandRef} className={s.brand}>
           <span className={s.brandGlow} aria-hidden="true" />
-          <p className={s.brandEyebrow}>{'// Forest of Thought'}</p>
+          <p className={s.brandEyebrow}>{'// ThinkForest'}</p>
           <h2 className={s.brandWord}>기획의 숲</h2>
           <div className={s.brandFoot}>
             <span className={s.brandRule} aria-hidden="true" />
