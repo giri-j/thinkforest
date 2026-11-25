@@ -18,7 +18,7 @@ import s from './apple.module.css'
 const heroP3 = {
   ...heroP2,
   lines: ['THINK', 'PLAN', 'BUILD'],
-  subtitle: '생각이 기획을 만나, 사업으로 자라납니다.',
+  subtitle: '아이디어가 기획을 만나, 사업으로 자라납니다.',
 }
 
 const COPYRIGHT = '© 기획의 숲' /* 공용 coda.copyright(수식어 포함)는 두고 홈에서만 짧게 */
