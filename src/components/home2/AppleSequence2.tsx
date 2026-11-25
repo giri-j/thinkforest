@@ -629,7 +629,7 @@ export default function AppleSequence2() {
         <div ref={blackoutRef} className={s.blackout} aria-hidden="true" />
         <div ref={bloomRef} className={s.bloom} />
         <div ref={floodRef} className={s.flood} />
-        <p ref={momentRef} className={s.moment} style={{ opacity: 0 }} aria-hidden="true">아이디어가 기획이 되는 순간.</p>
+        <p ref={momentRef} className={s.moment} style={{ opacity: 0 }} aria-hidden="true">아이디어가 기획을 만난 순간.</p>
 
         {/* 히어로 — 사과나무를 배경으로 */}
         <div ref={heroRef} className={s.hero}>

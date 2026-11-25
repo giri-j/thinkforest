@@ -99,7 +99,7 @@ const END = 8.7
 /* 머무는 구간 — 스크롤은 계속되지만 장면은 그 자리에 멈춰, 빨리 내려도 핵심 장면을 놓치지 않게 한다.
    at: 멈출 지점(장면 시간, vh), len: 그 지점에 머무는 스크롤 길이(vh). 스크롤을 멈춘 곳이 구간 바로 앞뒤면 구간 안으로 살짝 끌어당긴다 */
 const HOLDS = [
-  { at: T.zoom1, len: 0.9 }, /* 금빛이 다 차서 '아이디어가 기획이 되는 순간.'이 온전히 보이는 때 */
+  { at: T.zoom1, len: 0.9 }, /* 금빛이 다 차서 '아이디어가 기획을 만난 순간.'이 온전히 보이는 때 */
 ]
 const HOLD_TOTAL = HOLDS.reduce((a, h) => a + h.len, 0)
 /* 실제 스크롤 길이(vh) = 장면 길이 + 머무는 구간 */
@@ -120,7 +120,7 @@ const HOLD_RAW = HOLDS.map((h, i) => ({ start: h.at + HOLDS.slice(0, i).reduce((
 const SNAP_BEFORE = 0.45 /* 구간 앞 이만큼 안에서 멈추면 구간 안으로 (글자가 떠오르는 중) */
 const SNAP_AFTER = 0.35 /* 구간 뒤 이만큼 안에서 멈추면 구간 끝으로 (글자가 사라지는 중) */
 /* 금빛이 화면을 채우는 순간의 한 줄 */
-const MOMENT = '아이디어가 기획이 되는 순간.'
+const MOMENT = '아이디어가 기획을 만난 순간.'
 /* 섹션 높이 = (SCROLL_END + 1) × 100vh — 고정 100vh + 스크롤 SCROLL_END×100vh. (.seq를 /home2와 같이 쓰므로 높이는 인라인으로) */
 
 type Frame = { src: string; img: HTMLImageElement | null; ok: boolean }
