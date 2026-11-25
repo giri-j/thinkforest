@@ -979,7 +979,7 @@ export default function AppleSequence() {
         <div ref={endShadeRef} className={s.endShade} style={{ opacity: 0 }} />
         <div ref={copy2Ref} className={`${s.copy} ${s.copyCenter}`}>
           <p className={s.eyebrow} data-scramble="[ 04 ] — Business">[ 04 ] — Business</p>
-          <p className={`${s.line} ${s.lineBig}`}>생각은 사업이 되어<br /><span className={s.gold}>눈부신 발전을 이룹니다.</span></p>
+          <p className={`${s.line} ${s.lineBig}`}>아이디어는 사업이 되어<br /><span className={s.gold}>눈부신 발전을 이룹니다.</span></p>
         </div>
         <div ref={brandRef} className={s.brand}>
           <span className={s.brandGlow} aria-hidden="true" />
